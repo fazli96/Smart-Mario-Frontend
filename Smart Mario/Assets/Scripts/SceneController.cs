@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class WorldSelection : MonoBehaviour
+public class SceneController : MonoBehaviour
 {
     public void PlayWorld1()
     {
@@ -12,5 +12,15 @@ public class WorldSelection : MonoBehaviour
     public void PlayWorld2()
     {
         SceneManager.LoadScene("World2");
+    }
+
+    public void ToWorldSelection()
+    {
+        SceneManager.LoadScene("WorldSelection");
+    }
+
+    public void ToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }
