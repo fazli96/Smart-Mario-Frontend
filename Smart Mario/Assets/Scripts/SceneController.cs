@@ -23,4 +23,14 @@ public class SceneController : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
+
+    public void ToMinigame1()
+    {
+        SceneManager.LoadScene("SnakesAndLadders");
+    }
+
+    public void ToMinigame2()
+    {
+        SceneManager.LoadScene("Matching Cards");
+    }
 }
