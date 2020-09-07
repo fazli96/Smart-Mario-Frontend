@@ -205,7 +205,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1802214162}
+      - m_Target: {fileID: 723650118}
         m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
         m_MethodName: ToMainMenu
         m_Mode: 1
@@ -720,6 +720,74 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &723650117
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5222001972021905470, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+      propertyPath: m_Name
+      value: SceneManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+--- !u!114 &723650118 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5222001972021905471, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
+  m_PrefabInstance: {fileID: 723650117}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98fbe9c9ffaf2634d8821e0e9bf2ce8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &924102825
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,8 +870,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1802214162}
-        m_TargetAssemblyTypeName: WorldSelection, Assembly-CSharp
+      - m_Target: {fileID: 723650118}
+        m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
         m_MethodName: PlayWorld1
         m_Mode: 1
         m_Arguments:
@@ -934,8 +1002,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1802214162}
-        m_TargetAssemblyTypeName: WorldSelection, Assembly-CSharp
+      - m_Target: {fileID: 723650118}
+        m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
         m_MethodName: PlayWorld2
         m_Mode: 1
         m_Arguments:
@@ -1168,7 +1236,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1802214161}
-  - component: {fileID: 1802214162}
   m_Layer: 5
   m_Name: WorldSelection
   m_TagString: Untagged
@@ -1199,18 +1266,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.000015259, y: -0.0000076294}
   m_SizeDelta: {x: 443.50977, y: 334.73163}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1802214162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1802214160}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98fbe9c9ffaf2634d8821e0e9bf2ce8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1821977235
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,11 +7,11 @@ public class SceneController : MonoBehaviour
 {
     public void PlayWorld1()
     {
-        SceneManager.LoadScene("World1");
+        SceneManager.LoadSceneAsync("World1");
     }
     public void PlayWorld2()
     {
-        SceneManager.LoadScene("World2");
+        SceneManager.LoadSceneAsync("World2");
     }
 
     public void ToWorldSelection()
@@ -26,11 +26,11 @@ public class SceneController : MonoBehaviour
 
     public void ToMinigame1()
     {
-        SceneManager.LoadScene("SnakesAndLadders");
+        SceneManager.LoadSceneAsync("SnakesAndLadders");
     }
 
     public void ToMinigame2()
     {
-        SceneManager.LoadScene("Matching Cards");
+        SceneManager.LoadSceneAsync("Matching Cards");
     }
 }
