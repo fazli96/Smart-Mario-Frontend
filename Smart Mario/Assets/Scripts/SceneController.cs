@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Hosting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,11 +7,11 @@ public class SceneController : MonoBehaviour
 {
     public void PlayWorld1()
     {
-        SceneManager.LoadScene("World1");
+        SceneManager.LoadSceneAsync("World1");
     }
     public void PlayWorld2()
     {
-        SceneManager.LoadScene("World2");
+        SceneManager.LoadSceneAsync("World2");
     }
 
     public void ToWorldSelection()
@@ -25,20 +24,13 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void ToCreateAccount()
+    public void ToMinigame1()
     {
-        SceneManager.LoadScene("CreateAccount");
+        SceneManager.LoadSceneAsync("SnakesAndLadders");
     }
 
-    public void ToLogin()
+    public void ToMinigame2()
     {
-        SceneManager.LoadScene("Login");
+        SceneManager.LoadSceneAsync("Matching Cards");
     }
-
-    public void Quit()
-    {
-        Application.Quit();
-    }
-
-
 }
