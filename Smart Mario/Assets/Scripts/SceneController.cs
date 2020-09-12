@@ -57,7 +57,6 @@ public class SceneController : MonoBehaviour
 
     public void ToMinigame1()
     {
-        GameControl.nofPlayers = 1;
         SceneManager.LoadSceneAsync("Main");
     }
 

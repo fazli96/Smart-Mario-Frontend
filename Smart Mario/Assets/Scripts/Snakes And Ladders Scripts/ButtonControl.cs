@@ -28,13 +28,6 @@ public class ButtonControl : MonoBehaviour
         exitPanel.SetActive(false);
     }
 
-    public void PlayBtn()
-    {
-        SceneManager.LoadScene("Menu");
-        menuPanel.SetActive(false);
-        exitPanel.SetActive(false);
-    }
-
     public void ResetBtn()
     {
         SceneManager.LoadScene("Main");
@@ -47,31 +40,7 @@ public class ButtonControl : MonoBehaviour
 
     public void oneP()
     {
-        GameControl.nofPlayers = 1;
         SceneManager.LoadScene("Main");
-    }
-
-    public void twoP()
-    {
-        GameControl.nofPlayers = 2;
-        SceneManager.LoadScene("Main");
-    }
-
-    public void threeP()
-    {
-        GameControl.nofPlayers = 3;
-        SceneManager.LoadScene("Main");
-    }
-
-    public void fourP()
-    {
-        GameControl.nofPlayers = 4;
-        SceneManager.LoadScene("Main");
-    }
-
-    public void OpenUrl(){
-        Application.OpenURL("http://raviikmr.github.io/privacy-snakeladder.html");
-
     }
 
 }

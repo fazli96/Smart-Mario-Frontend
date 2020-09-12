@@ -1,23 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class FollowThePath : MonoBehaviour {
 
     //public Transform[] waypoints;
     public List<GameObject> waypoints = new List<GameObject>();
 
-
     [SerializeField]
     private float moveSpeed = 1f;
 
     [HideInInspector]
     public int waypointIndex = 0;
-
     public bool moveAllowed = false;
 
-	// Use this for initialization
-	private void Start () {
+    // Use this for initialization
+    private void Start () {
+
         /* foreach(GameObject fooObj in GameObject.FindGameObjectsWithTag("WayPoint")){
 			waypoints.Add(fooObj);
 		}
@@ -50,11 +50,11 @@ public class FollowThePath : MonoBehaviour {
             {
                 waypointIndex += 1;
             }
-            
-        }
-        
 
-       }
+        }
+   
+
+    }
 
         
 }
