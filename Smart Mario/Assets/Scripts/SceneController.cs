@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Hosting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,4 +24,21 @@ public class SceneController : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
+
+    public void ToCreateAccount()
+    {
+        SceneManager.LoadScene("CreateAccount");
+    }
+
+    public void ToLogin()
+    {
+        SceneManager.LoadScene("Login");
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+
 }
