@@ -5,6 +5,22 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
+    private static SceneController instance = null;
+
+    public static SceneController getSceneController()
+    {
+        if (instance == null)
+        {
+            instance = new SceneController();
+        }
+        return instance;
+    }
+
+    public void ToStartMenu()
+    {
+        SceneManager.LoadScene("Start");
+    }
+
     public void PlayWorld1()
     {
         SceneManager.LoadSceneAsync("World1");
@@ -22,6 +38,21 @@ public class SceneController : MonoBehaviour
     public void ToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ToCreateAccount()
+    {
+        SceneManager.LoadScene("CreateAccount");
+    }
+
+    public void ToLogin()
+    {
+        SceneManager.LoadScene("Login");
+    }
+
+    public void ToQuit()
+    {
+        Application.Quit();
     }
 
     public void ToMinigame1()

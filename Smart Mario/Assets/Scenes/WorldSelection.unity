@@ -205,9 +205,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 723650118}
-        m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
-        m_MethodName: ToMainMenu
+      - m_Target: {fileID: 1802214162}
+        m_TargetAssemblyTypeName: WorldSelection, Assembly-CSharp
+        m_MethodName: ReturnToMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -777,17 +777,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
---- !u!114 &723650118 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5222001972021905471, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-  m_PrefabInstance: {fileID: 723650117}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98fbe9c9ffaf2634d8821e0e9bf2ce8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &924102825
 GameObject:
   m_ObjectHideFlags: 0
@@ -870,9 +859,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 723650118}
-        m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
-        m_MethodName: PlayWorld1
+      - m_Target: {fileID: 1802214162}
+        m_TargetAssemblyTypeName: WorldSelection, Assembly-CSharp
+        m_MethodName: SelectWorld1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1002,9 +991,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 723650118}
-        m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
-        m_MethodName: PlayWorld2
+      - m_Target: {fileID: 1802214162}
+        m_TargetAssemblyTypeName: WorldSelection, Assembly-CSharp
+        m_MethodName: SelectWorld2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1236,6 +1225,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1802214161}
+  - component: {fileID: 1802214162}
   m_Layer: 5
   m_Name: WorldSelection
   m_TagString: Untagged
@@ -1266,6 +1256,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0.000015259, y: -0.0000076294}
   m_SizeDelta: {x: 443.50977, y: 334.73163}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1802214162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802214160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b794ad0123189d428dd7f1df5584e3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1821977235
 GameObject:
   m_ObjectHideFlags: 0
