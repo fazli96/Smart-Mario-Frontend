@@ -26,7 +26,8 @@ public class SceneController : MonoBehaviour
 
     public void ToMinigame1()
     {
-        SceneManager.LoadSceneAsync("SnakesAndLadders");
+        GameControl.nofPlayers = 1;
+        SceneManager.LoadSceneAsync("Main");
     }
 
     public void ToMinigame2()
