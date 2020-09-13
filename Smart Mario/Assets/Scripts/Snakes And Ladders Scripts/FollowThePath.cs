@@ -10,6 +10,7 @@ public class FollowThePath : MonoBehaviour {
 
     [SerializeField]
     private float moveSpeed = 1f;
+    private float moveH, moveV;
 
     [HideInInspector]
     public int waypointIndex = 0;
@@ -24,6 +25,8 @@ public class FollowThePath : MonoBehaviour {
         waypoints.Reverse(); */
         transform.position = waypoints[waypointIndex].transform.position;
 
+
+
        
 	}
 	
@@ -31,6 +34,12 @@ public class FollowThePath : MonoBehaviour {
 	private void Update () {
         
         if (moveAllowed){
+            moveH = waypoints[waypointIndex].transform.position.x - transform.position.x * moveSpeed;
+            moveV = waypoints[waypointIndex].transform.position.y - transform.position.y * moveSpeed;
+
+            Vector2 direction = new Vector2(moveH, moveV);
+
+            FindObjectOfType<PlayerAnimation>().SetDirection(direction);
             Move();
         }
         
