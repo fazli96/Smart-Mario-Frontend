@@ -1,36 +1,42 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
+using System.Linq;
 
 public class GameControl : MonoBehaviour {
 
-    private static GameObject whoWinsTextShadow, player;
+    private static GameObject player;
+    private static List<int> questionBarrelLocation = new List<int>();
+    public GameObject completeLevelPanel;
+    public GameObject questionBarrelPrefab;
+    public GameObject questionBarrelClone;
 
     public static int diceSideThrown = 0;
     public static int playerStartWaypoint = 0;
 
-    public static bool gameOver = false;
+    public static bool levelComplete = false;
 
     // Use this for initialization
     void Start () {
 
         diceSideThrown = 0;
         playerStartWaypoint = 0;
-        gameOver = false;
+        levelComplete = false;
+        questionBarrelLocation.Clear();
 
-        whoWinsTextShadow = GameObject.Find("WhoWinsText");
-        whoWinsTextShadow.gameObject.SetActive(false);
+        completeLevelPanel.gameObject.SetActive(false);
 
         player = GameObject.Find("Player");
         player.GetComponent<FollowThePath>().moveAllowed = false;
+
+        spawnQuestionBarrels(1);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(gameOver){
+        if(levelComplete)
+        {
             //back to menu
         }
 
@@ -38,6 +44,11 @@ public class GameControl : MonoBehaviour {
         if (player.GetComponent<FollowThePath>().waypointIndex > 
             playerStartWaypoint + diceSideThrown)
         {
+            if (questionBarrelLocation.Contains(playerStartWaypoint + diceSideThrown))
+            {
+                Debug.Log("ask a question");
+            }
+            
             //Debug.Log(playerStartWaypoint+diceSideThrown);
             /*if(playerStartWaypoint+diceSideThrown == 12){
                 player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[45].transform.position;
@@ -107,14 +118,38 @@ public class GameControl : MonoBehaviour {
         if (player.GetComponent<FollowThePath>().waypointIndex == 
             player.GetComponent<FollowThePath>().waypoints.Count)
         {
-            whoWinsTextShadow.gameObject.SetActive(true);
-            whoWinsTextShadow.GetComponent<Text>().text = "Player 1 Wins";
-            gameOver = true;
+            player.GetComponent<FollowThePath>().moveAllowed = false;
+            completeLevelPanel.gameObject.SetActive(true);
+            levelComplete = true;
         }
     }
 
     public static void MovePlayer()
     {
         player.GetComponent<FollowThePath>().moveAllowed = true;
+    }
+
+    public static bool getMoveAllowed()
+    {
+        return player.GetComponent<FollowThePath>().moveAllowed;
+    }
+
+    private void spawnQuestionBarrels(int difficulty)
+    {
+        // difficulty Easy - 3, Medium - 2, Hard - 1
+        for (int i = 2; i < 94; i += (difficulty + 4))
+        {
+
+            int rndInt = Random.Range(i, i + 5);
+            questionBarrelLocation.Add(rndInt);
+            //Debug.Log(rndInt);
+        }
+
+        for (int i = 0; i < questionBarrelLocation.Count() - 1; i++)
+        {
+            questionBarrelClone = Instantiate(questionBarrelPrefab,
+                player.GetComponent<FollowThePath>().waypoints[questionBarrelLocation[i]].transform.position,
+                Quaternion.Euler(0, 0, 0)) as GameObject;
+        }
     }
 }

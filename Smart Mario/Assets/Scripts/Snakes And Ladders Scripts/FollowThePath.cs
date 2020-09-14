@@ -64,7 +64,6 @@ public class FollowThePath : MonoBehaviour {
    
 
     }
-
         
 }
 

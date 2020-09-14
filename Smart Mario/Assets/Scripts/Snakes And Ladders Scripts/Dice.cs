@@ -19,7 +19,7 @@ public class Dice : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!GameControl.gameOver && coroutineAllowed)
+        if (!GameControl.levelComplete && coroutineAllowed && !GameControl.getMoveAllowed())
             StartCoroutine("RollTheDice");
             //GetComponent<AudioSource>().Play();
     }
