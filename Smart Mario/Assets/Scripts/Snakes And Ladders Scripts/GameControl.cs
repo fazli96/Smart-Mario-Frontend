@@ -6,7 +6,7 @@ public class GameControl : MonoBehaviour {
 
     private static GameObject player;
     private static List<int> questionBarrelLocation = new List<int>();
-    public GameObject completeLevelPanel;
+    public GameObject completeLevelPanel, gameOverPanel;
     public GameObject questionBarrelPrefab;
     public GameObject questionBarrelClone;
 
@@ -24,11 +24,12 @@ public class GameControl : MonoBehaviour {
         questionBarrelLocation.Clear();
 
         completeLevelPanel.gameObject.SetActive(false);
+        gameOverPanel.gameObject.SetActive(false);
 
         player = GameObject.Find("Player");
         player.GetComponent<FollowThePath>().moveAllowed = false;
 
-        spawnQuestionBarrels(1);
+        spawnQuestionBarrels(PlayerPrefs.GetInt("Minigame Difficulty",3));
 
     }
 
@@ -137,7 +138,7 @@ public class GameControl : MonoBehaviour {
     private void spawnQuestionBarrels(int difficulty)
     {
         // difficulty Easy - 3, Medium - 2, Hard - 1
-        for (int i = 2; i < 94; i += (difficulty + 4))
+        for (int i = 2; i < 94; i += (difficulty * 2))
         {
 
             int rndInt = Random.Range(i, i + 5);

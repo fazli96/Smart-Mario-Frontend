@@ -55,13 +55,17 @@ public class SceneController : MonoBehaviour
         Application.Quit();
     }
 
+    public void ToDifficultySelection()
+    {
+        SceneManager.LoadScene("SelectDifficulty");
+    }
     public void ToMinigame1()
     {
-        SceneManager.LoadSceneAsync("Main");
+        SceneManager.LoadScene("Minigame1_Level1");
     }
 
     public void ToMinigame2()
     {
-        SceneManager.LoadSceneAsync("Matching Cards");
+        SceneManager.LoadScene("Matching Cards");
     }
 }

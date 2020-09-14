@@ -6848,8 +6848,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2120773671}
-        m_TargetAssemblyTypeName: SceneController, Assembly-CSharp
+      - m_Target: {fileID: 1320876453}
+        m_TargetAssemblyTypeName: World1ManagerScreen, Assembly-CSharp
         m_MethodName: ToWorldSelection
         m_Mode: 1
         m_Arguments:
@@ -8742,7 +8742,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1122169163
 GameObject:
@@ -9553,6 +9553,49 @@ Transform:
   - {fileID: 288981633}
   m_Father: {fileID: 1322022576}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1320876452
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1320876454}
+  - component: {fileID: 1320876453}
+  m_Layer: 0
+  m_Name: World1Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1320876453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320876452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f560331a8f6f1047afa3028de1fcf9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1320876454
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320876452}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 486.86752, y: 178.91559, z: 24806.908}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1322022575
 GameObject:
@@ -18173,17 +18216,6 @@ PolygonCollider2D:
       - {x: 0.748745, y: 0.08561325}
       - {x: 0.748745, y: 0.22623825}
       - {x: 0.592495, y: 0.31998825}
---- !u!114 &2120773671 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5222001972021905471, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-  m_PrefabInstance: {fileID: 5222001971517011992}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98fbe9c9ffaf2634d8821e0e9bf2ce8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2144172970
 GameObject:
   m_ObjectHideFlags: 0
@@ -18320,14 +18352,18 @@ PrefabInstance:
     - target: {fileID: 5009134394142932096, guid: 42a5dfa0cad57f94498a69009669e593, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2120773671}
+      objectReference: {fileID: 1320876453}
     - target: {fileID: 5009134394142932096, guid: 42a5dfa0cad57f94498a69009669e593, type: 3}
       propertyPath: text
       value: 
       objectReference: {fileID: 424881008}
     - target: {fileID: 5009134394142932096, guid: 42a5dfa0cad57f94498a69009669e593, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToMinigame1
+      value: ToMinigame1DifficultySelection
+      objectReference: {fileID: 0}
+    - target: {fileID: 5009134394142932096, guid: 42a5dfa0cad57f94498a69009669e593, type: 3}
+      propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: World1ManagerScreen, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5741172710665544085, guid: 42a5dfa0cad57f94498a69009669e593, type: 3}
       propertyPath: m_Name
@@ -18503,67 +18539,14 @@ PrefabInstance:
     - target: {fileID: 5009134394142932096, guid: 42a5dfa0cad57f94498a69009669e593, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2120773671}
+      objectReference: {fileID: 1320876453}
     - target: {fileID: 5009134394142932096, guid: 42a5dfa0cad57f94498a69009669e593, type: 3}
       propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToMinigame2
+      value: ToMinigame2DifficultySelection
+      objectReference: {fileID: 0}
+    - target: {fileID: 5009134394142932096, guid: 42a5dfa0cad57f94498a69009669e593, type: 3}
+      propertyPath: interactAction.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: World1ManagerScreen, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42a5dfa0cad57f94498a69009669e593, type: 3}
---- !u!1001 &5222001971517011992
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5222001972021905456, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5222001972021905470, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
-      propertyPath: m_Name
-      value: SceneManager
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ea1d86a3ef2cbc64daf1673484297551, type: 3}
