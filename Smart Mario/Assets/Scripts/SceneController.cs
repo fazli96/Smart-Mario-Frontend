@@ -35,6 +35,11 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadScene("WorldSelection");
     }
 
+    public void ToCustomizeCharacter()
+    {
+        SceneManager.LoadScene("CustomizeCharacter");
+    }
+
     public void ToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");

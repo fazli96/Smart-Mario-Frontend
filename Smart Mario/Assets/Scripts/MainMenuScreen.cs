@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainMenu : MonoBehaviour
+public class MainMenuScreen : MonoBehaviour
 {
     private SceneController scene;
     // Start is called before the first frame update
@@ -17,13 +17,23 @@ public class MainMenu : MonoBehaviour
 
     }
 
-    public void WorldSelection()
+    public void WorldSelectionScreen()
     {
         scene.ToWorldSelection();
     }
 
-    public void ReturnToStartMenu()
+    public void MultiplayerScreen()
     {
-        scene.ToStartMenu();
+        
+    }
+
+    public void CustomizeCharacterScreen()
+    {
+        scene.ToCustomizeCharacter();
+    }
+
+    public void LogOut()
+    {
+        scene.ToLogin();
     }
 }

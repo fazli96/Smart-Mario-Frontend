@@ -5,7 +5,8 @@ using UnityEngine;
 public class FollowPlayer : MonoBehaviour
 {
 
-    public Transform lookAt;
+    private GameObject selectedPlayer;
+
     public Vector3 offset;
 
     private Camera cam;
@@ -14,12 +15,13 @@ public class FollowPlayer : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
+        selectedPlayer = GameObject.FindGameObjectWithTag("SelectedPlayer");
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 pos = cam.WorldToScreenPoint(lookAt.position + offset);
+        Vector3 pos = cam.WorldToScreenPoint(selectedPlayer.transform.position + offset);
 
         if (transform.position != pos)
             transform.position = pos;

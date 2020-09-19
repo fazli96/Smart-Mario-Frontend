@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Minigame1_Level1.unity
     guid: 6744bfa6d977a3140967319bcca3f1de
+  - enabled: 1
+    path: Assets/Scenes/CustomizeCharacter.unity
+    guid: 9832bfe033fe6044b8c6f38defae1bc0
   m_configObjects: {}
