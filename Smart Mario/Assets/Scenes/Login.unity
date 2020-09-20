@@ -521,7 +521,6 @@ GameObject:
   - component: {fileID: 206047509}
   - component: {fileID: 206047508}
   - component: {fileID: 206047507}
-  - component: {fileID: 206047511}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -610,18 +609,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &206047511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 206047506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15392bbc85cac2945b3b6ab6e83917b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &252218710
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,9 +976,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 580007967}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15392bbc85cac2945b3b6ab6e83917b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a7510a6cfd2df34898ec416adc425b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loginButton: {fileID: 733387008}
+  usernameInputField: {fileID: 408082653}
+  passwordInputField: {fileID: 2020024181}
+  teacherToggle: {fileID: 252218712}
 --- !u!1 &586521720
 GameObject:
   m_ObjectHideFlags: 0
@@ -1166,9 +1157,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 580007967}
+      - m_Target: {fileID: 580007969}
         m_TargetAssemblyTypeName: LoginScreen, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: CheckInput
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1373,9 +1364,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 580007967}
+      - m_Target: {fileID: 580007969}
         m_TargetAssemblyTypeName: LoginScreen, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: ReturnToStartMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

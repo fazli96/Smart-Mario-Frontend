@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +11,6 @@ public class LoginScreen : MonoBehaviour
     public Button loginButton;
     public InputField usernameInputField;
     public InputField passwordInputField;
-    public InputField keyInputField;
     public Toggle teacherToggle;
 
     void Start()
@@ -36,7 +34,6 @@ public class LoginScreen : MonoBehaviour
     {
         string username = usernameInputField.text;
         string password = passwordInputField.text;
-        string key = keyInputField.text;
 
         if (teacherToggle.isOn)
         {
@@ -58,7 +55,7 @@ public class LoginScreen : MonoBehaviour
         else
         {
             UnityEngine.Debug.Log("Student");
-            if (login.ValidateStudentLogin(key))
+            if (login.ValidateStudentLogin(username, password))
             {
                 // create account in database
                 // show successful message
