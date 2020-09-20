@@ -26,9 +26,4 @@ public class LoginScreen : MonoBehaviour
     {
         scene.ToStartMenu();
     }
-
-    public void ToMainMenu()
-    {
-        scene.ToMainMenu();
-    }
 }
