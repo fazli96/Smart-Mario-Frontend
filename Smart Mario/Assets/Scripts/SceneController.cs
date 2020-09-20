@@ -7,7 +7,7 @@ public class SceneController : MonoBehaviour
 {
     private static SceneController instance = null;
 
-    public static SceneController getSceneController()
+    public static SceneController GetSceneController()
     {
         if (instance == null)
         {

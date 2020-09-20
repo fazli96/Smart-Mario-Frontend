@@ -8,7 +8,7 @@ public class WorldSelection : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scene = SceneController.getSceneController();
+        scene = SceneController.GetSceneController();
     }
 
     // Update is called once per frame

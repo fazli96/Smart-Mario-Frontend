@@ -25,7 +25,7 @@ public class CustomizeCharManager : MonoBehaviour
             knight.SetActive(true);
             charInt = 2;
         }
-        scene = SceneController.getSceneController();
+        scene = SceneController.GetSceneController();
     }
 
     // Update is called once per frame

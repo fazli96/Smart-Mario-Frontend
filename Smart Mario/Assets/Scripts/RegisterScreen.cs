@@ -18,7 +18,7 @@ public class RegisterScreen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scene = SceneController.getSceneController();
+        scene = SceneController.GetSceneController();
         register = RegisterController.GetRegisterController();
     }
 
