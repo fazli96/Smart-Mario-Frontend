@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,46 +42,12 @@ public class RegisterScreen : MonoBehaviour
 
         if (teacherToggle.isOn)
         {
-            UnityEngine.Debug.Log("Teacher");
-            if (register.CheckTeacherUniqueUsername(username) && register.CheckTeacherValidKey(key))
-            {
-                // create account in database
-                // show successful message
-                // transition to next screen
-                UnityEngine.Debug.Log("(True set for all tests:) " + username + password + key);
-            }
-            
-            else if (!register.CheckTeacherValidKey(key))
-            {
-                // show teacher key is invalid message
-            }
-
-            else
-            {
-               // show teacher username is not unique message
-            }
+            register.RegisterTeacherDetails(username, password, key);
         } 
 
         else
         {
-            UnityEngine.Debug.Log("Student");
-            if (register.CheckStudentUniqueUsername(username) && register.CheckStudentValidKey(key))
-            {
-                // create account in database
-                // show successful message
-                // transition to next screen
-                UnityEngine.Debug.Log("(True set for all tests:) " + username + password + key);
-            }
-
-            else if (!register.CheckStudentValidKey(key))
-            {
-                // show student key is invalid message
-            }
-
-            else
-            {
-                // show student username is not unique message
-            }
+            register.RegisterStudentDetails(username, password, key);
         }
     }
 }

@@ -38,35 +38,12 @@ public class LoginScreen : MonoBehaviour
         if (teacherToggle.isOn)
         {
             UnityEngine.Debug.Log("Teacher");
-            if (login.ValidateTeacherLogin(username, password))
-            {
-                // create account in database
-                // show successful message
-                // transition to next screen
-                UnityEngine.Debug.Log("(True set for Teacher Validation:) " + username + password);
-            }
-
-            else
-            {
-                // show teacher username or password not valid
-            }
+            login.ValidateTeacherLogin(username, password);
         }
-
         else
         {
             UnityEngine.Debug.Log("Student");
-            if (login.ValidateStudentLogin(username, password))
-            {
-                // create account in database
-                // show successful message
-                // transition to next screen
-                UnityEngine.Debug.Log("(True set for Student Validation:) " + username + password);
-            }
-
-            else
-            {
-                // show student username or password not valid
-            }
+            login.ValidateStudentLogin(username, password);
         }
     }
 }

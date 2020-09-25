@@ -11,7 +11,7 @@ public class StartMenu : MonoBehaviour
         scene = SceneController.GetSceneController();
     }
 
-    // Update is called once per frame
+    // Update is called once per frames
     void Update()
     {
         

@@ -11,7 +11,8 @@ public class SceneController : MonoBehaviour
     {
         if (instance == null)
         {
-            instance = new SceneController();
+            GameObject go = new GameObject();
+            instance = go.AddComponent<SceneController>();
         }
         return instance;
     }
