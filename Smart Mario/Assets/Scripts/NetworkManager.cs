@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SocketIO;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -10,7 +11,7 @@ public class NetworkManager : MonoBehaviour
 {
     public static NetworkManager instance;
     public Canvas canvas;
-    //public SocketIOComponent socket;
+    public SocketIOComponent socket;
     public InputField playerNameInput;
     public GameObject player;
     
@@ -30,7 +31,11 @@ public class NetworkManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //TODO subscription
+        //subscribe to all the various websocket events
+        socket.On("other player connected", OnOtherPlayerConnected);
+        socket.On("play", OnPlay);
+        socket.On("player move", OnPlayerMove);
+        socket.On("other player disconnected", OnOtherPlayerDisconnected);
     }
 
     // Update is called once per frame
@@ -48,11 +53,90 @@ public class NetworkManager : MonoBehaviour
     IEnumerator ConnectToServer()
     {
         yield return new WaitForSeconds(0.5f);
+
+        socket.Emit("player connect");
+
+        yield return new WaitForSeconds(1f);
+
+        string playerName = playerNameInput.text;
+        List<SpawnPoint> playerSpawnPoints = GetComponent<PlayerSpawner>().playerSpawnPoints;
+        PlayerJSON playerJSON = new PlayerJSON(playerName, playerSpawnPoints);
+        string data = JsonUtility.ToJson(playerJSON);
+        socket.Emit("play", new JSONObject(data));
+        canvas.gameObject.SetActive(false);
+    }
+
+    public void CommandMove(Vector3 vec3)
+    {
+        string data = JsonUtility.ToJson(new PositionJSON(vec3));
+        socket.Emit("player move", new JSONObject(data));
     }
 
     #endregion
 
     #region Listening
+
+    void OnOtherPlayerConnected(SocketIOEvent socketIOEvent)
+    {
+        print("Someone else joined");
+        string data = socketIOEvent.data.ToString();
+        UserJSON userJSON = UserJSON.CreateFromJSON(data);
+        Vector3 position = new Vector3(userJSON.position[0], userJSON.position[1], userJSON.position[2]);
+        GameObject o = GameObject.Find(userJSON.name) as GameObject;
+        if (o != null)
+        {
+            return;
+        }
+        GameObject p = Instantiate(player, position, Quaternion.identity) as GameObject;
+        PlayerMovement pm = p.GetComponent<PlayerMovement>();
+        Transform t = p.transform.Find("Player Name Canvas");
+        Transform t1 = t.transform.Find("Player Name");
+        Text playerName = t1.GetComponent<Text>();
+        playerName.text = userJSON.name;
+        pm.isLocalPlayer = false;
+        p.name = userJSON.name;
+    }
+
+    void OnPlay(SocketIOEvent socketIOEvent)
+    {
+        print("You joined");
+        string data = socketIOEvent.data.ToString();
+        UserJSON currentUserJSON = UserJSON.CreateFromJSON(data);
+        Vector3 position = new Vector3(currentUserJSON.position[0], currentUserJSON.position[1], currentUserJSON.position[2]);
+        GameObject p = Instantiate(player, position, Quaternion.identity) as GameObject;
+        PlayerMovement pm = p.GetComponent<PlayerMovement>();
+        Transform t = p.transform.Find("Player Name Canvas");
+        Transform t1 = t.transform.Find("Player Name");
+        Text playerName = t1.GetComponent<Text>();
+        playerName.text = currentUserJSON.name;
+        pm.isLocalPlayer = true;
+        p.name = currentUserJSON.name;
+    }
+
+    void OnPlayerMove(SocketIOEvent socketIOEvent)
+    {
+        string data = socketIOEvent.data.ToString();
+        UserJSON userJSON = UserJSON.CreateFromJSON(data);
+        Vector3 position = new Vector3(userJSON.position[0], userJSON.position[1], userJSON.position[2]);
+        // if it is the current player exit
+        if (userJSON.name == playerNameInput.text)
+        {
+            return;
+        }
+        GameObject p = GameObject.Find(userJSON.name) as GameObject;
+        if (p != null)
+        {
+            p.transform.position = position;
+        }
+    }
+
+    void OnOtherPlayerDisconnected(SocketIOEvent socketIOEvent)
+    {
+        print("user disconnected");
+        string data = socketIOEvent.data.ToString();
+        UserJSON userJSON = UserJSON.CreateFromJSON(data);
+        Destroy(GameObject.Find(userJSON.name));
+    }
 
     #endregion
 

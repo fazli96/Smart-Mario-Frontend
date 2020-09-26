@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class FollowThePath : MonoBehaviour {
 
+    //networking
+    public bool isLocalPlayer = true;
+
     //public Transform[] waypoints;
     public List<GameObject> waypoints = new List<GameObject>();
 
