@@ -14,7 +14,7 @@ public class Minigame1_Level1Screen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scene = SceneController.getSceneController();
+        scene = SceneController.GetSceneController();
         pausePanel.SetActive(false);
         isPaused = false;
     }

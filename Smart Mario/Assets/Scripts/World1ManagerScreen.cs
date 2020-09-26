@@ -14,7 +14,7 @@ public class World1ManagerScreen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scene = SceneController.getSceneController();
+        scene = SceneController.GetSceneController();
         switch (PlayerPrefs.GetString("Selected Player", "Witch"))
         {
             case "Witch":

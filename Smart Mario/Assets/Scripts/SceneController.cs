@@ -7,11 +7,12 @@ public class SceneController : MonoBehaviour
 {
     private static SceneController instance = null;
 
-    public static SceneController getSceneController()
+    public static SceneController GetSceneController()
     {
         if (instance == null)
         {
-            instance = new SceneController();
+            GameObject go = new GameObject();
+            instance = go.AddComponent<SceneController>();
         }
         return instance;
     }

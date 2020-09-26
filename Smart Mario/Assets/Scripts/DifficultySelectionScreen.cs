@@ -10,7 +10,7 @@ public class DifficultySelectionScreen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scene = SceneController.getSceneController();
+        scene = SceneController.GetSceneController();
         minigameName.text = "Welcome to " + PlayerPrefs.GetString("Minigame Selected");
 
     }
