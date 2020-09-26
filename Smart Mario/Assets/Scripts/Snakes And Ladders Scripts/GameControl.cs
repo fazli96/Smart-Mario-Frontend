@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class GameControl : MonoBehaviour {
 
     private static GameObject player;
     private static List<int> questionBarrelLocation = new List<int>();
+    private static List<GameObject> waypoints = new List<GameObject>();
     public GameObject completeLevelPanel, gameOverPanel;
     public GameObject questionBarrelPrefab;
     public GameObject questionBarrelClone;
+    public GameObject witchPrefab;
+    public GameObject knightPrefab;
+    public GameObject spawnPoint;
 
     public static int diceSideThrown = 0;
     public static int playerStartWaypoint = 0;
@@ -26,10 +31,15 @@ public class GameControl : MonoBehaviour {
         completeLevelPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
 
-        player = GameObject.Find("Player");
+        foreach (GameObject fooObj in GameObject.FindGameObjectsWithTag("WayPoint"))
+        {
+            waypoints.Add(fooObj);
+        }
+
+        player = SpawnPlayer(PlayerPrefs.GetString("Selected Player", "Witch"));
         player.GetComponent<FollowThePath>().moveAllowed = false;
 
-        spawnQuestionBarrels(PlayerPrefs.GetInt("Minigame Difficulty",3));
+        SpawnQuestionBarrels(PlayerPrefs.GetInt("Minigame Difficulty",3));
 
     }
 
@@ -135,7 +145,7 @@ public class GameControl : MonoBehaviour {
         return player.GetComponent<FollowThePath>().moveAllowed;
     }
 
-    private void spawnQuestionBarrels(int difficulty)
+    private void SpawnQuestionBarrels(int difficulty)
     {
         // difficulty Easy - 3, Medium - 2, Hard - 1
         for (int i = 2; i < 94; i += (difficulty * 2))
@@ -149,8 +159,33 @@ public class GameControl : MonoBehaviour {
         for (int i = 0; i < questionBarrelLocation.Count() - 1; i++)
         {
             questionBarrelClone = Instantiate(questionBarrelPrefab,
-                player.GetComponent<FollowThePath>().waypoints[questionBarrelLocation[i]].transform.position,
+                waypoints[questionBarrelLocation[i]].transform.position,
                 Quaternion.Euler(0, 0, 0)) as GameObject;
         }
+    }
+
+    private GameObject SpawnPlayer(string selectedPlayer)
+    {
+        switch (selectedPlayer)
+        {
+            case "Witch":
+                return Instantiate(witchPrefab,
+                spawnPoint.transform.position,
+                Quaternion.Euler(0, 0, 0)) as GameObject;
+                //break;
+            case "Knight":
+                return Instantiate(knightPrefab,
+                spawnPoint.transform.position,
+                Quaternion.Euler(0, 0, 0)) as GameObject;
+                //break;
+            default:
+                return null;
+                //break;
+        }
+    }
+
+    public static List<GameObject> GetWayPoints()
+    {
+        return waypoints;
     }
 }

@@ -65,13 +65,58 @@ public class SceneController : MonoBehaviour
     {
         SceneManager.LoadScene("SelectDifficulty");
     }
-    public void ToMinigame1()
+
+    #region Minigame 1 Levels
+    public void ToMinigame1Level1()
     {
         SceneManager.LoadScene("Minigame1_Level1");
     }
 
-    public void ToMinigame2()
+    public void ToMinigame1Level2()
+    {
+        
+    }
+
+    public void ToMinigame1Level3()
+    {
+        
+    }
+
+    public void ToMinigame1Level4()
+    {
+        
+    }
+    public void ToMinigame1Level5()
+    {
+        
+    }
+
+    #endregion
+
+    #region Minigame 2 Levels
+    public void ToMinigame2Level1()
     {
         SceneManager.LoadScene("Matching Cards");
     }
+
+    public void ToMinigame2Level2()
+    {
+        
+    }
+
+    public void ToMinigame2Level3()
+    {
+        
+    }
+
+    public void ToMinigame2Level4()
+    {
+        
+    }
+    public void ToMinigame2Level5()
+    {
+        
+    }
+
+    #endregion
 }

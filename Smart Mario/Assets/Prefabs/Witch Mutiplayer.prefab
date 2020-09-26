@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
+  multiplayer: 0
   isLocalPlayer: 1
 --- !u!210 &4256734698904149900
 SortingGroup:
@@ -190,7 +191,7 @@ GameObject:
   - component: {fileID: 4256734699138407448}
   - component: {fileID: 4256734699138407451}
   m_Layer: 0
-  m_Name: Witch Sprite
+  m_Name: Player
   m_TagString: SelectedPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -49,7 +49,7 @@ public class Minigame1_Level1Screen : MonoBehaviour
 
     public void RestartLevel()
     {
-        scene.ToMinigame1();
+        scene.ToMinigame1Level1();
     }
 
     public void NextLevel()

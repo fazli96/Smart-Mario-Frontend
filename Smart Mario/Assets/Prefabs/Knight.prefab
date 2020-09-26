@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6336000712743900238}
   - component: {fileID: 6336000712743900233}
   m_Layer: 0
-  m_Name: Knight Sprite
+  m_Name: Player
   m_TagString: SelectedPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -219,6 +219,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
+  multiplayer: 0
+  isLocalPlayer: 1
 --- !u!210 &6336000713802587830
 SortingGroup:
   m_ObjectHideFlags: 0

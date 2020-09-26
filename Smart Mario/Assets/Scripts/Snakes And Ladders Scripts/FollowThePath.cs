@@ -22,15 +22,9 @@ public class FollowThePath : MonoBehaviour {
     // Use this for initialization
     private void Start () {
 
-        /* foreach(GameObject fooObj in GameObject.FindGameObjectsWithTag("WayPoint")){
-			waypoints.Add(fooObj);
-		}
-        waypoints.Reverse(); */
+        waypoints = GameControl.GetWayPoints();
         transform.position = waypoints[waypointIndex].transform.position;
 
-
-
-       
 	}
 	
 	// Update is called once per frame

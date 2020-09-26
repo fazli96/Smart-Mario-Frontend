@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed = 1.0f;
 
     //network
+    public bool multiplayer = false; //switch back to false when networking
     public bool isLocalPlayer = true; //switch back to false when networking
     Vector3 oldPosition;
     Vector3 currentPosition;
@@ -39,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
 
                 Vector2 direction = new Vector2(moveH, moveV);
 
-                Transform p = transform.Find("Witch Sprite");
+                Transform p = transform.Find("Player");
                 PlayerAnimation anim = p.GetComponent<PlayerAnimation>();
                 anim.SetDirection(direction);
                 oldPosition = currentPosition;
@@ -55,12 +56,12 @@ public class PlayerMovement : MonoBehaviour
 
             currentPosition = transform.position;
 
-            if (currentPosition != oldPosition)
+            if (currentPosition != oldPosition && multiplayer)
             {
                 NetworkManager.instance.GetComponent<NetworkManager>().CommandMove(transform.position);
                 oldPosition = currentPosition;
             }
-            Transform p = transform.Find("Witch Sprite");
+            Transform p = transform.Find("Player");
             PlayerAnimation anim = p.GetComponent<PlayerAnimation>();
             anim.SetDirection(direction);
         }
