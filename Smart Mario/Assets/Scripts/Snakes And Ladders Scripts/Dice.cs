@@ -10,7 +10,7 @@ public class Dice : MonoBehaviour
 
 
     // Use this for initialization
-    private void Start()
+    private void Awake()
     {
         rend = GetComponent<SpriteRenderer>();
         diceSides = Resources.LoadAll<Sprite>("DiceSides/");
@@ -19,7 +19,8 @@ public class Dice : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!GameControl.levelComplete && coroutineAllowed && !GameControl.getMoveAllowed())
+        if (!GameControl.levelComplete && coroutineAllowed 
+            && !GameControl.getMoveAllowed() && !GameControl.qnEncountered)
             StartCoroutine("RollTheDice");
             //GetComponent<AudioSource>().Play();
     }
@@ -34,6 +35,7 @@ public class Dice : MonoBehaviour
             rend.sprite = diceSides[randomDiceSide];
             yield return new WaitForSeconds(0.01f);
         }
+        yield return new WaitForSeconds(0.1f);
 
         GameControl.diceSideThrown = randomDiceSide + 1;
         //randomDiceSide = 5 for six;

@@ -6,40 +6,52 @@ using System.Runtime.InteropServices.WindowsRuntime;
 public class GameControl : MonoBehaviour {
 
     private static GameObject player;
-    private static List<int> questionBarrelLocation = new List<int>();
+    private static List<GameObject> questionBarrels = new List<GameObject>();
     private static List<GameObject> waypoints = new List<GameObject>();
+
+    public GameObject dice;
     public GameObject completeLevelPanel, gameOverPanel;
     public GameObject questionBarrelPrefab;
-    public GameObject questionBarrelClone;
     public GameObject witchPrefab;
     public GameObject knightPrefab;
     public GameObject spawnPoint;
 
+    private static QuestionController questionController;
+    private static GameStatus gameStatus;
+
     public static int diceSideThrown = 0;
     public static int playerStartWaypoint = 0;
+    public static bool qnEncountered = false;
 
     public static bool levelComplete = false;
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
 
         diceSideThrown = 0;
         playerStartWaypoint = 0;
         levelComplete = false;
-        questionBarrelLocation.Clear();
+        questionBarrels.Clear();
+        waypoints.Clear();
 
         completeLevelPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
+
+        questionController = GameObject.Find("QuestionController").GetComponent<QuestionController>();
+        gameStatus = GameObject.Find("GameStatus").GetComponent<GameStatus>();
+
+        player = SpawnPlayer(PlayerPrefs.GetString("Selected Player", "Witch"));
+        player.GetComponent<FollowThePath>().moveAllowed = false;
 
         foreach (GameObject fooObj in GameObject.FindGameObjectsWithTag("WayPoint"))
         {
             waypoints.Add(fooObj);
         }
 
-        player = SpawnPlayer(PlayerPrefs.GetString("Selected Player", "Witch"));
-        player.GetComponent<FollowThePath>().moveAllowed = false;
+        SpawnQuestionBarrels(PlayerPrefs.GetString("Minigame Difficulty","Easy"));
 
-        SpawnQuestionBarrels(PlayerPrefs.GetInt("Minigame Difficulty",3));
+        questionController.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
+        gameStatus.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
 
     }
 
@@ -48,89 +60,56 @@ public class GameControl : MonoBehaviour {
     {
         if(levelComplete)
         {
-            //back to menu
+            //update Database accordingly
+        }
+
+        if (player.GetComponent<FollowThePath>().moveAllowed || qnEncountered)
+        {
+            dice.SetActive(false);
+        }
+        else
+        {
+            dice.SetActive(true);
         }
 
 // ** PLAYER 1
         if (player.GetComponent<FollowThePath>().waypointIndex > 
             playerStartWaypoint + diceSideThrown)
         {
-            if (questionBarrelLocation.Contains(playerStartWaypoint + diceSideThrown))
+            foreach (GameObject questionBarrel in questionBarrels)
             {
-                Debug.Log("ask a question");
+                if (questionBarrel.transform.position == waypoints[playerStartWaypoint + diceSideThrown].transform.position)
+                {
+                    qnEncountered = true;
+                    questionController.AskQuestion();
+                    questionBarrels.Remove(questionBarrel);
+                    questionBarrel.SetActive(false);
+                }
             }
             
             //Debug.Log(playerStartWaypoint+diceSideThrown);
+            //Teleport to another waypoint
             /*if(playerStartWaypoint+diceSideThrown == 12){
                 player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[45].transform.position;
                 player.GetComponent<FollowThePath>().waypointIndex = 45;
                 player.GetComponent<FollowThePath>().waypointIndex +=1;
                 MovePlayer();
-            }
-            if(playerStartWaypoint+diceSideThrown == 32){
-                player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[48].transform.position;
-                player.GetComponent<FollowThePath>().waypointIndex = 48;
-                player.GetComponent<FollowThePath>().waypointIndex +=1;
-                MovePlayer();
-            }
-            if(playerStartWaypoint+diceSideThrown == 41){
-                player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[62].transform.position;
-                player.GetComponent<FollowThePath>().waypointIndex = 62;
-                player.GetComponent<FollowThePath>().waypointIndex +=1;
-                MovePlayer();
-            }
-            if(playerStartWaypoint+diceSideThrown == 49){
-                player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[68].transform.position;
-                player.GetComponent<FollowThePath>().waypointIndex = 68;
-                player.GetComponent<FollowThePath>().waypointIndex +=1;
-                MovePlayer();
-            }
-            if(playerStartWaypoint+diceSideThrown == 61){
-                player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[80].transform.position;
-                player.GetComponent<FollowThePath>().waypointIndex = 80;
-                player.GetComponent<FollowThePath>().waypointIndex +=1;
-                MovePlayer();
-            }
-            if(playerStartWaypoint+diceSideThrown == 73){
-                player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[91].transform.position;
-                player.GetComponent<FollowThePath>().waypointIndex = 91;
-                player.GetComponent<FollowThePath>().waypointIndex +=1;
-                MovePlayer();
-            }
-            if(playerStartWaypoint+diceSideThrown == 39){
-                player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[2].transform.position;
-                player.GetComponent<FollowThePath>().waypointIndex = 2;
-                player.GetComponent<FollowThePath>().waypointIndex +=1;
-                MovePlayer();
-            }
-            if(playerStartWaypoint+diceSideThrown == 86){
-                player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[36].transform.position;
-                player.GetComponent<FollowThePath>().waypointIndex = 36;
-                player.GetComponent<FollowThePath>().waypointIndex +=1;
-                MovePlayer();
-            }
-            if(playerStartWaypoint+diceSideThrown == 88){
-                player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[52].transform.position;
-                player.GetComponent<FollowThePath>().waypointIndex = 52;
-                player.GetComponent<FollowThePath>().waypointIndex +=1;
-                MovePlayer();
-            }
-            if(playerStartWaypoint+diceSideThrown == 97){
-                player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[40].transform.position;
-                player.GetComponent<FollowThePath>().waypointIndex = 40;
-                player.GetComponent<FollowThePath>().waypointIndex +=1;
-                MovePlayer();
             }*/
+
             player.GetComponent<FollowThePath>().moveAllowed = false;            
             playerStartWaypoint = player.GetComponent<FollowThePath>().waypointIndex - 1;
         }
+        
 
 
         if (player.GetComponent<FollowThePath>().waypointIndex == 
             player.GetComponent<FollowThePath>().waypoints.Count)
         {
             player.GetComponent<FollowThePath>().moveAllowed = false;
-            completeLevelPanel.gameObject.SetActive(true);
+            if (gameStatus.WinLevel())
+                completeLevelPanel.gameObject.SetActive(true);
+            else
+                gameOverPanel.gameObject.SetActive(true);
             levelComplete = true;
         }
     }
@@ -145,22 +124,33 @@ public class GameControl : MonoBehaviour {
         return player.GetComponent<FollowThePath>().moveAllowed;
     }
 
-    private void SpawnQuestionBarrels(int difficulty)
+    private void SpawnQuestionBarrels(string difficulty)
     {
-        // difficulty Easy - 3, Medium - 2, Hard - 1
-        for (int i = 2; i < 94; i += (difficulty * 2))
+        int spacesBetweenBarrels;
+        switch (difficulty)
         {
-
-            int rndInt = Random.Range(i, i + 5);
-            questionBarrelLocation.Add(rndInt);
-            //Debug.Log(rndInt);
+            case "Easy":
+                spacesBetweenBarrels = 6;
+                break;
+            case "Medium":
+                spacesBetweenBarrels = 4;
+                break;
+            case "Hard":
+                spacesBetweenBarrels = 2;
+                break;
+            default:
+                spacesBetweenBarrels = 0;
+                break;
         }
-
-        for (int i = 0; i < questionBarrelLocation.Count() - 1; i++)
+        for (int i = 2; i < 94; i += spacesBetweenBarrels)
         {
-            questionBarrelClone = Instantiate(questionBarrelPrefab,
-                waypoints[questionBarrelLocation[i]].transform.position,
-                Quaternion.Euler(0, 0, 0)) as GameObject;
+
+            int rndInt = Random.Range(i, i + spacesBetweenBarrels);
+            GameObject questionBarrelClone = Instantiate(questionBarrelPrefab,
+                waypoints[rndInt].transform.position,
+                Quaternion.Euler(0, 0, 0));
+            questionBarrels.Add(questionBarrelClone);
+            //Debug.Log(rndInt);
         }
     }
 

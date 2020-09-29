@@ -94,6 +94,7 @@ public class NetworkManager : MonoBehaviour
         Text playerName = t1.GetComponent<Text>();
         playerName.text = userJSON.name;
         pm.isLocalPlayer = false;
+        pm.multiplayer = true;
         p.name = userJSON.name;
     }
 
@@ -110,6 +111,7 @@ public class NetworkManager : MonoBehaviour
         Text playerName = t1.GetComponent<Text>();
         playerName.text = currentUserJSON.name;
         pm.isLocalPlayer = true;
+        pm.multiplayer = true;
         p.name = currentUserJSON.name;
     }
 
@@ -135,6 +137,7 @@ public class NetworkManager : MonoBehaviour
         print("user disconnected");
         string data = socketIOEvent.data.ToString();
         UserJSON userJSON = UserJSON.CreateFromJSON(data);
+        print(userJSON.name + " disconnected");
         Destroy(GameObject.Find(userJSON.name));
     }
 

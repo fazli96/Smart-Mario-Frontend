@@ -66,54 +66,59 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadScene("SelectDifficulty");
     }
 
+    public void ToLevelSelection()
+    {
+        SceneManager.LoadScene("SelectLevel");
+    }
+
     #region Minigame 1 Levels
-    public void ToMinigame1Level1()
+    public void ToWorld1Minigame1Level1()
     {
-        SceneManager.LoadScene("Minigame1_Level1");
+        SceneManager.LoadScene("World1_Minigame1_Level1");
     }
 
-    public void ToMinigame1Level2()
+    public void ToWorld1Minigame1Level2()
     {
-        
+        SceneManager.LoadScene("World1_Minigame1_Level2");
     }
 
-    public void ToMinigame1Level3()
+    public void ToWorld1Minigame1Level3()
     {
-        
+        SceneManager.LoadScene("World1_Minigame1_Level3");
     }
 
-    public void ToMinigame1Level4()
+    public void ToWorld1Minigame1Level4()
     {
-        
+        SceneManager.LoadScene("World1_Minigame1_Level4");
     }
-    public void ToMinigame1Level5()
+    public void ToWorld1Minigame1Level5()
     {
-        
+        SceneManager.LoadScene("World1_Minigame1_Level5");
     }
 
     #endregion
 
     #region Minigame 2 Levels
-    public void ToMinigame2Level1()
+    public void ToWorld1Minigame2Level1()
     {
         SceneManager.LoadScene("Matching Cards");
     }
 
-    public void ToMinigame2Level2()
+    public void ToWorld1Minigame2Level2()
     {
         
     }
 
-    public void ToMinigame2Level3()
+    public void ToWorld1Minigame2Level3()
     {
         
     }
 
-    public void ToMinigame2Level4()
+    public void ToWorld1Minigame2Level4()
     {
         
     }
-    public void ToMinigame2Level5()
+    public void ToWorld1Minigame2Level5()
     {
         
     }
