@@ -15,6 +15,6 @@ public class ScoreManager: MonoBehaviour
    
     void Update()
     {
-        score.text = "Score : " + GameControl.GetComponent<GameControl>().scoreValue;
+        score.text = "Score : " + GameControl.GetComponent<Game2Control>().scoreValue;
     }
 }

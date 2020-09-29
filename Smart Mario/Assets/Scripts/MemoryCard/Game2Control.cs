@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class GameControl : MonoBehaviour
+public class Game2Control : MonoBehaviour
 {
     GameObject questionManager;
     GameObject cardManager;

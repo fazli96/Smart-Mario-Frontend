@@ -14,25 +14,25 @@ public class CardControl : MonoBehaviour
 
     public void OnMouseDown()       //detecting mouseclick
     {
-        if (matched == false && !GameControl.GetComponent<GameControl>().faceindexes.Contains(faceIndex)) //not matched and not flipped up
+        if (matched == false && !GameControl.GetComponent<Game2Control>().faceindexes.Contains(faceIndex)) //not matched and not flipped up
         {
             if (spriteRenderer.sprite == back)    //check if its back of the card
             {
-                if (GameControl.GetComponent<GameControl>().TwoCards() == false) //if less than two cards have been flipped up
+                if (GameControl.GetComponent<Game2Control>().TwoCards() == false) //if less than two cards have been flipped up
                 {      
                     spriteRenderer.sprite = open;               //reveal the inside sprite 
-                    GameControl.GetComponent<GameControl>().AddVisibleFace(faceIndex);   //add the index of the face of this card to arr
-                    matched = GameControl.GetComponent<GameControl>().CheckMatch();     //check if got match 
+                    GameControl.GetComponent<Game2Control>().AddVisibleFace(faceIndex);   //add the index of the face of this card to arr
+                    matched = GameControl.GetComponent<Game2Control>().CheckMatch();     //check if got match 
                     if (matched)
                     {
-                        GameControl.GetComponent<GameControl>().ShowMatch(faceIndex);
+                        GameControl.GetComponent<Game2Control>().ShowMatch(faceIndex);
                     }
                 }
             }
             else
             {
                 spriteRenderer.sprite = back;   //flip back the card onto backside
-                GameControl.GetComponent<GameControl>().RemoveVisibleFace(faceIndex);  //remove the face
+                GameControl.GetComponent<Game2Control>().RemoveVisibleFace(faceIndex);  //remove the face
 
             }
         }
@@ -45,6 +45,7 @@ public class CardControl : MonoBehaviour
     
     private void Awake()
     {
+
         GameControl = GameObject.Find("GameManager");
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
