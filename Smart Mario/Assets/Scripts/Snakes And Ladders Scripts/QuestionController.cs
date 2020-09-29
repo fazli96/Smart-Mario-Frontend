@@ -1,7 +1,11 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
@@ -17,6 +21,7 @@ public class QuestionController : MonoBehaviour
     public GameObject wrongPanel;
     public GameObject correctPanel;
     public GameObject tooLatePanel;
+    private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/questions/mcqtheory"; 
 
     private Coroutine coroutine;
     private static GameStatus gameStatus;
@@ -25,7 +30,7 @@ public class QuestionController : MonoBehaviour
     public GameStatus GameStatus { get { return gameStatus; } }
 
     private static int timeLimit = 20;
-    private static List<Question> questionList;
+    private static List<Question> questionList = new List<Question>();
 
     // Start is called before the first frame update
     void Awake()
@@ -35,6 +40,8 @@ public class QuestionController : MonoBehaviour
         correctPanel.SetActive(false);
         tooLatePanel.SetActive(false);
         gameStatus = GameObject.Find("GameStatus").GetComponent<GameStatus>();
+        timeLimit = 20;
+        questionList.Clear();
 
     }
 
@@ -55,14 +62,53 @@ public class QuestionController : MonoBehaviour
                 break;
         }
         //get data from database based on difficulty and level
-        questionList = new List<Question>();
+        /*questionList = new List<Question>();
         List<string> options = new List<string>();
         options.Add("Boy");
         options.Add("Girl");
         options.Add("Man");
         options.Add("Woman");
         Question qn = new Question("Who are you", "text", options, "Man");
-        questionList.Add(qn);
+        questionList.Add(qn);*/
+        StartCoroutine(Get(url));
+    }
+
+    public IEnumerator Get(string url)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Get(url))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                if (www.isDone)
+                {
+                    // handle the result
+                    var result = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
+                    var data = (JObject)JsonConvert.DeserializeObject(result);
+                    JArray data2 = data["allQuestions"].Value<JArray>();
+                    foreach (JObject questionObject in data2)
+                    {
+                        Debug.Log("question: " + questionObject);
+                        Question question1 = questionObject.ToObject<Question>();
+                        Debug.Log(question1.option1);
+                        questionList.Add(question1);  
+                    }
+                    Debug.Log("DBResult: "+result);
+                    Debug.Log("allQuestions" + data2);
+                }
+                else
+                {
+                    //handle the problem
+                    Debug.Log("Error! data couldn't get.");
+                }
+            }
+        }
+
     }
 
     // Update is called once per frame
@@ -75,24 +121,19 @@ public class QuestionController : MonoBehaviour
     {
         timer.text = "Time Left: "+timeLimit + " seconds";
 
-        if (questionList[0].questionType == "text")
-        {
-            questionTitle.text = questionList[0].questionTitle;
-        }
-        else
-        {
-            //for image
-        }
-        option1.text = questionList[0].options[0];
-        option2.text = questionList[0].options[1];
-        option3.text = questionList[0].options[2];
-        option4.text = questionList[0].options[3];
+        questionTitle.text = questionList[0].questionTitle;
+        option1.text = questionList[0].option1;
+        option2.text = questionList[0].option2;
+        option3.text = questionList[0].option3;
+        option4.text = questionList[0].option4;
+        questionList.RemoveAt(0);
     }
 
     public void AskQuestion()
     {
         SetQuestion();
         coroutine = StartCoroutine(Countdown());
+        Debug.Log("After countdown");
     }
 
     private IEnumerator Countdown()
@@ -148,7 +189,7 @@ public class QuestionController : MonoBehaviour
 
     public void OnClickOption1()
     {
-        if (option1.text == questionList[0].correctAns)
+        if (questionList[0].answer == "1")
         {
             EndResult(QuestionStatus.CORRECT);
         }
@@ -160,7 +201,7 @@ public class QuestionController : MonoBehaviour
 
     public void OnClickOption2()
     {
-        if (option2.text == questionList[0].correctAns)
+        if (questionList[0].answer == "2")
         {
             EndResult(QuestionStatus.CORRECT);
         }
@@ -172,19 +213,20 @@ public class QuestionController : MonoBehaviour
 
     public void OnClickOption3()
     {
-        if (option3.text == questionList[0].correctAns)
+        if (questionList[0].answer == "3")
         {
             EndResult(QuestionStatus.CORRECT);
         }
         else
         {
+            Debug.Log(option3.text + " = " + questionList[0].answer);
             EndResult(QuestionStatus.WRONG);
         }
     }
 
     public void OnClickOption4()
     {
-        if (option4.text == questionList[0].correctAns)
+        if (questionList[0].answer == "4")
         {
             EndResult(QuestionStatus.CORRECT);
         }
@@ -204,7 +246,7 @@ public class QuestionController : MonoBehaviour
 
     //Datastructure for storeing the quetions data
     [System.Serializable]
-    public class Question
+    /*public class Question
     {
         public string questionTitle;         //question text
         public string questionType;          //type
@@ -219,5 +261,33 @@ public class QuestionController : MonoBehaviour
             this.options = options;
             this.correctAns = correctAns;
         }
+    }*/
+
+    class QuestionList
+    {
+        [JsonProperty("message")]
+        public string errorMsg { get; set; }
+        [JsonProperty("allQuestions")]
+        public List<Question> questionList { get; set; }
+    }
+
+    class Question
+    {
+        [JsonProperty("ID")]
+        public string Id { get; set; }
+        [JsonProperty("Question")]
+        public string questionTitle { get; set; }
+        [JsonProperty("1")]
+        public string option1 { get; set; }
+        [JsonProperty("2")]
+        public string option2 { get; set; }
+        [JsonProperty("3")]
+        public string option3 { get; set; }
+        [JsonProperty("4")]
+        public string option4 { get; set; }
+        [JsonProperty("Answer")]
+        public string answer { get; set; }
+        [JsonProperty("Explanation")]
+        public string explanation { get; set; }
     }
 }

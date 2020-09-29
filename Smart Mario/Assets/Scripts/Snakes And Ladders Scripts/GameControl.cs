@@ -84,6 +84,7 @@ public class GameControl : MonoBehaviour {
                     questionController.AskQuestion();
                     questionBarrels.Remove(questionBarrel);
                     questionBarrel.SetActive(false);
+                    Debug.Log("After ask question");
                 }
             }
             
