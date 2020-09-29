@@ -32,9 +32,11 @@ public class APICall
         request.SetRequestHeader("Content-Type", "application/json");
         request.chunkedTransfer = false;
         UnityEngine.Debug.Log(bodyJsonString);
+        UnityEngine.Debug.Log("Before");
         yield return request.SendWebRequest();
 
-        UnityEngine.Debug.Log("Response: " + request.downloadHandler.text);
+        UnityEngine.Debug.Log("After" + request.downloadHandler.text);
+
     }
 }
 

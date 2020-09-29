@@ -11,7 +11,7 @@ public class RegisterController : MonoBehaviour
 {
     //Singleton
     private static RegisterController instance = null;
-    private string url = "localhost:3000/api/";
+    private string url = "https://smart-mario-backend-1.herokuapp.com/api/";
 
     public static RegisterController GetRegisterController()
     {

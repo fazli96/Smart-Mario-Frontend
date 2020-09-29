@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class LoginController : MonoBehaviour
 {
     //Singleton
     private static LoginController instance = null;
-    private string url = "localhost:3000/api/";
+    private string url = "https://smart-mario-backend-1.herokuapp.com/api/";
 
     public static LoginController GetLoginController()
     {
@@ -25,6 +26,7 @@ public class LoginController : MonoBehaviour
         Teacher teacher = new Teacher(username, password, "");
         string bodyJsonString = apiCall.saveToJSONString(teacher);
         StartCoroutine(apiCall.PostRequest(url + "teachers/authenticate", bodyJsonString));
+        UnityEngine.Debug.Log("Continue");
     }
 
     public void ValidateStudentLogin(string username, string password)
