@@ -71,6 +71,24 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadScene("SelectLevel");
     }
 
+    #region Teachers
+    public void ToStudentPerformance()
+    {
+        SceneManager.LoadScene("StudentPerformance");
+    }
+
+    public void ToAssignTasksScreen()
+    {
+        SceneManager.LoadScene("");
+    }
+
+    public void ToCheckAssignedTasksScreen()
+    {
+        SceneManager.LoadScene("");
+    }
+
+    #endregion
+
     #region Minigame 1 Levels
     public void ToWorld1Minigame1Level1()
     {
