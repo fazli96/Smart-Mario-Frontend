@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     //network
     public bool multiplayer = false; //switch back to false when networking
     public bool isLocalPlayer = true; //switch back to false when networking
+    public bool isOwner = false;
     Vector3 oldPosition;
     Vector3 currentPosition;
 

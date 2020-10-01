@@ -13,7 +13,11 @@ public class NetworkManager : MonoBehaviour
     public Canvas canvas;
     public SocketIOComponent socket;
     public InputField playerNameInput;
+    public InputField roomNameInput;
+    public InputField roomCapacityInput;
     public GameObject player;
+
+    private static string currentRoomName;
     
     void Awake()
     {
@@ -36,6 +40,8 @@ public class NetworkManager : MonoBehaviour
         socket.On("play", OnPlay);
         socket.On("player move", OnPlayerMove);
         socket.On("other player disconnected", OnOtherPlayerDisconnected);
+        socket.On("owner disconnected", OnOwnerDisconnected);
+        socket.On("updateRooms", OnUpdateRooms);
     }
 
     // Update is called once per frame
@@ -43,8 +49,12 @@ public class NetworkManager : MonoBehaviour
     {
         
     }
+    
+    public void createGame()
+    {
 
-    public void JoinGame()
+    }
+    public void JoinRoom()
     {
         StartCoroutine(ConnectToServer());
     }
@@ -52,16 +62,32 @@ public class NetworkManager : MonoBehaviour
     #region Commands
     IEnumerator ConnectToServer()
     {
-        yield return new WaitForSeconds(0.5f);
-
-        socket.Emit("player connect");
-
-        yield return new WaitForSeconds(1f);
-
+        string roomName = roomNameInput.text;
+        currentRoomName = roomName;
+        int roomCapacity = int.Parse(roomCapacityInput.text);
         string playerName = playerNameInput.text;
+        bool isOwner;
+
+        if (roomCapacity == -1)
+        {
+            isOwner = false;
+        }
+        else
+        {
+            isOwner = true;
+        }
+
         List<SpawnPoint> playerSpawnPoints = GetComponent<PlayerSpawner>().playerSpawnPoints;
-        PlayerJSON playerJSON = new PlayerJSON(playerName, playerSpawnPoints);
+        PlayerJSON playerJSON = new PlayerJSON(playerName, isOwner, roomName, roomCapacity, playerSpawnPoints);
         string data = JsonUtility.ToJson(playerJSON);
+
+        if (roomCapacity == -1)
+        {
+            yield return new WaitForSeconds(0.5f);
+            socket.Emit("player connect", new JSONObject(data));
+            yield return new WaitForSeconds(1f);
+        }
+
         socket.Emit("play", new JSONObject(data));
         canvas.gameObject.SetActive(false);
     }
@@ -94,6 +120,7 @@ public class NetworkManager : MonoBehaviour
         Text playerName = t1.GetComponent<Text>();
         playerName.text = userJSON.name;
         pm.isLocalPlayer = false;
+        pm.isOwner = userJSON.isOwner;
         pm.multiplayer = true;
         p.name = userJSON.name;
     }
@@ -111,6 +138,7 @@ public class NetworkManager : MonoBehaviour
         Text playerName = t1.GetComponent<Text>();
         playerName.text = currentUserJSON.name;
         pm.isLocalPlayer = true;
+        pm.isOwner = currentUserJSON.isOwner;
         pm.multiplayer = true;
         p.name = currentUserJSON.name;
     }
@@ -120,7 +148,7 @@ public class NetworkManager : MonoBehaviour
         string data = socketIOEvent.data.ToString();
         UserJSON userJSON = UserJSON.CreateFromJSON(data);
         Vector3 position = new Vector3(userJSON.position[0], userJSON.position[1], userJSON.position[2]);
-        // if it is the current player exit
+        // if it is the current player, return
         if (userJSON.name == playerNameInput.text)
         {
             return;
@@ -141,20 +169,57 @@ public class NetworkManager : MonoBehaviour
         Destroy(GameObject.Find(userJSON.name));
     }
 
+    void OnOwnerDisconnected(SocketIOEvent socketIOEvent)
+    {
+        print("owner disconnected");
+        string data = socketIOEvent.data.ToString();
+        UserJSON newOwnerJSON = UserJSON.CreateFromJSON(data);
+        GameObject p = GameObject.Find(newOwnerJSON.name);
+        PlayerMovement pm = p.GetComponent<PlayerMovement>();
+        pm.isOwner = true;
+    }
+
+    void OnUpdateRooms(SocketIOEvent socketIOEvent)
+    {
+        print("OnUpdateRooms updated");
+        string data = socketIOEvent.data.ToString();
+        //TODO data manipulation
+    }
+
     #endregion
 
     #region JSONMessageClasses
 
     [Serializable]
+
+    /*public class RoomJSON
+    {
+        public string roomName;
+        public int capacity;
+        public PlayerJSON playerJSON;
+
+        public RoomJSON(string _roomName, int _capacity, string _name, bool _isOwner, List<SpawnPoint> _playerSpawnPoints)
+        {
+            roomName = _roomName;
+            capacity = _capacity;
+            playerJSON = new PlayerJSON(_name, _isOwner, _playerSpawnPoints);
+        }
+    }*/
     public class PlayerJSON
     {
         public string name;
+        public bool isOwner;
+        public string roomName;
+        public int capacity;
         public List<PointJSON> playerSpawnPoints;
 
-        public PlayerJSON(string _name, List<SpawnPoint> _playerSpawnPoints)
+        public PlayerJSON(string _name, bool _isOwner, string _roomName, int _capacity, List<SpawnPoint> _playerSpawnPoints)
         {
             playerSpawnPoints = new List<PointJSON>();
             name = _name;
+            isOwner = _isOwner;
+            roomName = _roomName;
+            capacity = _capacity;
 
             foreach (SpawnPoint playerSpawnPoint in _playerSpawnPoints) 
             {
@@ -195,6 +260,8 @@ public class NetworkManager : MonoBehaviour
     public class UserJSON // notify that another player joins the game 
     {
         public string name;
+        public string roomName;
+        public bool isOwner;
         public float[] position;
 
         public static UserJSON CreateFromJSON(string data)
