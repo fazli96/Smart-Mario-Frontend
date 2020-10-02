@@ -124,4 +124,18 @@ public class SceneController : MonoBehaviour
     }
 
     #endregion
+
+    #region Multiplayer
+
+    public void ToMultiplayerLobby()
+    {
+        SceneManager.LoadScene("MultiplayerLobby");
+    }
+
+    public void ToMultiplayerRoom()
+    {
+        SceneManager.LoadScene("MultiplayerRoom");
+    }
+
+    #endregion
 }
