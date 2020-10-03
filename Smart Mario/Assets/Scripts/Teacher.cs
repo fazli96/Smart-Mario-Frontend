@@ -7,13 +7,13 @@ public class Teacher
 {
     public string username;
     public string password;
-    public string teacher_key;
+    public string school_key;
 
-    public Teacher (string username, string password, string teacher_key)
+    public Teacher (string username, string password, string school_key)
     {
         this.username = username;
         this.password = password;
-        this.teacher_key = teacher_key;
+        this.school_key = school_key;
     }
 
 }

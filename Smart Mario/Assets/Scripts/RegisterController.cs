@@ -6,6 +6,7 @@ using System.Net.Mime;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class RegisterController : MonoBehaviour
 {
@@ -22,19 +23,21 @@ public class RegisterController : MonoBehaviour
         }
         return instance;
     }
-    public void RegisterTeacherDetails(string username, string password, string teacher_key)
+    public void RegisterTeacherDetails(string username, string password, string school_key, Text msg)
     {
         APICall apiCall = APICall.getAPICall();
-        Teacher teacher = new Teacher(username, password, teacher_key);
+        UnityEngine.Debug.Log(username + " " + password + " " + school_key);
+        Teacher teacher = new Teacher(username, password, school_key);
         string bodyJsonString = apiCall.saveToJSONString(teacher);
-        StartCoroutine(apiCall.PostRequest(url+"teachers", bodyJsonString));
+        StartCoroutine(apiCall.RegisterPostRequest(url+"teachers", bodyJsonString, msg));
     }  
 
-    public void RegisterStudentDetails(string username, string password, string student_key)
+    public void RegisterStudentDetails(string username, string password, string teacher_key, Text msg)
     {
         APICall apiCall = APICall.getAPICall();
-        Student student = new Student(username, password, student_key);
+        UnityEngine.Debug.Log(username + " " + password + " " + teacher_key);
+        Student student = new Student(username, password, teacher_key);
         string bodyJsonString = apiCall.saveToJSONString(student);
-        StartCoroutine(apiCall.PostRequest(url + "students", bodyJsonString));
+        StartCoroutine(apiCall.RegisterPostRequest(url + "students", bodyJsonString, msg));
     }
 }
