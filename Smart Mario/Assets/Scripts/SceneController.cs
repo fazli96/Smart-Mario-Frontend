@@ -96,6 +96,30 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadScene("World1_Minigame1_Level5");
     }
 
+    public void ToWorld2Minigame1Level1()
+    {
+        SceneManager.LoadScene("World2_Minigame1_Level1");
+    }
+
+    public void ToWorld2Minigame1Level2()
+    {
+        SceneManager.LoadScene("World2_Minigame1_Level2");
+    }
+
+    public void ToWorld2Minigame1Level3()
+    {
+        SceneManager.LoadScene("World2_Minigame1_Level3");
+    }
+
+    public void ToWorld2Minigame1Level4()
+    {
+        SceneManager.LoadScene("World2_Minigame1_Level4");
+    }
+    public void ToWorld2Minigame1Level5()
+    {
+        SceneManager.LoadScene("World2_Minigame1_Level5");
+    }
+
     #endregion
 
     #region Minigame 2 Levels

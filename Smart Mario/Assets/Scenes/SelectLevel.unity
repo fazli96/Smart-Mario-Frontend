@@ -1115,7 +1115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0e76f7373569e743b5f060c6efdcc88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minigameName_LvlSel: {fileID: 415806513}
+  minigameNameText: {fileID: 415806513}
   level2button: {fileID: 812281471}
   level3button: {fileID: 1435451863}
   level4button: {fileID: 948195525}

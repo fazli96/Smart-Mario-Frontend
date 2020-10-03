@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class DifficultySelectionScreen : MonoBehaviour
 {
-    public Text minigameName_DiffSel;
+    public Text minigameNameText;
     private SceneController scene;
     // Start is called before the first frame update
     void Start()
     {
         scene = SceneController.GetSceneController();
-        minigameName_DiffSel.text = "Welcome to " + PlayerPrefs.GetString("Minigame Selected");
+        minigameNameText.text = "Welcome to " + PlayerPrefs.GetString("Minigame Selected");
 
     }
 
@@ -24,7 +24,6 @@ public class DifficultySelectionScreen : MonoBehaviour
     public void ToMinigameMedium()
     {
         PlayerPrefs.SetString("Minigame Difficulty", "Medium");
-        PlayerPrefs.SetInt("World1Minigame1HighestLevelCompletedMedium", 0);
         scene.ToLevelSelection();
     }
 

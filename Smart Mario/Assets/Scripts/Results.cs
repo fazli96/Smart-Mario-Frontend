@@ -5,14 +5,14 @@ using UnityEngine;
 public class Results 
 {
     public string studentId;
-    public string minigameId;
+    public int minigameId;
     public string difficulty;
-    public string level;
-    public string score;
-    public string questions_attempted;
-    public string questions_correct;
+    public int level;
+    public int score;
+    public int questions_attempted;
+    public int questions_correct;
 
-    public Results(string studentId, string minigameId, string difficulty, string level, string score, string questions_attempted, string questions_correct)
+    public Results(string studentId, int minigameId, string difficulty, int level, int score, int questions_attempted, int questions_correct)
     {
         this.studentId = studentId;
         this.minigameId = minigameId;
@@ -21,5 +21,10 @@ public class Results
         this.score = score;
         this.questions_attempted = questions_attempted;
         this.questions_correct = questions_correct;
+    }
+
+    public static Results CreateFromJSON(string data)
+    {
+        return JsonUtility.FromJson<Results>(data);
     }
 }

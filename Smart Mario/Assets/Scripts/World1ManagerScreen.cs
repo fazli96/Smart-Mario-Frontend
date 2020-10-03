@@ -40,13 +40,13 @@ public class World1ManagerScreen : MonoBehaviour
 
     public void ToMinigame1DifficultySelection()
     {
-        PlayerPrefs.SetString("Minigame Selected", "Minigame1");
+        PlayerPrefs.SetString("Minigame Selected", "Stranded");
         scene.ToDifficultySelection();
     }
 
     public void ToMinigame2DifficultySelection()
     {
-        PlayerPrefs.SetString("Minigame Selected", "Minigame2");
+        PlayerPrefs.SetString("Minigame Selected", "Matching Cards");
         scene.ToDifficultySelection();
     }
 

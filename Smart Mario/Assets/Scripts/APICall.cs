@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Text;
-using System.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -83,9 +82,9 @@ public class APICall
         }
     }
 
-    public IEnumerator ResultsPutRequest(string bodyJsonString)
+    public IEnumerator ResultsPutRequest(string url, string bodyJsonString)
     {
-        var request = new UnityWebRequest("https://smart-mario-backend-1.herokuapp.com/api/results" , "PUT");
+        var request = new UnityWebRequest(url , "PUT");
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
@@ -93,54 +92,56 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        UnityEngine.Debug.Log(convertedStr);
+        Debug.Log(convertedStr);
     }
 
-    /* public IEnumerator BestResultsGetRequest()
-       {
-        string url = 
+    public IEnumerator BestResultsGetRequest(string url)
+    {
+        Debug.Log(url);
+        var request = new UnityWebRequest(url, "GET");
+        //byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
+        //request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        //request.SetRequestHeader("Content-Type", "application/json");
+        request.chunkedTransfer = false;
+        yield return request.SendWebRequest();
+        string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        Debug.Log("Best results" + convertedStr);
+        JArray resultsListJArray = JArray.Parse(convertedStr);
+        List<Results> resultList = new List<Results>();
+        foreach (JObject resultJObject in resultsListJArray)
+        {
+            string resultJSON = JsonConvert.SerializeObject(resultJObject);
+            Debug.Log(resultJSON);
+            Results result = Results.CreateFromJSON(resultJSON);
+            resultList.Add(result);
+        }
+        Debug.Log(resultList[0].score);
+        Debug.Log(resultList[1].score);
+        Debug.Log(resultList[2].score);
+    }
+
+    public IEnumerator AllQuestionsGetRequest(string url)
+    { 
         UnityEngine.Debug.Log(url);
         var request = new UnityWebRequest(url, "GET");
-          // byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
-         //  request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-           request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-          // request.SetRequestHeader("Content-Type", "application/json");
-           request.chunkedTransfer = false;
-           yield return request.SendWebRequest();
-           string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-           UnityEngine.Debug.Log(convertedStr);
-       }*/
-    
-  /*  public IEnumerator BestResultsGetRequest(string studentID, string minigameID, string difficulty, string level)
-    {
-        string url = "https://smart-mario-backend-1.herokuapp.com/api/results/:" + studentID + "&:" + minigameID + "&:" + difficulty + "&:" + level;
-        using (UnityWebRequest www = UnityWebRequest.Get(url))
+        // byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
+        //  request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        // request.SetRequestHeader("Content-Type", "application/json");
+        request.chunkedTransfer = false;
+        yield return request.SendWebRequest();
+        string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        Debug.Log(convertedStr);
+        if (GameObject.Find("QuestionController") != null)
         {
-            yield return www.SendWebRequest();
-
-            if (www.isNetworkError)
-            {
-                UnityEngine.Debug.Log(www.error);
-            }
-            else
-            {
-                if (www.isDone)
-                {
-                    // handle the result
-                    var result = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
-                   // var data = (JObject)JsonConvert.DeserializeObject(result);
-                    UnityEngine.Debug.Log(result);
-                  
-                }
-                else
-                {
-                    //handle the problem
-                    UnityEngine.Debug.Log("Error! data couldn't get.");
-                }
-            }
+            QuestionController questionController = GameObject.Find("QuestionController").GetComponent<QuestionController>();
+            questionController.QuestionsRetrieved(convertedStr);
         }
-    }*/
-    
+        Debug.Log("Unable to find questionController");
+    }
+
+
 }
 
 
