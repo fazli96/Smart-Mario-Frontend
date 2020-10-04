@@ -106,19 +106,8 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        Debug.Log("Best results" + convertedStr);
-        JArray resultsListJArray = JArray.Parse(convertedStr);
-        List<Results> resultList = new List<Results>();
-        foreach (JObject resultJObject in resultsListJArray)
-        {
-            string resultJSON = JsonConvert.SerializeObject(resultJObject);
-            Debug.Log(resultJSON);
-            Results result = Results.CreateFromJSON(resultJSON);
-            resultList.Add(result);
-        }
-        Debug.Log(resultList[0].score);
-        Debug.Log(resultList[1].score);
-        Debug.Log(resultList[2].score);
+        Debug.Log(convertedStr);
+        StatisticsController.instance.GetComponent<StatisticsController>().ResultsRetrieved(convertedStr);
     }
 
     public IEnumerator AllQuestionsGetRequest(string url)

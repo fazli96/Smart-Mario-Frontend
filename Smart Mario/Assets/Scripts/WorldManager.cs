@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class World1ManagerScreen : MonoBehaviour
+public class WorldManager : MonoBehaviour
 {
     private SceneController scene;
 

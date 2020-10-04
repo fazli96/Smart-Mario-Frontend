@@ -147,9 +147,9 @@ public class GameStatus : MonoBehaviour
                 minigameId = 4;
         }
 
-        //string customUrl = url + "/:" + studentId + "&:" + minigameId + "&:" + difficulty + "&:" + currentLevel;
+        string customUrl = url + "/" + studentId + "&" + minigameId + "&" + difficulty + "&" + currentLevel;
         //customUrl.ToLower();
-        //Debug.Log(customUrl);
+        Debug.Log(customUrl);
         APICall apiCall = APICall.getAPICall();
         StartCoroutine(apiCall.BestResultsGetRequest(url));
     }

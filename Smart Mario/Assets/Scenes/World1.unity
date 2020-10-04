@@ -8076,7 +8076,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 1.5}
-  m_SizeDelta: {x: 160, y: 35}
+  m_SizeDelta: {x: 250, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &945693819
 MonoBehaviour:
@@ -8521,7 +8521,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Minigame 2
+  m_Text: Matching Cards
 --- !u!222 &1047312630
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9398,7 +9398,7 @@ GameObject:
   - component: {fileID: 1320876454}
   - component: {fileID: 1320876453}
   m_Layer: 0
-  m_Name: World1Manager
+  m_Name: WorldManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16957,7 +16957,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Minigame 1
+  m_Text: Stranded
 --- !u!222 &1724062518
 CanvasRenderer:
   m_ObjectHideFlags: 0
