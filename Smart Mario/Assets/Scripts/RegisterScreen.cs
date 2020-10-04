@@ -14,10 +14,12 @@ public class RegisterScreen : MonoBehaviour
     public Button loginButton;
     public Button createButton;
     public InputField usernameInputField;
+    public InputField nameInputField;
     public InputField passwordInputField;
     public InputField keyInputField;
     public Toggle teacherToggle;
     public Text msg;
+  
 
     public static RegisterScreen GetRegisterScreen()
     {
@@ -54,12 +56,13 @@ public class RegisterScreen : MonoBehaviour
     public void CheckInput()
     {
         string username = usernameInputField.text;
+        string name = nameInputField.text;
         string password = passwordInputField.text;
         string key = keyInputField.text;
 
         if (teacherToggle.isOn)
         {
-            register.RegisterTeacherDetails(username, password, key, msg);
+            register.RegisterTeacherDetails(username, name, password, key, msg);
             
     /*        APICall apiCall = APICall.getAPICall();
             Results results = new Results("1", "1", "Easy", "1", "50", "1", "1");
@@ -70,7 +73,7 @@ public class RegisterScreen : MonoBehaviour
 
         else
         {
-            register.RegisterStudentDetails(username, password, key, msg);
+            register.RegisterStudentDetails(username, name, password, key, msg);
         }
     }
 

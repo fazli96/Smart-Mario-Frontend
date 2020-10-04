@@ -23,7 +23,7 @@ public class LoginController : MonoBehaviour
     public void ValidateTeacherLogin(string username, string password, Text msg)
     {
         APICall apiCall = APICall.getAPICall();
-        Teacher teacher = new Teacher(username, password, "");
+        Teacher teacher = new Teacher(username, "", password, "");
         string bodyJsonString = apiCall.saveToJSONString(teacher);
         StartCoroutine(apiCall.LoginPostRequest(url + "teachers/authenticate", bodyJsonString, msg));
     }
@@ -31,7 +31,7 @@ public class LoginController : MonoBehaviour
     public void ValidateStudentLogin(string username, string password, Text msg)
     {
         APICall apiCall = APICall.getAPICall();
-        Student student = new Student(username, password, "");
+        Student student = new Student(username, "", password, "");
         string bodyJsonString = apiCall.saveToJSONString(student);
         StartCoroutine(apiCall.LoginPostRequest(url + "students/authenticate", bodyJsonString, msg));
     }

@@ -56,7 +56,7 @@ public class APICall
 
     public IEnumerator LoginPostRequest(string url, string bodyJsonString, Text msg)
     {
-        var request = new UnityWebRequest(url, "PT");
+        var request = new UnityWebRequest(url, "POST");
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
@@ -79,6 +79,11 @@ public class APICall
         else
         {
             logScreen.LoginSuccess();
+            int startIndex = convertedStr.IndexOf("username") + 11;
+            string username = convertedStr.Substring(startIndex);
+            int len = username.IndexOf('"');
+            username = username.Substring(0, len);
+            PlayerPrefs.SetString("username", username);
         }
     }
 

@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Student 
+public class Student : User
 {
-    public string username;
-    public string password;
     public string teacher_key;
 
-    public Student(string username, string password, string teacher_key)
+    public Student(string username, string name, string password, string teacher_key)
     {
         this.username = username;
+        this.name = name;
         this.password = password;
         this.teacher_key = teacher_key;
     }
