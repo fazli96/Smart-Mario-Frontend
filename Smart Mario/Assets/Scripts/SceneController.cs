@@ -72,6 +72,11 @@ public class SceneController : MonoBehaviour
     }
 
     #region Teachers
+    public void ToTeacherMenu()
+    {
+        SceneManager.LoadScene("TeacherMenu");
+    }
+
     public void ToStudentPerformance()
     {
         SceneManager.LoadScene("StudentPerformance");
