@@ -160,12 +160,21 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        Debug.Log(convertedStr);
-        if (GameObject.Find("QuestionController") != null)
+        Debug.Log("converted" + convertedStr);
+        Debug.Log("Before!");
+        if (GameObject.Find("QuestionManager") != null)
+        {
+            questionManager questionManager = GameObject.Find("QuestionManager").GetComponent<questionManager>();
+            Debug.Log("Success in finding QuestionManager!");
+            questionManager.QuestionsRetrieved(convertedStr);
+        }
+        else if (GameObject.Find("QuestionController") != null)
         {
             QuestionController questionController = GameObject.Find("QuestionController").GetComponent<QuestionController>();
             questionController.QuestionsRetrieved(convertedStr);
+            Debug.Log("Success in finding QuestionController!");
         }
+        
         Debug.Log("Unable to find questionController");
     }
 

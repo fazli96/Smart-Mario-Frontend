@@ -21,8 +21,8 @@ public class QuestionController : MonoBehaviour
     public Text option3;
     public Text option4;
     public GameObject questionPanel;
-    public GameObject wrongPanel;
-    public GameObject correctPanel;
+    public GameObject wrongPanel; 
+    public GameObject correctPanel; 
     public GameObject tooLatePanel;
     private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/questions/mcqtheory"; 
 

@@ -2,29 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// This class controls the behavior of the canvas  
+/// </summary>
 public class CanvasControl : MonoBehaviour
 {
     public Text matchText;
     Canvas canvas;
-    // Start is called before the first frame update
+    /// <summary>
+    /// This is called at the start of initialisation
+    /// </summary>
     void Start()
     {
         canvas = GetComponent<Canvas>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    /// <summary>
+    /// This class instantiates text that shows a match between two cards
+    /// </summary>
     public void ShowMatch()
     {
         Text one = Instantiate(matchText, new Vector2(          //instantiating prefab
                 350, 90),
                 Quaternion.identity);
         one.transform.SetParent(canvas.transform, false);
-        //one.transform.parent = canvas.transform;
         Text two = Instantiate(matchText, new Vector2(          //instantiating prefab
                 350, -40),
                 Quaternion.identity);

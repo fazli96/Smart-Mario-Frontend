@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
+
+/// <summary>
+/// This class manages the cards played in the game and instantiates and stores them in a list datastructure
+/// </summary>
 public class CardsManager: MonoBehaviour
 {
     public GameObject token;
@@ -13,6 +17,10 @@ public class CardsManager: MonoBehaviour
     float xPosition;
     float yPosition;
     public List<GameObject> cards = new List<GameObject>();
+    /// <summary>
+    /// Called at the initialisation of this script
+    /// Instantiates the appropriate number of cards and at the right coordinates in accordance to the difficulty level
+    /// </summary>
     public void Start()
     {
         faceindexes.Clear();
@@ -41,13 +49,6 @@ public class CardsManager: MonoBehaviour
                 UnityEngine.Debug.Log(i);
             }
         }
-        //UnityEngine.Debug.Log("pairs " + pairs);
-        //UnityEngine.Debug.Log("elements are:");
-        //foreach (var i in faceindexes)
-        //{
-        //    UnityEngine.Debug.Log(i);
-        //}
-        //int originalLength = pairs*2;
         if (pairs == 4)
         {
             yPosition = 6.5f;
@@ -72,7 +73,13 @@ public class CardsManager: MonoBehaviour
             var temp = Instantiate(token, new Vector3(          //instantiating prefab
                 xPosition, yPosition, 0),
                 Quaternion.identity);
-            temp.GetComponent<CardControl>().faceIndex = faceindexes[shuffleNum];   //setting faceindex of the prefab 
+            var current = temp.GetComponent<CardControl>().faceIndex = faceindexes[shuffleNum];   //setting faceindex of the prefab 
+            var count = 0;
+            foreach (int i in faceindexes)
+            {
+                if (i != null && i == current) count++;
+            }
+            temp.GetComponent<CardControl>().qOrA = count;
             UnityEngine.Debug.Log("set index:" + faceindexes[shuffleNum]);
             cards.Add(temp);
             faceindexes.Remove(faceindexes[shuffleNum]);        //removing this faceindex from available pool
@@ -113,11 +120,14 @@ public class CardsManager: MonoBehaviour
             }
 
         }
-        //token.GetComponent<NewBehaviourScript>().faceIndex = faceindexes[0];
         faceindexes.Clear();
     }
 
-  
+    /// <summary>
+    /// This is called when a card is opened up
+    /// Invokes a function for the specific card that is being opened
+    /// </summary>
+    /// <param name="index"></param>
     public void Open(int index)
     {
         foreach (var i in cards)
