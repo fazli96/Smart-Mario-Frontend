@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Control for World providing scene transitions and setting player objects
+/// </summary>
 public class WorldManager : MonoBehaviour
 {
     private SceneController scene;
@@ -10,7 +12,9 @@ public class WorldManager : MonoBehaviour
     public GameObject knightPrefab;
     public GameObject witchClone;
     public GameObject knightClone;
-
+    /// <summary>
+    /// Get instance of SceneController once World Manager starts and sets the Player object according to player preference's selected player
+    /// </summary>
     // Start is called before the first frame update
     void Start()
     {
@@ -37,19 +41,25 @@ public class WorldManager : MonoBehaviour
     {
 
     }
-
+    /// <summary>
+    /// Changes scene to difficulty selection for minigame 1
+    /// </summary>
     public void ToMinigame1DifficultySelection()
     {
         PlayerPrefs.SetString("Minigame Selected", "Stranded");
         scene.ToDifficultySelection();
     }
-
+    /// <summary>
+    /// Changes scene to difficulty selection for minigame 2
+    /// </summary>
     public void ToMinigame2DifficultySelection()
     {
         PlayerPrefs.SetString("Minigame Selected", "Matching Cards");
         scene.ToDifficultySelection();
     }
-
+    /// <summary>
+    /// Changes scene to world selection
+    /// </summary>
     public void ToWorldSelection()
     {
         scene.ToWorldSelection();

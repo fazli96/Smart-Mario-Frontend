@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Entity for question storing attributes for ID, Question text, MCQ options text, Answer and Explanation
+/// </summary>
 public class Question
 {
     [JsonProperty("ID")]
