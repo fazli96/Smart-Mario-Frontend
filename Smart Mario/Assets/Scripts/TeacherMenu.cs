@@ -24,9 +24,9 @@ public class TeacherMenu : MonoBehaviour
         
     }
 
-    public void StudentPerformanceScreen()
+    public void SelectStudentPerformanceScreen()
     {
-        scene.ToStudentPerformance();
+        scene.ToSelectStudentPerformance();
     }
 
     public void AssignTasksScreen()

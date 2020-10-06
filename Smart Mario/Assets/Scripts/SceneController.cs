@@ -77,6 +77,11 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadScene("TeacherMenu");
     }
 
+    public void ToSelectStudentPerformance()
+    {
+        SceneManager.LoadScene("SelectStudentPerformance");
+    }
+
     public void ToStudentPerformance()
     {
         SceneManager.LoadScene("StudentPerformance");
@@ -84,12 +89,12 @@ public class SceneController : MonoBehaviour
 
     public void ToAssignTasksScreen()
     {
-        SceneManager.LoadScene("");
+        SceneManager.LoadScene("TeacherAssignTasks");
     }
 
     public void ToCheckAssignedTasksScreen()
     {
-        SceneManager.LoadScene("");
+        SceneManager.LoadScene("ViewAssignedTasks");
     }
 
     #endregion
