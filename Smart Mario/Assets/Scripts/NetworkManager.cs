@@ -1,4 +1,7 @@
-﻿using SocketIO;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SimpleJSON;
+using SocketIO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,14 +13,9 @@ using UnityEngine.UI;
 public class NetworkManager : MonoBehaviour
 {
     public static NetworkManager instance;
-    public Canvas canvas;
+    private SceneController scene;
     public SocketIOComponent socket;
-    public InputField playerNameInput;
-    public InputField roomNameInput;
-    public InputField roomCapacityInput;
     public GameObject player;
-
-    private static string currentRoomName;
     
     void Awake()
     {
@@ -30,18 +28,23 @@ public class NetworkManager : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+        if (socket )
+        DontDestroyOnLoad(socket);
+        DontDestroyOnLoad(player);
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        scene = SceneController.GetSceneController();
         //subscribe to all the various websocket events
         socket.On("other player connected", OnOtherPlayerConnected);
         socket.On("play", OnPlay);
         socket.On("player move", OnPlayerMove);
         socket.On("other player disconnected", OnOtherPlayerDisconnected);
         socket.On("owner disconnected", OnOwnerDisconnected);
-        socket.On("updateRooms", OnUpdateRooms);
+        socket.On("get rooms", OnGetRooms);
+        socket.On("room is full", OnRoomIsFull);
     }
 
     // Update is called once per frame
@@ -62,40 +65,55 @@ public class NetworkManager : MonoBehaviour
     #region Commands
     IEnumerator ConnectToServer()
     {
-        string roomName = roomNameInput.text;
-        currentRoomName = roomName;
-        int roomCapacity = int.Parse(roomCapacityInput.text);
-        string playerName = playerNameInput.text;
+        scene.ToMultiplayerRoom();
+
+        string roomName = PlayerPrefs.GetString("roomName", "room1");
+        int roomCapacity = PlayerPrefs.GetInt("roomCapacity", 4);
+        string playerName = PlayerPrefs.GetString("username", "fazli");
+        string roomID = PlayerPrefs.GetString("roomID", "create");
+        string minigameSelected = PlayerPrefs.GetString("Minigame Selected", "World 2 Stranded");
+        string difficultySelected = PlayerPrefs.GetString("Difficulty Selected", "Easy");
+
         bool isOwner;
 
-        if (roomCapacity == -1)
-        {
-            isOwner = false;
-        }
-        else
+        if (roomID.Equals("create"))
         {
             isOwner = true;
         }
-
-        List<SpawnPoint> playerSpawnPoints = GetComponent<PlayerSpawner>().playerSpawnPoints;
-        PlayerJSON playerJSON = new PlayerJSON(playerName, isOwner, roomName, roomCapacity, playerSpawnPoints);
-        string data = JsonUtility.ToJson(playerJSON);
-
-        if (roomCapacity == -1)
+        else
         {
-            yield return new WaitForSeconds(0.5f);
-            socket.Emit("player connect", new JSONObject(data));
-            yield return new WaitForSeconds(1f);
+            isOwner = false;
         }
 
+        //wait for scene to finish loading
+        while (GameObject.Find("RoomManager") == null)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        List<SpawnPoint> playerSpawnPoints = GameObject.Find("RoomManager").GetComponent<PlayerSpawner>().playerSpawnPoints;
+        PlayerJSON playerJSON = new PlayerJSON(playerName, roomID, isOwner, roomName, roomCapacity, minigameSelected, difficultySelected, playerSpawnPoints);
+        string data = JsonUtility.ToJson(playerJSON);
+        Debug.Log(data);
+        socket.Emit("player connect", new JSONObject(data));
+        yield return new WaitForSeconds(0.1f);
         socket.Emit("play", new JSONObject(data));
-        canvas.gameObject.SetActive(false);
     }
 
     public void CommandMove(Vector3 vec3)
     {
         string data = JsonUtility.ToJson(new PositionJSON(vec3));
         socket.Emit("player move", new JSONObject(data));
+    }
+
+    public void CommandGetRooms()
+    {
+        socket.Emit("get rooms");
+    }
+
+    public void CommandLeaveRoom()
+    {
+        scene.ToMultiplayerLobby();
+        socket.Emit("disconnect");
     }
 
     #endregion
@@ -149,7 +167,7 @@ public class NetworkManager : MonoBehaviour
         UserJSON userJSON = UserJSON.CreateFromJSON(data);
         Vector3 position = new Vector3(userJSON.position[0], userJSON.position[1], userJSON.position[2]);
         // if it is the current player, return
-        if (userJSON.name == playerNameInput.text)
+        if (userJSON.name == PlayerPrefs.GetString("username", "fazli"))
         {
             return;
         }
@@ -179,11 +197,29 @@ public class NetworkManager : MonoBehaviour
         pm.isOwner = true;
     }
 
-    void OnUpdateRooms(SocketIOEvent socketIOEvent)
+    void OnGetRooms(SocketIOEvent socketIOEvent)
     {
-        print("OnUpdateRooms updated");
+        print("Rooms retrieved");
         string data = socketIOEvent.data.ToString();
+        Debug.Log(data);
+        JObject roomJSONData = (JObject)JsonConvert.DeserializeObject(data);
+
+        LobbyManager.instance.GetComponent<LobbyManager>().AddRooms(roomJSONData);
         //TODO data manipulation
+    }
+
+    void OnRoomIsFull(SocketIOEvent socketIOEvent)
+    {
+        print("room is full");
+        StartCoroutine(LoadMultiplayerLobby());
+    }
+
+    IEnumerator LoadMultiplayerLobby()
+    {
+        scene.ToMultiplayerLobby();
+        while (GameObject.Find("LobbyManager") == null)
+            yield return new WaitForSeconds(0.1f);
+        LobbyManager.instance.GetComponent<LobbyManager>().RoomIsFull();
     }
 
     #endregion
@@ -191,41 +227,53 @@ public class NetworkManager : MonoBehaviour
     #region JSONMessageClasses
 
     [Serializable]
-
-    /*public class RoomJSON
-    {
-        public string roomName;
-        public int capacity;
-        public PlayerJSON playerJSON;
-
-        public RoomJSON(string _roomName, int _capacity, string _name, bool _isOwner, List<SpawnPoint> _playerSpawnPoints)
-        {
-            roomName = _roomName;
-            capacity = _capacity;
-            playerJSON = new PlayerJSON(_name, _isOwner, _playerSpawnPoints);
-        }
-    }*/
     public class PlayerJSON
     {
         public string name;
+        public string roomID;
         public bool isOwner;
         public string roomName;
         public int capacity;
+        public string minigameSelected;
+        public string difficultySelected;
         public List<PointJSON> playerSpawnPoints;
 
-        public PlayerJSON(string _name, bool _isOwner, string _roomName, int _capacity, List<SpawnPoint> _playerSpawnPoints)
+        public PlayerJSON(string _name, string _roomID, bool _isOwner, string _roomName, 
+            int _capacity, string _minigameSelected, string _difficultySelected, List<SpawnPoint> _playerSpawnPoints)
         {
             playerSpawnPoints = new List<PointJSON>();
             name = _name;
+            roomID = _roomID;
             isOwner = _isOwner;
             roomName = _roomName;
             capacity = _capacity;
+            minigameSelected = _minigameSelected;
+            difficultySelected = _difficultySelected;
 
             foreach (SpawnPoint playerSpawnPoint in _playerSpawnPoints) 
             {
                 PointJSON pointJSON = new PointJSON(playerSpawnPoint);
+                Debug.Log(pointJSON.position[0]);
                 playerSpawnPoints.Add(pointJSON);
             }
+        }
+    }
+
+    [Serializable]
+
+    public class RoomJSON
+    {
+        public string roomID;
+        public string roomName;
+        public string roomOwner;
+        public int noOfClients;
+        public int roomCapacity;
+        public string minigameSelected;
+        public string difficultySelected;
+
+        public static RoomJSON CreateFromJSON(string data)
+        {
+            return JsonUtility.FromJson<RoomJSON>(data);
         }
     }
 
@@ -260,7 +308,7 @@ public class NetworkManager : MonoBehaviour
     public class UserJSON // notify that another player joins the game 
     {
         public string name;
-        public string roomName;
+        public string roomID;
         public bool isOwner;
         public float[] position;
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LoginController : MonoBehaviour
 {
@@ -19,22 +20,20 @@ public class LoginController : MonoBehaviour
         }
         return instance;
     }
-
-    public void ValidateTeacherLogin(string username, string password)
+    public void ValidateTeacherLogin(string username, string password, Text msg)
     {
         APICall apiCall = APICall.getAPICall();
-        Teacher teacher = new Teacher(username, password, "");
+        Teacher teacher = new Teacher(username, "", password, "");
         string bodyJsonString = apiCall.saveToJSONString(teacher);
-        StartCoroutine(apiCall.PostRequest(url + "teachers/authenticate", bodyJsonString));
-        UnityEngine.Debug.Log("Continue");
+        StartCoroutine(apiCall.LoginPostRequest(url + "teachers/authenticate", bodyJsonString, msg));
     }
 
-    public void ValidateStudentLogin(string username, string password)
+    public void ValidateStudentLogin(string username, string password, Text msg)
     {
         APICall apiCall = APICall.getAPICall();
-        Student student = new Student(username, password, "");
+        Student student = new Student(username, "", password, "");
         string bodyJsonString = apiCall.saveToJSONString(student);
-        StartCoroutine(apiCall.PostRequest(url + "students/authenticate", bodyJsonString));
+        StartCoroutine(apiCall.LoginPostRequest(url + "students/authenticate", bodyJsonString, msg));
     }
 }
 

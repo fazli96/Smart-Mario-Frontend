@@ -1,17 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LoginScreen : MonoBehaviour
 {
+    //Singleton
+    private static LoginScreen instance = null;
     private SceneController scene;
     private LoginController login;
-
     public Button loginButton;
     public InputField usernameInputField;
     public InputField passwordInputField;
     public Toggle teacherToggle;
+    public Text msg;
+
+    public static LoginScreen GetLoginScreen()
+    {
+        if (instance == null)
+        {
+            GameObject go = new GameObject();
+            instance = go.AddComponent<LoginScreen>();
+        }
+        return instance;
+    }
 
     void Start()
     {
@@ -29,7 +42,6 @@ public class LoginScreen : MonoBehaviour
     {
         scene.ToStartMenu();
     }
-
     public void CheckInput()
     {
         string username = usernameInputField.text;
@@ -38,12 +50,24 @@ public class LoginScreen : MonoBehaviour
         if (teacherToggle.isOn)
         {
             UnityEngine.Debug.Log("Teacher");
-            login.ValidateTeacherLogin(username, password);
+            login.ValidateTeacherLogin(username, password, msg);
         }
         else
         {
             UnityEngine.Debug.Log("Student");
-            login.ValidateStudentLogin(username, password);
+            login.ValidateStudentLogin(username, password, msg);
         }
+    }
+
+    public void DisplayMessage(String str, Text message)
+    {
+        this.msg = message;
+        msg.text = str;
+    }
+
+    public void LoginSuccess()
+    {
+        scene = SceneController.GetSceneController();
+        scene.ToMainMenu();
     }
 }

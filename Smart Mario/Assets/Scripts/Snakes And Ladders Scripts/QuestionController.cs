@@ -61,60 +61,24 @@ public class QuestionController : MonoBehaviour
             default:
                 break;
         }
-        //get data from database based on difficulty and level
-        /*questionList = new List<Question>();
-        List<string> options = new List<string>();
-        options.Add("Boy");
-        options.Add("Girl");
-        options.Add("Man");
-        options.Add("Woman");
-        Question qn = new Question("Who are you", "text", options, "Man");
-        questionList.Add(qn);*/
-        StartCoroutine(Get(url));
+        APICall apiCall = APICall.getAPICall();
+        StartCoroutine(apiCall.AllQuestionsGetRequest(url));
     }
 
-    public IEnumerator Get(string url)
+    public void QuestionsRetrieved(string result)
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(url))
+        var data = (JObject)JsonConvert.DeserializeObject(result);
+        JArray data2 = data["allQuestions"].Value<JArray>();
+        foreach (JObject questionObject in data2)
         {
-            yield return www.SendWebRequest();
-
-            if (www.isNetworkError)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                if (www.isDone)
-                {
-                    // handle the result
-                    var result = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
-                    var data = (JObject)JsonConvert.DeserializeObject(result);
-                    JArray data2 = data["allQuestions"].Value<JArray>();
-                    foreach (JObject questionObject in data2)
-                    {
-                        Debug.Log("question: " + questionObject);
-                        Question question1 = questionObject.ToObject<Question>();
-                        Debug.Log(question1.option1);
-                        questionList.Add(question1);  
-                    }
-                    Debug.Log("DBResult: "+result);
-                    Debug.Log("allQuestions" + data2);
-                }
-                else
-                {
-                    //handle the problem
-                    Debug.Log("Error! data couldn't get.");
-                }
-            }
+            Debug.Log("question: " + questionObject);
+            Question question1 = questionObject.ToObject<Question>();
+            Debug.Log(question1.option1);
+            questionList.Add(question1);
         }
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log("DBResult: " + result);
+        Debug.Log("allQuestions" + data2);
+        ShuffleList.Shuffle(questionList);
     }
 
     public void SetQuestion()
@@ -245,8 +209,8 @@ public class QuestionController : MonoBehaviour
     }
 
     //Datastructure for storeing the quetions data
-    [System.Serializable]
-    /*public class Question
+    /*[System.Serializable]
+    public class Question
     {
         public string questionTitle;         //question text
         public string questionType;          //type
@@ -263,31 +227,41 @@ public class QuestionController : MonoBehaviour
         }
     }*/
 
-    class QuestionList
+    /*public IEnumerator Get(string url)
     {
-        [JsonProperty("message")]
-        public string errorMsg { get; set; }
-        [JsonProperty("allQuestions")]
-        public List<Question> questionList { get; set; }
-    }
+        using (UnityWebRequest www = UnityWebRequest.Get(url))
+        {
+            yield return www.SendWebRequest();
 
-    class Question
-    {
-        [JsonProperty("ID")]
-        public string Id { get; set; }
-        [JsonProperty("Question")]
-        public string questionTitle { get; set; }
-        [JsonProperty("1")]
-        public string option1 { get; set; }
-        [JsonProperty("2")]
-        public string option2 { get; set; }
-        [JsonProperty("3")]
-        public string option3 { get; set; }
-        [JsonProperty("4")]
-        public string option4 { get; set; }
-        [JsonProperty("Answer")]
-        public string answer { get; set; }
-        [JsonProperty("Explanation")]
-        public string explanation { get; set; }
-    }
+            if (www.isNetworkError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                if (www.isDone)
+                {
+                    // handle the result
+                    var result = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
+                    var data = (JObject)JsonConvert.DeserializeObject(result);
+                    JArray data2 = data["allQuestions"].Value<JArray>();
+                    foreach (JObject questionObject in data2)
+                    {
+                        Debug.Log("question: " + questionObject);
+                        Question question1 = questionObject.ToObject<Question>();
+                        Debug.Log(question1.option1);
+                        questionList.Add(question1);  
+                    }
+                    Debug.Log("DBResult: "+result);
+                    Debug.Log("allQuestions" + data2);
+                }
+                else
+                {
+                    //handle the problem
+                    Debug.Log("Error! data couldn't get.");
+                }
+            }
+        }
+
+    }*/
 }

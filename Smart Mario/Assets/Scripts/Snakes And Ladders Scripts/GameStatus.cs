@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +21,8 @@ public class GameStatus : MonoBehaviour
     private static int currentScore;
     private static int qnsAttempted;
     private static int qnsAnsweredCorrectly;
+
+    private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/results";
 
 
     public void Initialize(string difficulty)
@@ -41,6 +44,7 @@ public class GameStatus : MonoBehaviour
         qnsAttempted = 0;
         qnsAnsweredCorrectly = 0;
         DisplayScore();
+        TestGetResults();
     }
 
     public void ScoreChange(int changeInScore)
@@ -74,7 +78,7 @@ public class GameStatus : MonoBehaviour
             completeLvlScoreText.text = "Score: " + currentScore + " / " + targetScore;
             completeLvlQnsAttemptedText.text = "Qns Attempted: " + qnsAttempted;
             completeLvlQnsAnsweredCorrectlyText.text = "Qns Answered Correctly: " + qnsAnsweredCorrectly;
-            SaveResultsToPlayerPrefs();
+            SaveResults();
             return true;
         }
         else
@@ -82,24 +86,72 @@ public class GameStatus : MonoBehaviour
             gameOverScoreText.text = "Score: " + currentScore + " / " + targetScore;
             gameOverQnsAttemptedText.text = "Qns Attempted: " + qnsAttempted;
             gameOverQnsAnsweredCorrectlyText.text = "Qns Answered Correctly: " + qnsAnsweredCorrectly;
-            SaveResultsToPlayerPrefs();
+            SaveResults();
             return false;
         }
     }
 
-    private void SaveResultsToPlayerPrefs()
+    private void SaveResults()
     {
+        int worldSelected = PlayerPrefs.GetInt("World", 1);
+        string minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Stranded");
         string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
-        int currentLevel = PlayerPrefs.GetInt("World1Minigame1Level", 1);
-        string key = "World1Minigame1Level" + currentLevel+ difficulty;
-        if (currentScore >= targetScore)
+        int currentLevel = PlayerPrefs.GetInt("MinigameLevel", 1);
+        string studentId = "1";
+        int minigameId;
+
+        if (worldSelected == 1)
         {
-            PlayerPrefs.SetInt("World1Minigame1HighestLevelCompleted"+difficulty, currentLevel);
-            if (currentScore > PlayerPrefs.GetInt(key + "Highscore", 1000))
-                PlayerPrefs.SetInt(key + "Highscore", currentScore);
+            if (minigameSelected.Equals("Stranded"))
+                minigameId = 1;
+            else
+                minigameId = 2;
         }
-        PlayerPrefs.SetInt(key + "QnsAttempted", qnsAttempted);
-        PlayerPrefs.SetInt(key + "QnsAnsweredCorrectly", qnsAnsweredCorrectly);
+        else
+        {
+            if (minigameSelected.Equals("Stranded"))
+                minigameId = 3;
+            else
+                minigameId = 4;
+        }
+
+        APICall apiCall = APICall.getAPICall();
+        Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + currentScore + ", " + qnsAttempted + ", " + qnsAnsweredCorrectly);
+        Results result = new Results(studentId, minigameId, difficulty, currentLevel, currentScore, qnsAttempted, qnsAnsweredCorrectly);
+        //Results result = new Results("1", 1, "Easy", 1, 50, 1, 1);
+        string bodyJsonString = apiCall.saveToJSONString(result);
+        StartCoroutine(apiCall.ResultsPutRequest(url, bodyJsonString));
+    }
+
+    public void TestGetResults()
+    {
+        int worldSelected = PlayerPrefs.GetInt("World", 1);
+        string minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Stranded");
+        string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
+        int currentLevel = PlayerPrefs.GetInt("MinigameLevel", 1);
+        string studentId = "1";
+        int minigameId;
+
+        if (worldSelected == 1)
+        {
+            if (minigameSelected.Equals("Stranded"))
+                minigameId = 1;
+            else
+                minigameId = 2;
+        }
+        else
+        {
+            if (minigameSelected.Equals("Stranded"))
+                minigameId = 3;
+            else
+                minigameId = 4;
+        }
+
+        string customUrl = url + "/" + studentId + "&" + minigameId + "&" + difficulty + "&" + currentLevel;
+        //customUrl.ToLower();
+        Debug.Log(customUrl);
+        APICall apiCall = APICall.getAPICall();
+        StartCoroutine(apiCall.BestResultsGetRequest(url));
     }
 }
 

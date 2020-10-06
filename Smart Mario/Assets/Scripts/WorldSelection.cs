@@ -19,11 +19,13 @@ public class WorldSelection : MonoBehaviour
 
     public void SelectWorld1()
     {
+        PlayerPrefs.SetInt("World", 1);
         scene.PlayWorld1();
     }
 
     public void SelectWorld2()
     {
+        PlayerPrefs.SetInt("World", 2);
         scene.PlayWorld2();
     }
 

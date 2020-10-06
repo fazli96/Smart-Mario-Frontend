@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SelectedPlayer
   - WayPoint
+  - Dynamic Message
   layers:
   - Default
   - TransparentFX

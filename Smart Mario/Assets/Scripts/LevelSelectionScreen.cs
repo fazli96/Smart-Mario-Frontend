@@ -5,21 +5,27 @@ using UnityEngine.UI;
 
 public class LevelSelectionScreen : MonoBehaviour
 {
-    public Text minigameName_LvlSel;
+    public Text minigameNameText;
     public Button level2button;
     public Button level3button;
     public Button level4button;
     public Button level5button;
+
+    private int worldSelected;
+    private string minigameSelected;
+    private string difficulty;
 
     private SceneController scene;
     // Start is called before the first frame update
     void Start()
     {
         scene = SceneController.GetSceneController();
-        string minigameSelected = PlayerPrefs.GetString("Minigame Selected");
-        string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
-        minigameName_LvlSel.text = "Welcome to " + minigameSelected;
-        Debug.Log("World1" + minigameSelected + "HighestLevelCompleted" + difficulty);
+        worldSelected = PlayerPrefs.GetInt("World", 1);
+        minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Stranded");
+        difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
+        minigameNameText.text = "Welcome to " + minigameSelected;
+
+        /*Debug.Log("World"+ worldSelected + minigameSelected + "HighestLevelCompleted" + difficulty);
         switch (PlayerPrefs.GetInt("World1"+minigameSelected+"HighestLevelCompleted"+difficulty, 2))
         {
             case 0:
@@ -42,78 +48,102 @@ public class LevelSelectionScreen : MonoBehaviour
                 break;
             default:
                 break;
-        }
+        }*/
 
     }
 
     public void ToLevel1()
     {
-        
-        if (PlayerPrefs.GetString("Minigame Selected").Equals("Minigame1"))
+        PlayerPrefs.SetInt("MinigameLevel", 1);
+        if (worldSelected == 1)
         {
-            PlayerPrefs.SetInt("World1Minigame1Level", 1);
-            scene.ToWorld1Minigame1Level1();
+            if (minigameSelected.Equals("Stranded"))
+                scene.ToWorld1Minigame1Level1();
+            else
+                scene.ToWorld1Minigame2Level1();
         }
-        else if (PlayerPrefs.GetString("Minigame Selected").Equals("Minigame2"))
+        else
         {
-            PlayerPrefs.SetInt("World1Minigame2Level", 1);
-            scene.ToWorld1Minigame2Level1();
+            if (minigameSelected.Equals("Stranded"))
+                scene.ToWorld2Minigame1Level1();
+            //else
+            //scene.ToWorld2Minigame2Level1();
         }
     }
 
     public void ToLevel2()
     {
-        if (PlayerPrefs.GetString("Minigame Selected").Equals("Minigame1"))
+        PlayerPrefs.SetInt("MinigameLevel", 2);
+        if (worldSelected == 1)
         {
-            PlayerPrefs.SetInt("World1Minigame1Level", 2);
-            scene.ToWorld1Minigame1Level2();
+            if (minigameSelected.Equals("Stranded"))
+                scene.ToWorld1Minigame1Level2();
+            else
+                scene.ToWorld1Minigame2Level2();
         }
-        else if (PlayerPrefs.GetString("Minigame Selected").Equals("Minigame2"))
+        else
         {
-            PlayerPrefs.SetInt("World1Minigame2Level", 2);
-            scene.ToWorld1Minigame2Level2();
+            if (minigameSelected.Equals("Stranded"))
+                scene.ToWorld2Minigame1Level2();
+            //else
+            //scene.ToWorld2Minigame2Level2();
         }
     }
 
     public void ToLevel3()
     {
-        if (PlayerPrefs.GetString("Minigame Selected").Equals("Minigame1"))
+        PlayerPrefs.SetInt("MinigameLevel", 3);
+        if (worldSelected == 1)
         {
-            PlayerPrefs.SetInt("World1Minigame1Level", 3);
-            scene.ToWorld1Minigame1Level3();
+            if (minigameSelected.Equals("Stranded"))
+                scene.ToWorld1Minigame1Level3();  
+            else
+                scene.ToWorld1Minigame2Level3();
         }
-        else if (PlayerPrefs.GetString("Minigame Selected").Equals("Minigame2"))
+        else
         {
-            PlayerPrefs.SetInt("World1Minigame2Level", 3);
-            scene.ToWorld1Minigame2Level3();
+            if (minigameSelected.Equals("Stranded"))
+                scene.ToWorld2Minigame1Level3();
+            //else
+            //scene.ToWorld2Minigame2Level3();
         }
     }
 
     public void ToLevel4()
     {
-        if (PlayerPrefs.GetString("Minigame Selected").Equals("Minigame1"))
+        PlayerPrefs.SetInt("MinigameLevel", 4);
+        if (worldSelected == 1)
         {
-            PlayerPrefs.SetInt("World1Minigame1Level", 4);
-            scene.ToWorld1Minigame1Level4();
+            if (minigameSelected.Equals("Stranded"))
+                scene.ToWorld1Minigame1Level4();
+            else
+                scene.ToWorld1Minigame2Level4();
         }
-        else if (PlayerPrefs.GetString("Minigame Selected").Equals("Minigame2"))
+        else
         {
-            PlayerPrefs.SetInt("World1Minigame2Level", 4);
-            scene.ToWorld1Minigame2Level4();
+            if (minigameSelected.Equals("Stranded"))
+                scene.ToWorld2Minigame1Level4();
+            //else
+            //scene.ToWorld2Minigame2Level4();
         }
     }
 
     public void ToLevel5()
     {
-        if (PlayerPrefs.GetString("Minigame Selected").Equals("Minigame1"))
+        PlayerPrefs.SetInt("MinigameLevel", 5);
+        if (worldSelected == 1)
         {
-            PlayerPrefs.SetInt("World1Minigame1Level", 5);
-            scene.ToWorld1Minigame1Level5();
+            if (minigameSelected.Equals("Stranded"))
+                scene.ToWorld1Minigame1Level5();
+            else
+                scene.ToWorld1Minigame2Level5();
         }
-        else if (PlayerPrefs.GetString("Minigame Selected").Equals("Minigame2"))
+        else
         {
-            PlayerPrefs.SetInt("World1Minigame2Level", 5);
-            scene.ToWorld1Minigame2Level5();
+            if (minigameSelected.Equals("Stranded"))
+                scene.ToWorld2Minigame1Level5();
+            //else
+            //scene.ToWorld2Minigame2Level5();
         }
     }
 
