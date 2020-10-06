@@ -1106,6 +1106,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65dd8b6862416664490ac7e834867538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  studentPerformanceButton: {fileID: 239969264}
+  assignTaskButton: {fileID: 1889602523}
+  checkAssignedTasksButton: {fileID: 1054427505}
+  logOutButton: {fileID: 37080648}
 --- !u!1 &1587302682
 GameObject:
   m_ObjectHideFlags: 0
