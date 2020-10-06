@@ -33,7 +33,7 @@ public class FollowThePath : MonoBehaviour {
     /// </summary>
     private void Start () {
 
-        waypoints = GameControl.GetWayPoints();
+        waypoints = GameControl.instance.GetWayPoints();
         transform.position = waypoints[waypointIndex].transform.position;
         Transform p = transform.Find("Player");
         anim = p.GetComponent<PlayerAnimation>();

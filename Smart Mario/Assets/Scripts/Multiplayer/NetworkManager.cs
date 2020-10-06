@@ -198,7 +198,7 @@ public class NetworkManager : MonoBehaviour
         if (GameObject.Find("GameControl") == null)
             p = Instantiate(player, position, Quaternion.identity);
         else
-            p = Instantiate(playerMinigame, GameControl.GetStartWayPoint().transform.position, Quaternion.identity) as GameObject;
+            p = Instantiate(playerMinigame, GameControl.instance.GetStartWayPoint().transform.position, Quaternion.identity) as GameObject;
         PlayerMovement pm = p.GetComponent<PlayerMovement>();
         Transform t = p.transform.Find("Player Name Canvas");
         Transform t1 = t.transform.Find("Player Name");

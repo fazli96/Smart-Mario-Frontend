@@ -11,9 +11,10 @@ using System;
 /// </summary>
 public class GameControl : MonoBehaviour {
 
+    public static GameControl instance;
     private static GameObject player;
     private static List<GameObject> questionBarrels = new List<GameObject>();
-    private static List<GameObject> waypoints = new List<GameObject>();
+    public List<GameObject> waypoints;
 
     public GameObject dice;
     public GameObject completeLevelPanel, gameOverPanel;
@@ -38,12 +39,19 @@ public class GameControl : MonoBehaviour {
     /// This is for initialization
     /// </summary>
     void Awake () {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
 
         diceSideThrown = 0;
         playerStartWaypoint = 0;
         levelComplete = false;
         questionBarrels.Clear();
-        waypoints.Clear();
 
         completeLevelPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
@@ -53,10 +61,6 @@ public class GameControl : MonoBehaviour {
 
         player = SpawnPlayer(PlayerPrefs.GetString("Selected Player", "Witch"));
         player.GetComponent<FollowThePath>().moveAllowed = false;
-        foreach (GameObject fooObj in GameObject.FindGameObjectsWithTag("WayPoint"))
-        {
-            waypoints.Add(fooObj);
-        }
         if (GameObject.Find("NetworkManager") != null)
         {
             multiplayer = true;
@@ -257,7 +261,7 @@ public class GameControl : MonoBehaviour {
     /// This is to retrieve the position of all tiles on the board as a list of GameObjects
     /// </summary>
     /// <returns>the position of all tiles on the board as a list of GameObjects</returns>
-    public static List<GameObject> GetWayPoints()
+    public List<GameObject> GetWayPoints()
     {
         return waypoints;
     }
@@ -266,7 +270,7 @@ public class GameControl : MonoBehaviour {
     /// This is to retrieve the position of the start tile on the board as a GameObject
     /// </summary>
     /// <returns>the position of start tile on the board as a GameObject</returns>
-    public static GameObject GetStartWayPoint()
+    public GameObject GetStartWayPoint()
     {
         Debug.Log(waypoints[0]);
         return waypoints[0];
