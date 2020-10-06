@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// Boundary that connects to Unity Login Scene UI objects and triggers function calls on events
+/// </summary>
 public class LoginScreen : MonoBehaviour
 {
     //Singleton
@@ -15,7 +17,10 @@ public class LoginScreen : MonoBehaviour
     public InputField passwordInputField;
     public Toggle teacherToggle;
     public Text msg;
-
+    /// <summary>
+    /// Creates a singleton instance if none exist, returns the existing instance if one exists
+    /// </summary>
+    /// <returns></returns>
     public static LoginScreen GetLoginScreen()
     {
         if (instance == null)
@@ -25,7 +30,9 @@ public class LoginScreen : MonoBehaviour
         }
         return instance;
     }
-
+    /// <summary>
+    /// Get instances of SceneController and LoginController once LoginScreen starts
+    /// </summary>
     void Start()
     {
         scene = SceneController.GetSceneController();
@@ -37,11 +44,16 @@ public class LoginScreen : MonoBehaviour
     {
 
     }
-
+    /// <summary>
+    /// Changes scene to Start Menu
+    /// </summary>
     public void ReturnToStartMenu()
     {
         scene.ToStartMenu();
     }
+    /// <summary>
+    /// Takes username and password details and sends them for Teacher/Student validation
+    /// </summary>
     public void CheckInput()
     {
         string username = usernameInputField.text;
@@ -58,13 +70,19 @@ public class LoginScreen : MonoBehaviour
             login.ValidateStudentLogin(username, password, msg);
         }
     }
-
+    /// <summary>
+    /// Displays error message on screen for failed login attempts
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="message"></param>
     public void DisplayMessage(String str, Text message)
     {
         this.msg = message;
         msg.text = str;
     }
-
+    /// <summary>
+    /// Changes scene to Main Menu
+    /// </summary>
     public void LoginSuccess()
     {
         scene = SceneController.GetSceneController();
