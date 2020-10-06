@@ -1961,6 +1961,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pausePanel: {fileID: 759248634}
+  rulesPanel: {fileID: 1264578085}
 --- !u!114 &258315725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39218,11 +39219,11 @@ PrefabInstance:
       objectReference: {fileID: 258315724}
     - target: {fileID: 6173974051570635321, guid: ce3d10f930d81424d85ca8e481f07bf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToWorld1
+      value: ToWorld
       objectReference: {fileID: 0}
     - target: {fileID: 6173974051570635321, guid: ce3d10f930d81424d85ca8e481f07bf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Minigame1_Level1Screen, Assembly-CSharp
+      value: Minigame1_UIManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7265513277892716398, guid: ce3d10f930d81424d85ca8e481f07bf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -39514,11 +39515,11 @@ PrefabInstance:
       objectReference: {fileID: 258315724}
     - target: {fileID: 131758506920247027, guid: 43468931f285ae44f9fe54932b448250, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToWorld1
+      value: ToWorld
       objectReference: {fileID: 0}
     - target: {fileID: 131758506920247027, guid: 43468931f285ae44f9fe54932b448250, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Minigame1_Level1Screen, Assembly-CSharp
+      value: Minigame1_UIManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 477000135791763098, guid: 43468931f285ae44f9fe54932b448250, type: 3}
       propertyPath: m_AnchorMin.y
@@ -41734,6 +41735,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7285327053239051440, guid: 7f18a3d9bf9f4f9458a297cd4f43ed45, type: 3}
   m_PrefabInstance: {fileID: 1264578083}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1264578085 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 578512744937876287, guid: 7f18a3d9bf9f4f9458a297cd4f43ed45, type: 3}
+  m_PrefabInstance: {fileID: 1264578083}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1280202036
 GameObject:
   m_ObjectHideFlags: 0
@@ -41919,11 +41925,11 @@ PrefabInstance:
       objectReference: {fileID: 258315724}
     - target: {fileID: 2691685349653519438, guid: d3bb89e6069e007499e7b0452683030f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ToWorld1
+      value: ToWorld
       objectReference: {fileID: 0}
     - target: {fileID: 2691685349653519438, guid: d3bb89e6069e007499e7b0452683030f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Minigame1_Level1Screen, Assembly-CSharp
+      value: Minigame1_UIManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5542806154717559332, guid: d3bb89e6069e007499e7b0452683030f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

@@ -3,15 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This class contains all methods to manage the movement animation of the player
+/// </summary>
 public class PlayerAnimation : MonoBehaviour
 {
     private Animator anim;
 
     public string[] staticDirections = { "Static N", "Static NW", "Static W", "Static SW", "Static S", "Static SE", "Static E", "Static NE" };
     public string[] runDirections = { "Run N", "Run NW", "Run W", "Run SW", "Run S", "Run SE", "Run E", "Run NE" };
+    public bool isMoving;
 
     int lastDirection = 4;
 
+    /// <summary>
+    /// This is called for initialization
+    /// </summary>
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -32,34 +39,47 @@ public class PlayerAnimation : MonoBehaviour
     {
         string[] directionArray = null;
 
-        if(_direction.magnitude < 0.01)//MARKER Character is static. And his velocity is close to zero
+        // Character is static. And his velocity is close to zero
+        if (_direction.magnitude < 0.01)
         {
             directionArray = staticDirections;
         }
         else
         {
             directionArray = runDirections;
-
-            lastDirection = DirectionToIndex(_direction);//MARKER Get the index of the slcie from the direction vector
+            // Get the index of the slice from the direction vector for isometric movement
+            lastDirection = DirectionToIndex(_direction); 
         }
 
         anim.Play(directionArray[lastDirection]);
     }
 
-    //MARKER Converts a Vector2 direction to an index to a slcie around a circle
-    //CORE this goes in a counter-clock direction
+    /// <summary>
+    /// This class Converts a Vector2 direction to an index to a slice around a circle for isometric movement
+    /// This goes in a counter-clock direction
+    /// </summary>
+    /// <param name="_direction"></param>
+    /// <returns>an index to a slice around a circle</returns>
     private int DirectionToIndex(Vector2 _direction)
     {
-        Vector2 norDir = _direction.normalized;//MARKER return this vector with a magnitude of 1 and get the normalized to an index
+        // return this vector with a magnitude of 1 and get the normalized to an index
+        Vector2 norDir = _direction.normalized;
 
-        float step = 360 / 8;//MARKER 45 one circle and 8 slices//Calcuate how many degrees one slice is 
-        float offset = step / 2;//MARKER 22.5//OFFSET help us easy to calcuate and get the correct index of the string array
+        // 45 one circle and 8 slices
+        //Calculate how many degrees one slice is
+        float step = 360 / 8;
 
-        float angle = Vector2.SignedAngle(Vector2.up, norDir);//MARKER returns the signed angle in degrees between A and B
+        // help us easy to calcuate and get the correct index of the string array
+        float offset = step / 2;
 
-        angle += offset;//Help us easy to calcuate and get the correct index of the string array
+        // returns the signed angle in degrees between A and B
+        float angle = Vector2.SignedAngle(Vector2.up, norDir);
 
-        if(angle < 0)//avoid the negative number 
+        //Help us easy to calcuate and get the correct index of the string array
+        angle += offset;
+
+        //avoid the negative number
+        if (angle < 0) 
         {
             angle += 360;
         }

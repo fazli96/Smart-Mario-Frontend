@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class contains all methods that manages the UI elements in the level selection screen
+/// </summary>
 public class LevelSelectionScreen : MonoBehaviour
 {
     public Text minigameNameText;
@@ -15,8 +18,11 @@ public class LevelSelectionScreen : MonoBehaviour
     private string minigameSelected;
     private string difficulty;
 
-    private SceneController scene;
-    // Start is called before the first frame update
+    private SceneController scene; 
+    /// <summary>
+    /// This method is called before the first frame update
+    /// This method is used for initialization
+    /// </summary>
     void Start()
     {
         scene = SceneController.GetSceneController();
@@ -52,6 +58,10 @@ public class LevelSelectionScreen : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This method is called when 'Level 1' button is pressed.
+    /// It navigates the player to the selected minigame level
+    /// </summary>
     public void ToLevel1()
     {
         PlayerPrefs.SetInt("MinigameLevel", 1);
@@ -71,6 +81,10 @@ public class LevelSelectionScreen : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when 'Level 2' button is pressed.
+    /// It navigates the player to the selected minigame level
+    /// </summary>
     public void ToLevel2()
     {
         PlayerPrefs.SetInt("MinigameLevel", 2);
@@ -90,6 +104,10 @@ public class LevelSelectionScreen : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when 'Level 3' button is pressed.
+    /// It navigates the player to the selected minigame level
+    /// </summary>
     public void ToLevel3()
     {
         PlayerPrefs.SetInt("MinigameLevel", 3);
@@ -109,6 +127,10 @@ public class LevelSelectionScreen : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when 'Level 4' button is pressed.
+    /// It navigates the player to the selected minigame level
+    /// </summary>
     public void ToLevel4()
     {
         PlayerPrefs.SetInt("MinigameLevel", 4);
@@ -128,6 +150,10 @@ public class LevelSelectionScreen : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when 'Level 5' button is pressed.
+    /// It navigates the player to the selected minigame level
+    /// </summary>
     public void ToLevel5()
     {
         PlayerPrefs.SetInt("MinigameLevel", 5);
@@ -147,6 +173,10 @@ public class LevelSelectionScreen : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when 'Back' button is pressed.
+    /// It navigates the player to the difficulty selection page
+    /// </summary>
     public void BackToDifficultySel()
     {
         scene.ToDifficultySelection();

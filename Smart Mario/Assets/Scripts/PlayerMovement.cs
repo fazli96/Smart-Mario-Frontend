@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
-
+/// <summary>
+/// This class is for the player movement on the world map via arrow keys
+/// </summary>
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
@@ -17,6 +20,9 @@ public class PlayerMovement : MonoBehaviour
     Vector3 oldPosition;
     Vector3 currentPosition;
 
+    /// <summary>
+    /// This is used for initialization
+    /// </summary>
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -24,11 +30,28 @@ public class PlayerMovement : MonoBehaviour
         currentPosition = oldPosition;
     }
 
-    private void FixedUpdate()
+    /// <summary>
+    /// Update is called for every frame
+    /// </summary>
+    private void Update()
     {
+        if (isOwner && isLocalPlayer)
+        {
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            if (players.Length > 1)
+            {
+                RoomManager.instance.GetComponent<RoomManager>().ShowStartChallengeButton();
+            }
+            else
+            {
+                RoomManager.instance.GetComponent<RoomManager>().DisableStartChallengeButton();
+            }
+        }
         if (!isLocalPlayer)
         {
             currentPosition = transform.position;
+            Transform p = transform.Find("Player");
+            PlayerAnimation anim = p.GetComponent<PlayerAnimation>();
 
             if (currentPosition != oldPosition)
             {
@@ -41,11 +64,11 @@ public class PlayerMovement : MonoBehaviour
 
                 Vector2 direction = new Vector2(moveH, moveV);
 
-                Transform p = transform.Find("Player");
-                PlayerAnimation anim = p.GetComponent<PlayerAnimation>();
                 anim.SetDirection(direction);
                 oldPosition = currentPosition;
             }
+            else
+                anim.SetDirection(new Vector2(0, 0));
         }
         else
         {
@@ -70,6 +93,9 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This is to avoid player to player collision during multiplayer
+    /// </summary>
     private void OnEnable()
     {
         GameObject[] otherObjects = GameObject.FindGameObjectsWithTag("Player");

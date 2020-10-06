@@ -1799,6 +1799,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1871678850}
+    - target: {fileID: 2691685349653519438, guid: d3bb89e6069e007499e7b0452683030f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Minigame1_UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2691685349653519438, guid: d3bb89e6069e007499e7b0452683030f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToWorld
+      objectReference: {fileID: 0}
     - target: {fileID: 5542806154717559332, guid: d3bb89e6069e007499e7b0452683030f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -5542,6 +5550,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1871678850}
+    - target: {fileID: 131758506920247027, guid: 43468931f285ae44f9fe54932b448250, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Minigame1_UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 131758506920247027, guid: 43468931f285ae44f9fe54932b448250, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToWorld
+      objectReference: {fileID: 0}
     - target: {fileID: 477000135791763098, guid: 43468931f285ae44f9fe54932b448250, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0
@@ -6077,6 +6093,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1871678850}
+    - target: {fileID: 6173974051570635321, guid: ce3d10f930d81424d85ca8e481f07bf5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Minigame1_UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173974051570635321, guid: ce3d10f930d81424d85ca8e481f07bf5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToWorld
+      objectReference: {fileID: 0}
     - target: {fileID: 7265513277892716398, guid: ce3d10f930d81424d85ca8e481f07bf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -9014,7 +9038,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 4
-      m_TileSpriteIndex: 9
+      m_TileSpriteIndex: 22
       m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -41936,8 +41960,8 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: ffe071571dcbb4049a48a72cca7af170, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
   - m_RefCount: 67
@@ -41962,8 +41986,8 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: 6e519d11ee68d0746baede35d77154ba, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: ffe071571dcbb4049a48a72cca7af170, type: 3}
   - m_RefCount: 132
     m_Data: {fileID: 21300000, guid: 15730c75e42a3ae42bcf6c9529519f6a, type: 3}
   - m_RefCount: 1
@@ -42222,6 +42246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pausePanel: {fileID: 1253615614}
+  rulesPanel: {fileID: 0}
 --- !u!114 &1871678851
 MonoBehaviour:
   m_ObjectHideFlags: 0

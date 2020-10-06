@@ -3037,6 +3037,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomNameText: {fileID: 411596329}
+  startChallengeButton: {fileID: 1420167984}
 --- !u!1 &611614162
 GameObject:
   m_ObjectHideFlags: 0

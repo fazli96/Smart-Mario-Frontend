@@ -32,10 +32,13 @@ public class MainMenuScreen : MonoBehaviour
         scene = SceneController.GetSceneController();
         msg.text = "Welcome " + PlayerPrefs.GetString("username") + "!";
     }
-    
-    // Update is called once per frame
-    void Update()
+
+    /// <summary>
+    /// Changes scene to Statistics
+    /// </summary>
+    public void StatisticsScreen()
     {
+        scene.ToStatistics();
     }
     /// <summary>
     /// Changes scene to World Selection
@@ -45,9 +48,12 @@ public class MainMenuScreen : MonoBehaviour
         scene.ToWorldSelection();
     }
 
+    /// <summary>
+    /// Changes scene to Multiplayer Lobby
+    /// </summary>
     public void MultiplayerScreen()
     {
-        
+        scene.ToMultiplayerLobby();
     }
     /// <summary>
     /// Changes scene to Customize Character
