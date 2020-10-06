@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,11 +40,11 @@ public class questionManager : MonoBehaviour
     }
     public void hideQuestion(int choice, bool fade)
     {
-        
+
         if (fade)
         {
-            //qnsOne.GetComponent<questionScript>().Fade();
-            //StartCoroutine(WaitForSecond(1));
+
+            StartCoroutine(WaitForSecond(1));
         }
         if (choice == 1)
         {
@@ -56,6 +57,7 @@ public class questionManager : MonoBehaviour
             panelTwo.SetActive(false);
         }
     }
+
     IEnumerator WaitForSecond(float time)
     {
         yield return new WaitForSeconds(time);

@@ -6,6 +6,7 @@ public class CardControl : MonoBehaviour
 {
     GameObject GameControl;
     SpriteRenderer spriteRenderer;
+    GameObject cardsManager;
     public Sprite[] faces;
     public Sprite back;
     public Sprite open;
@@ -14,7 +15,7 @@ public class CardControl : MonoBehaviour
 
     public void OnMouseDown()       //detecting mouseclick
     {
-        if (matched == false && !GameControl.GetComponent<Game2Control>().faceindexes.Contains(faceIndex)) //not matched and not flipped up
+        if (matched == false && !cardsManager.GetComponent<CardsManager>().faceindexes.Contains(faceIndex)) //not matched and not flipped up
         {
             if (spriteRenderer.sprite == back)    //check if its back of the card
             {
@@ -47,6 +48,7 @@ public class CardControl : MonoBehaviour
     {
 
         GameControl = GameObject.Find("GameManager");
+        cardsManager = GameObject.Find("CardsManager");
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 }

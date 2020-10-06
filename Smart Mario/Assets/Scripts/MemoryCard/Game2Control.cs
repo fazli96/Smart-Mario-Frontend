@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -9,43 +10,17 @@ public class Game2Control : MonoBehaviour
     GameObject questionManager;
     GameObject cardManager;
     GameObject canvas;
-    public GameObject token;
+    int[] visibleFaces = { -1, -2 };
     public GameObject finishText;
     public GameObject overlay;
-    public List<int> faceindexes = new List<int> { 0, 1, 2, 3, 0, 1, 2, 3 };
-    public List<GameObject> cards = new List<GameObject>();
-    public static System.Random rnd = new System.Random();
-    public int shuffleNum = 0;
-    int[] visibleFaces = { -1, -2 };
-    public int pairs = 4;
+    
     public int scoreValue = 0;
 
     private void Start()
     {
         finishText.SetActive(false);
         overlay.SetActive(false);
-        int originalLength = faceindexes.Count;
-        float yPosition = 6f;
-        float xPosition = -14.5f;
-        for (int i= 0; i< 8; i++)
-        {
-            shuffleNum = rnd.Next(0, (faceindexes.Count));      //randomising faceindex
-            var temp = Instantiate(token, new Vector3(          //instantiating prefab
-                xPosition, yPosition, 0),
-                Quaternion.identity);
-            temp.GetComponent<CardControl>().faceIndex = faceindexes[shuffleNum];   //setting faceindex of the prefab 
-            cardManager.GetComponent<CardsManager>().AddObject(temp);
-            faceindexes.Remove(faceindexes[shuffleNum]);        //removing this faceindex from available pool
-            xPosition = xPosition + 5;                          //changing position of next instantiations
-            if (i == (originalLength/2 -1))
-            {
-                yPosition = 0.75f;
-                xPosition = -14.5f;
-            }
-
-        }
-        //token.GetComponent<NewBehaviourScript>().faceIndex = faceindexes[0];
-        faceindexes.Clear();
+        
     }
     public bool TwoCards()
     {
@@ -82,7 +57,7 @@ public class Game2Control : MonoBehaviour
     }
     public void ShowMatch(int index)
     {
-        faceindexes.Add(index);
+        cardManager.GetComponent<CardsManager>().faceindexes.Add(index);
         cardManager.GetComponent<CardsManager>().Open(index);
         canvas.GetComponent<CanvasControl>().ShowMatch();
         questionManager.GetComponent<questionManager>().hideQuestion(1, true );
@@ -95,7 +70,7 @@ public class Game2Control : MonoBehaviour
         {
             visibleFaces[0] = -1;
             visibleFaces[1] = -2;
-            pairs--;
+            int pairs = (cardManager.GetComponent<CardsManager>().pairs) - 1;
             print(pairs);
             if (pairs == 0)
             {
