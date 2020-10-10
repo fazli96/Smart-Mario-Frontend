@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// This class is for what happens when player rolls the dice
+/// </summary>
 public class Dice : MonoBehaviour
 {
 
@@ -8,23 +11,31 @@ public class Dice : MonoBehaviour
     private SpriteRenderer rend;
     private bool coroutineAllowed = true;
 
-
-    // Use this for initialization
+    /// <summary>
+    /// This is for initialization
+    /// </summary>
     private void Awake()
     {
         rend = GetComponent<SpriteRenderer>();
         diceSides = Resources.LoadAll<Sprite>("DiceSides/");
         rend.sprite = diceSides[5];
     }
-
+    /// <summary>
+    /// Listens for mouse click down on the dice
+    /// </summary>
     private void OnMouseDown()
     {
         if (!GameControl.levelComplete && coroutineAllowed 
-            && !GameControl.getMoveAllowed() && !GameControl.qnEncountered)
+            && !GameControl.GetMoveAllowed() && !GameControl.qnEncountered
+            && GameControl.currentTurn)
             StartCoroutine("RollTheDice");
             //GetComponent<AudioSource>().Play();
     }
-
+    /// <summary>
+    /// A coroutine for rolling the dice. 
+    /// Waits for the dice to finish rolling before the player moves
+    /// </summary>
+    /// <returns>wait for seconds</returns>
     private IEnumerator RollTheDice()
     {
         coroutineAllowed = false;

@@ -6518,6 +6518,10 @@ PrefabInstance:
       propertyPath: socket
       value: 
       objectReference: {fileID: 860891942}
+    - target: {fileID: 1955077931185112346, guid: f4774c658a39bb342974ae68b9b2e4f1, type: 3}
+      propertyPath: playerMinigame
+      value: 
+      objectReference: {fileID: 7972777223144208055, guid: 1775b9ae5f8be084396d091f30b486c0, type: 3}
     - target: {fileID: 2598027623668257118, guid: f4774c658a39bb342974ae68b9b2e4f1, type: 3}
       propertyPath: m_Name
       value: NetworkManager

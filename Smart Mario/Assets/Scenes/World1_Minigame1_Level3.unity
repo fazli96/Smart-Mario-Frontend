@@ -5226,6 +5226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pausePanel: {fileID: 2115179810}
+  rulesPanel: {fileID: 0}
 --- !u!114 &1192179835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42039,6 +42040,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1192179834}
+    - target: {fileID: 2691685349653519438, guid: d3bb89e6069e007499e7b0452683030f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Minigame1_UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2691685349653519438, guid: d3bb89e6069e007499e7b0452683030f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToWorld
+      objectReference: {fileID: 0}
     - target: {fileID: 5542806154717559332, guid: d3bb89e6069e007499e7b0452683030f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -44286,6 +44295,107 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89eb6cfc89eb01748bcddda1a7a2b5e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waypoints:
+  - {fileID: 491656817}
+  - {fileID: 230065442}
+  - {fileID: 1273406168}
+  - {fileID: 222465771}
+  - {fileID: 556963535}
+  - {fileID: 1088657296}
+  - {fileID: 1102231699}
+  - {fileID: 1431335228}
+  - {fileID: 1894267491}
+  - {fileID: 390780518}
+  - {fileID: 1331697817}
+  - {fileID: 2060584483}
+  - {fileID: 98072391}
+  - {fileID: 1123381080}
+  - {fileID: 314410828}
+  - {fileID: 1767256384}
+  - {fileID: 375312192}
+  - {fileID: 279649802}
+  - {fileID: 1205427541}
+  - {fileID: 524348034}
+  - {fileID: 2117382294}
+  - {fileID: 1918582241}
+  - {fileID: 1113608821}
+  - {fileID: 439239916}
+  - {fileID: 1656127379}
+  - {fileID: 2007502310}
+  - {fileID: 1818823253}
+  - {fileID: 1280331030}
+  - {fileID: 160541933}
+  - {fileID: 1845134560}
+  - {fileID: 370120078}
+  - {fileID: 1282536540}
+  - {fileID: 1663838803}
+  - {fileID: 201834466}
+  - {fileID: 796794405}
+  - {fileID: 1847922126}
+  - {fileID: 1651423425}
+  - {fileID: 1255876059}
+  - {fileID: 1244056482}
+  - {fileID: 725305521}
+  - {fileID: 2115237740}
+  - {fileID: 1935257097}
+  - {fileID: 1719910259}
+  - {fileID: 617106707}
+  - {fileID: 377855779}
+  - {fileID: 854423478}
+  - {fileID: 355970646}
+  - {fileID: 1768360267}
+  - {fileID: 1981775604}
+  - {fileID: 1314189981}
+  - {fileID: 149645226}
+  - {fileID: 532993326}
+  - {fileID: 19127064}
+  - {fileID: 22599650}
+  - {fileID: 1758447393}
+  - {fileID: 1743115980}
+  - {fileID: 1614646283}
+  - {fileID: 1055247178}
+  - {fileID: 1742572243}
+  - {fileID: 1005940990}
+  - {fileID: 1356733501}
+  - {fileID: 644219699}
+  - {fileID: 1365013100}
+  - {fileID: 34822845}
+  - {fileID: 1747186318}
+  - {fileID: 1760972077}
+  - {fileID: 1146702238}
+  - {fileID: 2119089959}
+  - {fileID: 2036780039}
+  - {fileID: 1918031333}
+  - {fileID: 19175507}
+  - {fileID: 1602517739}
+  - {fileID: 1202605960}
+  - {fileID: 791836909}
+  - {fileID: 743330838}
+  - {fileID: 361515725}
+  - {fileID: 1264294525}
+  - {fileID: 1313544678}
+  - {fileID: 1629709344}
+  - {fileID: 415685852}
+  - {fileID: 2130020279}
+  - {fileID: 1069792772}
+  - {fileID: 269258027}
+  - {fileID: 90059028}
+  - {fileID: 353052374}
+  - {fileID: 1341655671}
+  - {fileID: 693577970}
+  - {fileID: 1313989456}
+  - {fileID: 94756904}
+  - {fileID: 752637158}
+  - {fileID: 957610402}
+  - {fileID: 1960812997}
+  - {fileID: 222216073}
+  - {fileID: 1831137972}
+  - {fileID: 557115775}
+  - {fileID: 1957448940}
+  - {fileID: 1958932536}
+  - {fileID: 439382638}
+  - {fileID: 2115851835}
+  - {fileID: 922866670}
   dice: {fileID: 1922819160}
   completeLevelPanel: {fileID: 2020078466}
   gameOverPanel: {fileID: 1602314601}
@@ -44378,6 +44488,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1192179834}
+    - target: {fileID: 131758506920247027, guid: 43468931f285ae44f9fe54932b448250, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Minigame1_UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 131758506920247027, guid: 43468931f285ae44f9fe54932b448250, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToWorld
+      objectReference: {fileID: 0}
     - target: {fileID: 477000135791763098, guid: 43468931f285ae44f9fe54932b448250, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0
@@ -44836,6 +44954,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1192179834}
+    - target: {fileID: 6173974051570635321, guid: ce3d10f930d81424d85ca8e481f07bf5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Minigame1_UIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6173974051570635321, guid: ce3d10f930d81424d85ca8e481f07bf5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToWorld
+      objectReference: {fileID: 0}
     - target: {fileID: 7265513277892716398, guid: ce3d10f930d81424d85ca8e481f07bf5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

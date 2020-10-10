@@ -7,6 +7,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using WebSocketSharp;
 
+/// <summary>
+/// This class contains all method that manages the user in the Multiplayer Lobby page
+/// </summary>
 public class LobbyManager : MonoBehaviour
 {
 
@@ -33,6 +36,9 @@ public class LobbyManager : MonoBehaviour
     public GameObject errorPanel;
     private static List<RoomJSON> rooms;
 
+    /// <summary>
+    /// This method is called for initialization
+    /// </summary>
     void Awake()
     {
         if (instance == null)
@@ -43,11 +49,6 @@ public class LobbyManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
         scene = SceneController.GetSceneController();
         errorPanel.SetActive(false);
         roomSelectedDropdown.options.Clear();
@@ -55,23 +56,28 @@ public class LobbyManager : MonoBehaviour
         joinButton.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
-
+    /// <summary>
+    /// This method is called when 'Back' button is called
+    /// It navigates the player back to the main menu
+    /// </summary>
     public void BackToMainMenu()
     {
         scene.ToMainMenu();
     }
 
+    /// <summary>
+    /// This method is called when the challenge room is full
+    /// </summary>
     public void RoomIsFull()
     {
         errorText.text = "Room is full";
         errorPanel.SetActive(true);
     }
 
+    /// <summary>
+    /// This method is called when a player has created a multiplayer challenge room 
+    /// </summary>
     public void CreateRoom()
     {
         string errorMsg = ValidateFields(roomNameInput.text, roomCapacityInput.text, playerNameInputCreate.text);
@@ -121,6 +127,9 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the player has joined a challenge room
+    /// </summary>
     public void JoinRoom()
     {
         int index = roomSelectedDropdown.value;
@@ -133,6 +142,13 @@ public class LobbyManager : MonoBehaviour
         NetworkManager.instance.GetComponent<NetworkManager>().JoinRoom();
     }
 
+    /// <summary>
+    /// This method is called to validate the fields in the create challenge form
+    /// </summary>
+    /// <param name="roomName"></param>
+    /// <param name="roomCapacity"></param>
+    /// <param name="playerName"></param>
+    /// <returns></returns>
     private string ValidateFields(string roomName, string roomCapacity, string playerName)
     {
         if (roomName.Equals("") || roomCapacity.Equals("") || playerName.Equals(""))
@@ -152,11 +168,17 @@ public class LobbyManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This method is called to retrieve available rooms from the game server
+    /// </summary>
     public void GetRooms()
     {
         NetworkManager.instance.GetComponent<NetworkManager>().CommandGetRooms();
     }
 
+    /// <summary>
+    /// This method is called when different challenge room is selected from the dropdown bar
+    /// </summary>
     public void OnRoomSelectedValueChange()
     {
         int index = roomSelectedDropdown.value;
@@ -168,6 +190,10 @@ public class LobbyManager : MonoBehaviour
         difficultySelectedText.text = "Difficulty Selected: " + rooms[index].difficultySelected;
     }
 
+    /// <summary>
+    /// This method is called to display available rooms in the form of a dropdown bar
+    /// </summary>
+    /// <param name="data"></param>
     public void AddRooms(JObject data)
     {
         JArray roomJArray = data["rooms"].Value<JArray>();
@@ -203,8 +229,10 @@ public class LobbyManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// This class is to store the room retrieved from the server
+    /// </summary>
     [Serializable]
-
     public class RoomJSON
     {
         public string roomID;
@@ -215,6 +243,11 @@ public class LobbyManager : MonoBehaviour
         public string minigameSelected;
         public string difficultySelected;
 
+        /// <summary>
+        /// This method is to instantiate a class based on a jsonString
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public static RoomJSON CreateFromJSON(string data)
         {
             return JsonUtility.FromJson<RoomJSON>(data);

@@ -1,72 +1,67 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
+/// <summary>
+/// This class checks the logic of minigame 2 as well as keeping track of the states in the game
+/// </summary>
 public class Game2Control : MonoBehaviour
 {
     GameObject questionManager;
     GameObject cardManager;
     GameObject canvas;
-    public GameObject token;
+    int[] visibleFaces = { -1, -2 };
     public GameObject finishText;
     public GameObject overlay;
-    public List<int> faceindexes = new List<int> { 0, 1, 2, 3, 0, 1, 2, 3 };
-    public List<GameObject> cards = new List<GameObject>();
-    public static System.Random rnd = new System.Random();
-    public int shuffleNum = 0;
-    int[] visibleFaces = { -1, -2 };
-    public int pairs = 4;
+    
     public int scoreValue = 0;
-
+    /// <summary>
+    /// Called at the start of script initialisation
+    /// </summary>
     private void Start()
     {
         finishText.SetActive(false);
         overlay.SetActive(false);
-        int originalLength = faceindexes.Count;
-        float yPosition = 6f;
-        float xPosition = -14.5f;
-        for (int i= 0; i< 8; i++)
-        {
-            shuffleNum = rnd.Next(0, (faceindexes.Count));      //randomising faceindex
-            var temp = Instantiate(token, new Vector3(          //instantiating prefab
-                xPosition, yPosition, 0),
-                Quaternion.identity);
-            temp.GetComponent<CardControl>().faceIndex = faceindexes[shuffleNum];   //setting faceindex of the prefab 
-            cardManager.GetComponent<CardsManager>().AddObject(temp);
-            faceindexes.Remove(faceindexes[shuffleNum]);        //removing this faceindex from available pool
-            xPosition = xPosition + 5;                          //changing position of next instantiations
-            if (i == (originalLength/2 -1))
-            {
-                yPosition = 0.75f;
-                xPosition = -14.5f;
-            }
-
-        }
-        //token.GetComponent<NewBehaviourScript>().faceIndex = faceindexes[0];
-        faceindexes.Clear();
+        
     }
+    /// <summary>
+    /// Checks the state of the game whether two cards have been flipped up
+    /// </summary>
+    /// <returns>Boolean on whether there are two flipped cards</returns>
     public bool TwoCards()
     {
     
         return (visibleFaces[0] >= 0 && visibleFaces[1] >= 0);
 
     }
-    public void AddVisibleFace(int index)
+    /// <summary>
+    /// Adds a face to a list of already visible faces
+    /// Called when a card has been flipped up
+    /// Subsequently shows the questions corresponding to the card
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="qOrA"></param>
+    public void AddVisibleFace(int index, int qOrA)
     {
         if (visibleFaces[0]== -1)
         {
             visibleFaces[0] = index;
-            questionManager.GetComponent<questionManager>().showQuestion(1, index);
+            questionManager.GetComponent<questionManager>().showQuestion(1, index, qOrA);
         }
         else if (visibleFaces[1] == -2)
         {
             visibleFaces[1] = index;
-            questionManager.GetComponent<questionManager>().showQuestion(2, index);
+            questionManager.GetComponent<questionManager>().showQuestion(2, index, qOrA);
         }
     }
-
+    /// <summary>
+    /// Removes a face from the list of visible faces
+    /// Also hides the corresponding question of the hidden card
+    /// </summary>
+    /// <param name="index"></param>
     public void RemoveVisibleFace(int index)
     {
         if (visibleFaces[0] == index)
@@ -80,22 +75,29 @@ public class Game2Control : MonoBehaviour
             questionManager.GetComponent<questionManager>().hideQuestion(2, false);
         }
     }
+    /// <summary>
+    /// Called when there is match between two cards
+    /// </summary>
+    /// <param name="index"></param>
     public void ShowMatch(int index)
     {
-        faceindexes.Add(index);
+        cardManager.GetComponent<CardsManager>().faceindexes.Add(index);
         cardManager.GetComponent<CardsManager>().Open(index);
         canvas.GetComponent<CanvasControl>().ShowMatch();
         questionManager.GetComponent<questionManager>().hideQuestion(1, true );
         questionManager.GetComponent<questionManager>().hideQuestion(2, true );
     }
-   
+   /// <summary>
+   /// Checks whether two visible faces are matching or not
+   /// </summary>
+   /// <returns>Boolean on match of two cards</returns>
     public bool CheckMatch()
     {
         if (visibleFaces[0]== visibleFaces[1])
         {
             visibleFaces[0] = -1;
             visibleFaces[1] = -2;
-            pairs--;
+            int pairs = (cardManager.GetComponent<CardsManager>().pairs) - 1;
             print(pairs);
             if (pairs == 0)
             {
@@ -111,6 +113,9 @@ public class Game2Control : MonoBehaviour
             return false;
         }
     }
+    /// <summary>
+    /// Called before the first frame update
+    /// </summary>
     private void Awake()
     {
         questionManager = GameObject.Find("QuestionManager");

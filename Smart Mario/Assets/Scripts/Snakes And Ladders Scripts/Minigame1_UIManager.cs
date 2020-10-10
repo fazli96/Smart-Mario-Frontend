@@ -4,49 +4,74 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class manages the UI elements present when the player is in Minigame Stranded.
+/// </summary>
 public class Minigame1_UIManager : MonoBehaviour
 {
 
     public GameObject pausePanel;
+    public GameObject rulesPanel;
     private bool isPaused;
     private SceneController scene;
-    
-    // Start is called before the first frame update
+
+    /// <summary>
+    /// This is called before the first frame update
+    /// </summary>
     void Start()
     {
         scene = SceneController.GetSceneController();
         pausePanel.SetActive(false);
         isPaused = false;
+        if (GameObject.Find("NetworkManager") != null)
+            rulesPanel.SetActive(false);
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update is called once per frame
+    /// </summary>
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (GameObject.Find("NetworkManager") == null)
         {
-            if (!isPaused)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                isPaused = true;
-                pausePanel.SetActive(true);
-            }
-            else
-            {
-                isPaused = false;
-                pausePanel.SetActive(false);
+                if (!isPaused)
+                {
+                    isPaused = true;
+                    pausePanel.SetActive(true);
+                }
+                else
+                {
+                    isPaused = false;
+                    pausePanel.SetActive(false);
+                }
             }
         }
     }
 
+    /// <summary>
+    /// This method is called when the 'Back To World'button is pressed
+    /// </summary>
     public void ToWorld()
     {
-        scene.PlayWorld1();
+        if (PlayerPrefs.GetInt("World", 1) == 1)
+            scene.PlayWorld1();
+        else
+            scene.PlayWorld2();
     }
 
+    /// <summary>
+    /// This method is called when the 'Level Selection'button is pressed
+    /// </summary>
     public void ToLevelSelection()
     {
         scene.ToLevelSelection();
     }
 
+    /// <summary>
+    /// This method is called when the 'Restart Level'button is pressed
+    /// </summary>
     public void RestartLevel()
     {
         switch (PlayerPrefs.GetInt("World1Minigame1Level", 1))
@@ -71,6 +96,9 @@ public class Minigame1_UIManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the 'Next Level'button is pressed
+    /// </summary>
     public void NextLevel()
     {
         switch (PlayerPrefs.GetInt("World1Minigame1Level", 1))

@@ -16,7 +16,17 @@ public class NetworkManager : MonoBehaviour
     private SceneController scene;
     public SocketIOComponent socket;
     public GameObject player;
-    
+    public GameObject playerMinigame;
+
+    private static string roomName;
+    private static int roomCapacity;
+    public static string playerName;
+    private static string roomID;
+    private static string minigameSelected;
+    private static string difficultySelected;
+    public static bool isOwner;
+    public static UserJSON userJSON;
+
     void Awake()
     {
         if (instance == null)
@@ -45,6 +55,8 @@ public class NetworkManager : MonoBehaviour
         socket.On("owner disconnected", OnOwnerDisconnected);
         socket.On("get rooms", OnGetRooms);
         socket.On("room is full", OnRoomIsFull);
+        socket.On("minigame start", OnMinigameStart);
+        socket.On("next player", OnNextPlayer);
     }
 
     // Update is called once per frame
@@ -59,22 +71,25 @@ public class NetworkManager : MonoBehaviour
     }
     public void JoinRoom()
     {
-        StartCoroutine(ConnectToServer());
+        StartCoroutine(ConnectToRoom());
+    }
+
+    public void StartChallenge()
+    {
+        scene.ToWorld1Minigame1Level1();
     }
 
     #region Commands
-    IEnumerator ConnectToServer()
+    IEnumerator ConnectToRoom()
     {
         scene.ToMultiplayerRoom();
 
-        string roomName = PlayerPrefs.GetString("roomName", "room1");
-        int roomCapacity = PlayerPrefs.GetInt("roomCapacity", 4);
-        string playerName = PlayerPrefs.GetString("username", "fazli");
-        string roomID = PlayerPrefs.GetString("roomID", "create");
-        string minigameSelected = PlayerPrefs.GetString("Minigame Selected", "World 2 Stranded");
-        string difficultySelected = PlayerPrefs.GetString("Difficulty Selected", "Easy");
-
-        bool isOwner;
+        roomName = PlayerPrefs.GetString("roomName", "room1");
+        roomCapacity = PlayerPrefs.GetInt("roomCapacity", 4);
+        playerName = PlayerPrefs.GetString("username", "fazli");
+        roomID = PlayerPrefs.GetString("roomID", "create");
+        minigameSelected = PlayerPrefs.GetString("Minigame Selected", "World 2 Stranded");
+        difficultySelected = PlayerPrefs.GetString("Difficulty Selected", "Easy");
 
         if (roomID.Equals("create"))
         {
@@ -91,6 +106,7 @@ public class NetworkManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         List<SpawnPoint> playerSpawnPoints = GameObject.Find("RoomManager").GetComponent<PlayerSpawner>().playerSpawnPoints;
+        userJSON = new UserJSON(playerName, roomID, isOwner);
         PlayerJSON playerJSON = new PlayerJSON(playerName, roomID, isOwner, roomName, roomCapacity, minigameSelected, difficultySelected, playerSpawnPoints);
         string data = JsonUtility.ToJson(playerJSON);
         Debug.Log(data);
@@ -116,31 +132,82 @@ public class NetworkManager : MonoBehaviour
         socket.Emit("disconnect");
     }
 
+    public void CommandMinigameStart(List<int> questionBarrelLocations)
+    {
+        string data = JsonUtility.ToJson(new QuestionBarrelJSON(questionBarrelLocations));
+        socket.Emit("minigame start", new JSONObject(data));
+        string data2 = JsonUtility.ToJson(userJSON);
+        socket.Emit("minigame connect", new JSONObject(data2));
+    }
+
+    public void CommandEndTurn()
+    {
+        string data = JsonUtility.ToJson(userJSON);
+        socket.Emit("end turn", new JSONObject(data));
+    }
+
     #endregion
 
     #region Listening
 
+    void OnNextPlayer(SocketIOEvent socketIOEvent)
+    {
+        print("next player");
+        string data = socketIOEvent.data.ToString();
+        UserJSON nextPlayerJSON = UserJSON.CreateFromJSON(data);
+        if (userJSON.name.Equals(nextPlayerJSON.name))
+        {
+            GameControl.currentTurn = true;
+            GameObject.Find("GameControl").GetComponent<GameControl>().ShowDice();
+        }
+    }
+    void OnMinigameStart(SocketIOEvent socketIOEvent)
+    {
+        print("minigame start");
+        string data = socketIOEvent.data.ToString();
+        QuestionBarrelJSON questionBarrelJSON = QuestionBarrelJSON.CreateFromJSON(data);
+        StartCoroutine(LoadMinigame(questionBarrelJSON.questionBarrelLocations));
+    }
+
+    IEnumerator LoadMinigame(List<int> questionBarrelLocations)
+    {
+        scene.ToWorld1Minigame1Level1();
+
+        while (GameObject.Find("GameControl") == null)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        GameControl gameControl = GameObject.Find("GameControl").GetComponent<GameControl>();
+        gameControl.SpawnQuestionBarrelsMultiplayer(questionBarrelLocations);
+        string data = JsonUtility.ToJson(userJSON);
+        socket.Emit("minigame connect", new JSONObject(data));
+    }
+    
     void OnOtherPlayerConnected(SocketIOEvent socketIOEvent)
     {
         print("Someone else joined");
         string data = socketIOEvent.data.ToString();
-        UserJSON userJSON = UserJSON.CreateFromJSON(data);
-        Vector3 position = new Vector3(userJSON.position[0], userJSON.position[1], userJSON.position[2]);
-        GameObject o = GameObject.Find(userJSON.name) as GameObject;
+        UserJSON otherUserJSON = UserJSON.CreateFromJSON(data);
+        Vector3 position = new Vector3(otherUserJSON.position[0], otherUserJSON.position[1], otherUserJSON.position[2]);
+        GameObject o = GameObject.Find(otherUserJSON.name) as GameObject;
         if (o != null)
         {
             return;
         }
-        GameObject p = Instantiate(player, position, Quaternion.identity) as GameObject;
+        GameObject p;
+        if (GameObject.Find("GameControl") == null)
+            p = Instantiate(player, position, Quaternion.identity);
+        else
+            p = Instantiate(playerMinigame, GameControl.instance.GetStartWayPoint().transform.position, Quaternion.identity) as GameObject;
         PlayerMovement pm = p.GetComponent<PlayerMovement>();
         Transform t = p.transform.Find("Player Name Canvas");
         Transform t1 = t.transform.Find("Player Name");
         Text playerName = t1.GetComponent<Text>();
-        playerName.text = userJSON.name;
+        playerName.text = otherUserJSON.name;
         pm.isLocalPlayer = false;
-        pm.isOwner = userJSON.isOwner;
+        pm.isOwner = otherUserJSON.isOwner;
         pm.multiplayer = true;
-        p.name = userJSON.name;
+        p.name = otherUserJSON.name;
     }
 
     void OnPlay(SocketIOEvent socketIOEvent)
@@ -195,6 +262,8 @@ public class NetworkManager : MonoBehaviour
         GameObject p = GameObject.Find(newOwnerJSON.name);
         PlayerMovement pm = p.GetComponent<PlayerMovement>();
         pm.isOwner = true;
+        if (pm.isLocalPlayer)
+            isOwner = true;
     }
 
     void OnGetRooms(SocketIOEvent socketIOEvent)
@@ -304,7 +373,6 @@ public class NetworkManager : MonoBehaviour
     }
 
     [Serializable]
-
     public class UserJSON // notify that another player joins the game 
     {
         public string name;
@@ -312,9 +380,36 @@ public class NetworkManager : MonoBehaviour
         public bool isOwner;
         public float[] position;
 
+        public UserJSON(string _name, string _roomID, bool _isOwner)
+        {
+            name = _name;
+            roomID = _roomID;
+            isOwner = _isOwner;
+            position = new float[] { 0, 0, 0 };
+        }
         public static UserJSON CreateFromJSON(string data)
         {
             return JsonUtility.FromJson<UserJSON>(data);
+        }
+    }
+
+    [Serializable]
+    public class QuestionBarrelJSON
+    {
+        public List<int> questionBarrelLocations;
+
+        public QuestionBarrelJSON(List<int> _questionBarrelLocations)
+        {
+            questionBarrelLocations = new List<int>();
+            for (int i = 0;i<_questionBarrelLocations.Count;i++)
+            {
+                questionBarrelLocations.Add(_questionBarrelLocations[i]);
+            }
+        }
+        
+        public static QuestionBarrelJSON CreateFromJSON(string data)
+        {
+            return JsonUtility.FromJson<QuestionBarrelJSON>(data);
         }
     }
 

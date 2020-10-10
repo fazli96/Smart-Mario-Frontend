@@ -9,6 +9,9 @@ using UnityEngine.Networking;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class is used for retrieving and managing the questions given to the player
+/// </summary>
 public class QuestionController : MonoBehaviour  
 {
     public Text timer;
@@ -18,8 +21,8 @@ public class QuestionController : MonoBehaviour
     public Text option3;
     public Text option4;
     public GameObject questionPanel;
-    public GameObject wrongPanel;
-    public GameObject correctPanel;
+    public GameObject wrongPanel; 
+    public GameObject correctPanel; 
     public GameObject tooLatePanel;
     private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/questions/mcqtheory"; 
 
@@ -32,7 +35,9 @@ public class QuestionController : MonoBehaviour
     private static int timeLimit = 20;
     private static List<Question> questionList = new List<Question>();
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// This is called before the first frame update
+    /// </summary>
     void Awake()
     {
         questionPanel.SetActive(false);
@@ -45,6 +50,10 @@ public class QuestionController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This is called to retrieve the questions based on the difficulty of the minigame
+    /// </summary>
+    /// <param name="difficulty"></param>
     public void Initialize(string difficulty)
     {
         switch (difficulty)
@@ -65,6 +74,11 @@ public class QuestionController : MonoBehaviour
         StartCoroutine(apiCall.AllQuestionsGetRequest(url));
     }
 
+    /// <summary>
+    /// This is called when the data has been retrieved from the database
+    /// Questions retrieved from the database is stored as a list in this class 
+    /// </summary>
+    /// <param name="result"></param>
     public void QuestionsRetrieved(string result)
     {
         var data = (JObject)JsonConvert.DeserializeObject(result);
@@ -81,6 +95,10 @@ public class QuestionController : MonoBehaviour
         ShuffleList.Shuffle(questionList);
     }
 
+    /// <summary>
+    /// This is called to set the question to be displayed on the screen
+    /// This is called only when the player is answering a question
+    /// </summary>
     public void SetQuestion()
     {
         timer.text = "Time Left: "+timeLimit + " seconds";
@@ -93,6 +111,10 @@ public class QuestionController : MonoBehaviour
         questionList.RemoveAt(0);
     }
 
+    /// <summary>
+    /// This is called when the player is prompted a question
+    /// A timer is set as a countdown to the question
+    /// </summary>
     public void AskQuestion()
     {
         SetQuestion();
@@ -100,6 +122,10 @@ public class QuestionController : MonoBehaviour
         Debug.Log("After countdown");
     }
 
+    /// <summary>
+    /// This is a coroutine to count down the timer for a question
+    /// </summary>
+    /// <returns>Wait for Seconds</returns>
     private IEnumerator Countdown()
     {
         questionPanel.SetActive(true);
@@ -115,6 +141,11 @@ public class QuestionController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This is called when the player has answered a question or
+    /// the player ran out of time
+    /// </summary>
+    /// <param name="qnStatus"></param>
     public void EndResult(QuestionStatus qnStatus)
     {
         this.qnStatus = qnStatus;
@@ -127,6 +158,11 @@ public class QuestionController : MonoBehaviour
         coroutine = StartCoroutine(QnResults());
     }
 
+    /// <summary>
+    /// This is called to display the question results screen to the player for 2 seconds
+    /// before the question results dissapear
+    /// </summary>
+    /// <returns>Wait for Seconds</returns>
     private IEnumerator QnResults()
     {
         if (qnStatus == QuestionStatus.CORRECT)
@@ -151,6 +187,10 @@ public class QuestionController : MonoBehaviour
         GameControl.qnEncountered = false;
     }
 
+    /// <summary>
+    /// This is called when the first option in the question panel is pressed
+    /// This is to check if the option chosen by the player is correct or wrong
+    /// </summary>
     public void OnClickOption1()
     {
         if (questionList[0].answer == "1")
@@ -163,6 +203,10 @@ public class QuestionController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This is called when the second option in the question panel is pressed
+    /// This is to check if the option chosen by the player is correct or wrong
+    /// </summary>
     public void OnClickOption2()
     {
         if (questionList[0].answer == "2")
@@ -175,6 +219,10 @@ public class QuestionController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This is called when the third option in the question panel is pressed
+    /// This is to check if the option chosen by the player is correct or wrong
+    /// </summary>
     public void OnClickOption3()
     {
         if (questionList[0].answer == "3")
@@ -188,6 +236,10 @@ public class QuestionController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This is called when the fourth option in the question panel is pressed
+    /// This is to check if the option chosen by the player is correct or wrong
+    /// </summary>
     public void OnClickOption4()
     {
         if (questionList[0].answer == "4")
@@ -200,6 +252,10 @@ public class QuestionController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This is for easier indication on whether the question results is correct or wrong
+    /// or that the player has ran out of time
+    /// </summary>
     [System.Serializable]
     public enum QuestionStatus
     {
@@ -207,61 +263,4 @@ public class QuestionController : MonoBehaviour
         WRONG,
         TOOLATE
     }
-
-    //Datastructure for storeing the quetions data
-    /*[System.Serializable]
-    public class Question
-    {
-        public string questionTitle;         //question text
-        public string questionType;          //type
-        //public Sprite questionImage;        //image for Image Type
-        public List<string> options;        //options to select
-        public string correctAns;           //correct option
-
-        public Question(string questionTitle, string questionType, List<string> options, string correctAns)
-        {
-            this.questionTitle = questionTitle;
-            this.questionType = questionType;
-            this.options = options;
-            this.correctAns = correctAns;
-        }
-    }*/
-
-    /*public IEnumerator Get(string url)
-    {
-        using (UnityWebRequest www = UnityWebRequest.Get(url))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.isNetworkError)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                if (www.isDone)
-                {
-                    // handle the result
-                    var result = System.Text.Encoding.UTF8.GetString(www.downloadHandler.data);
-                    var data = (JObject)JsonConvert.DeserializeObject(result);
-                    JArray data2 = data["allQuestions"].Value<JArray>();
-                    foreach (JObject questionObject in data2)
-                    {
-                        Debug.Log("question: " + questionObject);
-                        Question question1 = questionObject.ToObject<Question>();
-                        Debug.Log(question1.option1);
-                        questionList.Add(question1);  
-                    }
-                    Debug.Log("DBResult: "+result);
-                    Debug.Log("allQuestions" + data2);
-                }
-                else
-                {
-                    //handle the problem
-                    Debug.Log("Error! data couldn't get.");
-                }
-            }
-        }
-
-    }*/
 }

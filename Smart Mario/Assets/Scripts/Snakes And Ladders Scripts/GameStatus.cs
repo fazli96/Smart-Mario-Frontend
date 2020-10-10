@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +23,10 @@ public class GameStatus : MonoBehaviour
     private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/results";
 
 
+    /// <summary>
+    /// This is for initialization based on the minigame difficulty
+    /// </summary>
+    /// <param name="difficulty"></param>
     public void Initialize(string difficulty)
     {
         switch(difficulty)
@@ -44,9 +46,12 @@ public class GameStatus : MonoBehaviour
         qnsAttempted = 0;
         qnsAnsweredCorrectly = 0;
         DisplayScore();
-        TestGetResults();
     }
 
+    /// <summary>
+    /// This is to change the current score of the player
+    /// </summary>
+    /// <param name="changeInScore"></param>
     public void ScoreChange(int changeInScore)
     {
         if (changeInScore > 0)
@@ -58,6 +63,9 @@ public class GameStatus : MonoBehaviour
         DisplayScore();
     }
 
+    /// <summary>
+    /// This is to display the score on the screen
+    /// </summary>
     public void DisplayScore()
     {
         scoreText.text = "Score: " + currentScore + " / " + targetScore;
@@ -71,6 +79,11 @@ public class GameStatus : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This is called when the player completes the level
+    /// The Minigame Results panel will be displayed
+    /// </summary>
+    /// <returns></returns>
     public bool WinLevel()
     {
         if (currentScore >= targetScore)
@@ -91,6 +104,9 @@ public class GameStatus : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This is to save the results into the database
+    /// </summary>
     private void SaveResults()
     {
         int worldSelected = PlayerPrefs.GetInt("World", 1);
@@ -121,37 +137,6 @@ public class GameStatus : MonoBehaviour
         //Results result = new Results("1", 1, "Easy", 1, 50, 1, 1);
         string bodyJsonString = apiCall.saveToJSONString(result);
         StartCoroutine(apiCall.ResultsPutRequest(url, bodyJsonString));
-    }
-
-    public void TestGetResults()
-    {
-        int worldSelected = PlayerPrefs.GetInt("World", 1);
-        string minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Stranded");
-        string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
-        int currentLevel = PlayerPrefs.GetInt("MinigameLevel", 1);
-        string studentId = "1";
-        int minigameId;
-
-        if (worldSelected == 1)
-        {
-            if (minigameSelected.Equals("Stranded"))
-                minigameId = 1;
-            else
-                minigameId = 2;
-        }
-        else
-        {
-            if (minigameSelected.Equals("Stranded"))
-                minigameId = 3;
-            else
-                minigameId = 4;
-        }
-
-        string customUrl = url + "/" + studentId + "&" + minigameId + "&" + difficulty + "&" + currentLevel;
-        //customUrl.ToLower();
-        Debug.Log(customUrl);
-        APICall apiCall = APICall.getAPICall();
-        StartCoroutine(apiCall.BestResultsGetRequest(url));
     }
 }
 

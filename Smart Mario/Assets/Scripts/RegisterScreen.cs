@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
-
+/// <summary>
+/// Boundary that connects to Unity Register Scene UI objects and triggers function calls on events
+/// </summary>
 public class RegisterScreen : MonoBehaviour
 {
     //Singleton
@@ -19,8 +21,11 @@ public class RegisterScreen : MonoBehaviour
     public InputField keyInputField;
     public Toggle teacherToggle;
     public Text msg;
-  
 
+    /// <summary>
+    /// Creates a singleton instance if none exist, returns the existing instance if one exists
+    /// </summary>
+    /// <returns></returns>
     public static RegisterScreen GetRegisterScreen()
     {
         if (instance == null)
@@ -30,6 +35,9 @@ public class RegisterScreen : MonoBehaviour
         }
         return instance;
     }
+    /// <summary>
+    /// Get instances of SceneController and LoginController once RegisterScreen starts
+    /// </summary>
     // Start is called before the first frame update
     void Start()
     {
@@ -42,17 +50,23 @@ public class RegisterScreen : MonoBehaviour
     {
 
     }
-
+    /// <summary>
+    /// Changes scene to Login
+    /// </summary>
     public void ToLogin()
     {
         scene.ToLogin();
     }
-
+    /// <summary>
+    /// Changes scene to Start Menu
+    /// </summary>
     public void ReturnToStartMenu()
     {
         scene.ToStartMenu();
     }
-
+    /// <summary>
+    /// Takes username, name, password and key details and sends them for Teacher/Student validation and potential subsequent registration
+    /// </summary>
     public void CheckInput()
     {
         string username = usernameInputField.text;
@@ -76,7 +90,11 @@ public class RegisterScreen : MonoBehaviour
             register.RegisterStudentDetails(username, name, password, key, msg);
         }
     }
-
+    /// <summary>
+    /// Displays error message on screen for failed registration attempts
+    /// </summary>
+    /// <param name="str"></param>
+    /// <param name="message"></param>
     public void DisplayMessage(String str, Text message)
     {
         this.msg = message;

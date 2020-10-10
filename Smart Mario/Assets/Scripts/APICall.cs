@@ -6,13 +6,18 @@ using UnityEngine.UI;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+/// <summary>
+/// Control that offers consolidated API calls to database
+/// </summary>
 public class APICall
 {
     //Singleton
     private static APICall instance = null;
 
-
+    /// <summary>
+    /// Creates a singleton instance if none exist, returns the existing instance if one exists
+    /// </summary>
+    /// <returns></returns>
     public static APICall getAPICall()
     {
         if (instance == null)
@@ -21,12 +26,22 @@ public class APICall
         }
         return instance;
     }
-
+    /// <summary>
+    /// Converts object to Json form
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public string saveToJSONString(object obj)
     {
         return JsonUtility.ToJson(obj);
     }
-
+    /// <summary>
+    /// Creates an IEnumerator for coroutines that is used for registration of Teachers and Students via a POST request
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="bodyJsonString"></param>
+    /// <param name="msg"></param>
+    /// <returns></returns>
     public IEnumerator RegisterPostRequest(string url, string bodyJsonString, Text msg)
     {
         var request = new UnityWebRequest(url, "POST");
@@ -53,7 +68,13 @@ public class APICall
             regScreen.DisplayMessage("Successfully created! Please proceed to login. ", msg);
         }
     }
-
+    /// <summary>
+    /// Creates an IEnumerator for coroutines that is used for login of Teachers and Students via a POST request
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="bodyJsonString"></param>
+    /// <param name="msg"></param>
+    /// <returns></returns>
     public IEnumerator LoginPostRequest(string url, string bodyJsonString, Text msg)
     {
         var request = new UnityWebRequest(url, "POST");
@@ -86,7 +107,12 @@ public class APICall
             PlayerPrefs.SetString("username", username);
         }
     }
-
+    /// <summary>
+    /// Creates an IEnumerator for coroutines that is used for logging game results for Students via a Put request
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="bodyJsonString"></param>
+    /// <returns></returns>
     public IEnumerator ResultsPutRequest(string url, string bodyJsonString)
     {
         var request = new UnityWebRequest(url , "PUT");
@@ -99,7 +125,11 @@ public class APICall
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
         Debug.Log(convertedStr);
     }
-
+    /// <summary>
+    /// Creates an IEnumerator for coroutines that is used for retrieving best game results of Student via a Get request
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
     public IEnumerator BestResultsGetRequest(string url)
     {
         Debug.Log(url);
@@ -114,7 +144,11 @@ public class APICall
         Debug.Log(convertedStr);
         StatisticsController.instance.GetComponent<StatisticsController>().ResultsRetrieved(convertedStr);
     }
-
+    /// <summary>
+    /// Creates an IEnumerator for coroutines that is used for retrieving game questions for Student via a Get request
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
     public IEnumerator AllQuestionsGetRequest(string url)
     { 
         UnityEngine.Debug.Log(url);
@@ -126,12 +160,21 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        Debug.Log(convertedStr);
-        if (GameObject.Find("QuestionController") != null)
+        Debug.Log("converted" + convertedStr);
+        Debug.Log("Before!");
+        if (GameObject.Find("QuestionManager") != null)
+        {
+            questionManager questionManager = GameObject.Find("QuestionManager").GetComponent<questionManager>();
+            Debug.Log("Success in finding QuestionManager!");
+            questionManager.QuestionsRetrieved(convertedStr);
+        }
+        else if (GameObject.Find("QuestionController") != null)
         {
             QuestionController questionController = GameObject.Find("QuestionController").GetComponent<QuestionController>();
             questionController.QuestionsRetrieved(convertedStr);
+            Debug.Log("Success in finding QuestionController!");
         }
+        
         Debug.Log("Unable to find questionController");
     }
 
