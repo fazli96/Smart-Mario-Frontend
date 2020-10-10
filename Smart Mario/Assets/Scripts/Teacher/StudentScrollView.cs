@@ -12,35 +12,43 @@ public class StudentScrollView : MonoBehaviour
     [SerializeField]
     private GridLayoutGroup gridGroup;
     private List<string> NameList = new List<string>();
+    public Text msg;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        DisplayMessage("");
+
         scene = SceneController.GetSceneController();
 
-        NameList.Add("Alan");
-        NameList.Add("Amy");
-        NameList.Add("Brian");
-        NameList.Add("Carrie");
-        NameList.Add("David");
-        NameList.Add("Joe");
-        NameList.Add("Jason");
-        NameList.Add("Michelle");
-        NameList.Add("Stephanie");
-        NameList.Add("Zoe");
-        NameList.Add("Alan2");
-        NameList.Add("Amy2");
-        NameList.Add("Brian2");
-        NameList.Add("Carrie2");
-        NameList.Add("David2");
-        NameList.Add("Joe2");
-        NameList.Add("Jason2");
-        NameList.Add("Michelle2");
-        NameList.Add("Stephanie2");
-        NameList.Add("Zoe2");
-
+        // NameList.Add("Alan");
+        // NameList.Add("Amy");
+        // NameList.Add("Brian");
+        // NameList.Add("Carrie");
+        // NameList.Add("David");
+        // NameList.Add("Joe");
+        // NameList.Add("Jason");
+        // NameList.Add("Michelle");
+        // NameList.Add("Stephanie");
+        // NameList.Add("Zoe");
+        // NameList.Add("Alan2");
+        // NameList.Add("Amy2");
+        // NameList.Add("Brian2");
+        // NameList.Add("Carrie2");
+        // NameList.Add("David2");
+        // NameList.Add("Joe2");
+        // NameList.Add("Jason2");
+        // NameList.Add("Michelle2");
+        // NameList.Add("Stephanie2");
+        // NameList.Add("Zoe2");
+        
         GenerateStudentButtons();
+
+        if (NameList.Count == 0)
+        {
+            DisplayMessage("There are no students to display.");
+        }
 
     }
 
@@ -54,6 +62,11 @@ public class StudentScrollView : MonoBehaviour
             SB.SetName(str);
             newButton.transform.SetParent(Button_Template.transform.parent);
         }
+    }
+
+    public void DisplayMessage(string str)
+    {
+        this.msg.text = str;
     }
 
     // Update is called once per frame

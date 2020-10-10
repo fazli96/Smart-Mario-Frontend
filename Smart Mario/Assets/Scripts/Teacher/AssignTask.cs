@@ -9,6 +9,8 @@ public class AssignTask : MonoBehaviour
 
     public Button confirmButton;
     public Button cancelButton;
+    public Text successMessage;
+    public Text errorMessage;
 
     // Start is called before the first frame update
     void Start()
@@ -22,13 +24,18 @@ public class AssignTask : MonoBehaviour
         
     }
 
-    public void Confirm()
+    public void ConfirmAndDisplayMessage()
     {
+        // To replace
+        bool success = false;
         
+        successMessage.text = success ? "Task successfully assigned to all students!" : "" ;
+        errorMessage.text = success ? "" : "Task is not assigned, as it was already assigned before!";
     }
 
     public void Cancel()
     {
         scene.ToTeacherMenu();
     }
+    
 }
