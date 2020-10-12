@@ -177,7 +177,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 114070124}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea6acdcf5b8f704499d1da08ff679fc6, type: 3}
+  m_Script: {fileID: 11500000, guid: cebace59aa7ba3a4e9789bf459c376ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   loginButton: {fileID: 2134377955}
@@ -491,7 +491,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114070126}
-        m_TargetAssemblyTypeName: RegisterScreen, Assembly-CSharp
+        m_TargetAssemblyTypeName: RegisterManager, Assembly-CSharp
         m_MethodName: CheckInput
         m_Mode: 1
         m_Arguments:
@@ -1181,7 +1181,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114070126}
-        m_TargetAssemblyTypeName: RegisterScreen, Assembly-CSharp
+        m_TargetAssemblyTypeName: RegisterManager, Assembly-CSharp
         m_MethodName: ReturnToStartMenu
         m_Mode: 1
         m_Arguments:
@@ -2163,7 +2163,6 @@ GameObject:
   - component: {fileID: 1516961407}
   - component: {fileID: 1516961406}
   - component: {fileID: 1516961405}
-  - component: {fileID: 1516961409}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2252,18 +2251,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1516961409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1516961404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3e6ebd580e61414982a8d84c9c46411, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1791077325
 GameObject:
   m_ObjectHideFlags: 0
@@ -2771,7 +2758,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114070126}
-        m_TargetAssemblyTypeName: RegisterScreen, Assembly-CSharp
+        m_TargetAssemblyTypeName: RegisterManager, Assembly-CSharp
         m_MethodName: ToLogin
         m_Mode: 1
         m_Arguments:

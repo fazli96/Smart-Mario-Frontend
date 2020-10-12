@@ -6,12 +6,12 @@ using UnityEngine.UI;
 /// <summary>
 /// Boundary that connects to Unity Login Scene UI objects and triggers function calls on events
 /// </summary>
-public class LoginScreen : MonoBehaviour
+public class LoginManager : MonoBehaviour
 {
     //Singleton
-    private static LoginScreen instance = null;
+    private static LoginManager instance = null;
+    private string url = "https://smart-mario-backend-1.herokuapp.com/api/";
     private SceneController scene;
-    private LoginController login;
     public Button loginButton;
     public InputField usernameInputField;
     public InputField passwordInputField;
@@ -21,22 +21,21 @@ public class LoginScreen : MonoBehaviour
     /// Creates a singleton instance if none exist, returns the existing instance if one exists
     /// </summary>
     /// <returns></returns>
-    public static LoginScreen GetLoginScreen()
+    public static LoginManager GetLoginManager()
     {
         if (instance == null)
         {
             GameObject go = new GameObject();
-            instance = go.AddComponent<LoginScreen>();
+            instance = go.AddComponent<LoginManager>();
         }
         return instance;
     }
     /// <summary>
-    /// Get instances of SceneController and LoginController once LoginScreen starts
+    /// Get instances of SceneController once LoginScreen starts
     /// </summary>
     void Start()
     {
         scene = SceneController.GetSceneController();
-        login = LoginController.GetLoginController();
     }
 
     // Update is called once per frame
@@ -62,12 +61,12 @@ public class LoginScreen : MonoBehaviour
         if (teacherToggle.isOn)
         {
             UnityEngine.Debug.Log("Teacher");
-            login.ValidateTeacherLogin(username, password, msg);
+            ValidateTeacherLogin(username, password, msg);
         }
         else
         {
             UnityEngine.Debug.Log("Student");
-            login.ValidateStudentLogin(username, password, msg);
+            ValidateStudentLogin(username, password, msg);
         }
     }
     /// <summary>
@@ -87,5 +86,27 @@ public class LoginScreen : MonoBehaviour
     {
         scene = SceneController.GetSceneController();
         scene.ToMainMenu();
+    }
+
+    /// <summary>
+    /// Check the Student login details are valid
+    /// </summary>
+    /// <param name="username"></param>
+    /// <param name="password"></param>
+    /// <param name="msg"></param>
+    public void ValidateStudentLogin(string username, string password, Text msg)
+    {
+        APICall apiCall = APICall.getAPICall();
+        Student student = new Student(username, "", password, "");
+        string bodyJsonString = apiCall.saveToJSONString(student);
+        StartCoroutine(apiCall.LoginPostRequest(url + "students/authenticate", bodyJsonString, msg));
+    }
+
+    public void ValidateTeacherLogin(string username, string password, Text msg)
+    {
+        APICall apiCall = APICall.getAPICall();
+        Teacher teacher = new Teacher(username, "", password, "");
+        string bodyJsonString = apiCall.saveToJSONString(teacher);
+        StartCoroutine(apiCall.LoginPostRequest(url + "teachers/authenticate", bodyJsonString, msg));
     }
 }

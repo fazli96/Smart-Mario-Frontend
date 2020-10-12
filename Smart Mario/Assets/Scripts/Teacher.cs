@@ -21,5 +21,4 @@ public class Teacher : User
         this.password = password;
         this.school_key = school_key;
     }
-
 }

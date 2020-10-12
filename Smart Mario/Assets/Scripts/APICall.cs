@@ -51,7 +51,7 @@ public class APICall
         request.SetRequestHeader("Content-Type", "application/json");
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
-        RegisterScreen regScreen = RegisterScreen.GetRegisterScreen();
+        RegisterManager regManager = RegisterManager.GetRegisterManager();
         UnityEngine.Debug.Log(request.downloadHandler.text);
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
         UnityEngine.Debug.Log(convertedStr);
@@ -60,12 +60,12 @@ public class APICall
         {
             string errorMsg = convertedStr.Substring(convertedStr.IndexOf(":")+1);
             errorMsg = errorMsg.Substring(0, errorMsg.Length - 1);
-            regScreen.DisplayMessage(errorMsg, msg);
+            regManager.DisplayMessage(errorMsg, msg);
         }
 
         else
         {
-            regScreen.DisplayMessage("Successfully created! Please proceed to login. ", msg);
+            regManager.DisplayMessage("Successfully created! Please proceed to login. ", msg);
         }
     }
     /// <summary>
@@ -84,7 +84,7 @@ public class APICall
         request.SetRequestHeader("Content-Type", "application/json");
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
-        LoginScreen logScreen = LoginScreen.GetLoginScreen(); ;
+        LoginManager logManager = LoginManager.GetLoginManager();
         UnityEngine.Debug.Log(request.downloadHandler.text);
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
         UnityEngine.Debug.Log(convertedStr);
@@ -94,12 +94,12 @@ public class APICall
             string errorMsg = convertedStr.Substring(convertedStr.IndexOf(":") + 1);
             errorMsg = errorMsg.Substring(0, errorMsg.Length - 1);
             errorMsg = errorMsg.Substring(0, errorMsg.IndexOf(","));
-            logScreen.DisplayMessage(errorMsg, msg);
+            logManager.DisplayMessage(errorMsg, msg);
         }
 
         else
         {
-            logScreen.LoginSuccess();
+            logManager.LoginSuccess();
             int startIndex = convertedStr.IndexOf("username") + 11;
             string username = convertedStr.Substring(startIndex);
             int len = username.IndexOf('"');
@@ -178,7 +178,18 @@ public class APICall
         Debug.Log("Unable to find questionController");
     }
 
+    public IEnumerator StudentResultGetRequest(string studentID)
+    {
+        string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/" + studentID;
+        var request = new UnityWebRequest(url, "GET");
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.chunkedTransfer = false;
+        yield return request.SendWebRequest();
+        string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        SelectStudentManager selectStudentManager = SelectStudentManager.GetSelectStudentManager();
+        selectStudentManager.CSVRetrieved(convertedStr);
 
+    }
 }
 
 

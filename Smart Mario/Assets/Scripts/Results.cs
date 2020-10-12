@@ -33,6 +33,7 @@ public class Results
         this.questions_attempted = questions_attempted;
         this.questions_correct = questions_correct;
     }
+
     /// <summary>
     /// Static method that takes queried Json data and converts it into a Results object
     /// </summary>
