@@ -15,23 +15,7 @@ public class StudentTaskCell : MonoBehaviour
         CompletionStatus = completionStatus;
     }
 
-    public void SetName(string name)
-    {
-        Name = name;
-    }
-    
-    public void SetCompletionStatus(bool completionStatus)
-    {
-        CompletionStatus = completionStatus;
-    }
+    public string GetName() { return Name; }
 
-    public string GetName()
-    {
-        return Name;
-    }
-
-    public bool GetCompletionStatus()
-    {
-        return CompletionStatus;
-    }
+    public bool GetCompletionStatus() { return CompletionStatus; }
 }

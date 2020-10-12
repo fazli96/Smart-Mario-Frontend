@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class DisplayResults
 {
-    public string id;
-    public string minigameId;
-    public string studentId;
-    public string teacherId;
+    public int id;
+    public int minigameId;
+    public int studentId;
+    public int teacherId;
     public string difficulty;
     public string level;
     public string completed;
     public string createdAt;
     public string updatedAt;
+    public List<StudentResult> studentResultList;
 
-    public DisplayResults(string id, string minigameId, string studentId, string teacherId, string difficulty, string level, string completed, string createdAt, string updatedAt)
+    public DisplayResults(int id, int minigameId, int studentId, int teacherId, string difficulty, string level, string completed, string createdAt, string updatedAt, List<StudentResult> studentResultList)
     {
         this.id = id;
         this.minigameId = minigameId;
@@ -25,5 +26,6 @@ public class DisplayResults
         this.completed = completed;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.studentResultList = studentResultList;
     }
 }

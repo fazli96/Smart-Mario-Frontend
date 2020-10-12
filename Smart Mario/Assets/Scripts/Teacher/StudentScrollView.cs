@@ -66,7 +66,7 @@ public class StudentScrollView : MonoBehaviour
 
     public void DisplayMessage(string str)
     {
-        this.msg.text = str;
+        msg.text = str;
     }
 
     // Update is called once per frame

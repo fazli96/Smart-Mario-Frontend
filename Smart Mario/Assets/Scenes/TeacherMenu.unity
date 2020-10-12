@@ -945,7 +945,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1484486087}
         m_TargetAssemblyTypeName: TeacherMenu, Assembly-CSharp
-        m_MethodName: CheckAssignedTasksScreen
+        m_MethodName: SelectTaskScreen
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

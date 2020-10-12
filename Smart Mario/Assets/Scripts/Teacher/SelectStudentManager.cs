@@ -17,6 +17,7 @@ public class SelectStudentManager : MonoBehaviour
     private List<DisplayResults> displayResultsList;
     public Button exportCSVButton;
     public Button backToTeacherMenuButton;
+    public Text CSVerrorMessage;
 
     public static SelectStudentManager GetSelectStudentManager()
     {
@@ -44,7 +45,7 @@ public class SelectStudentManager : MonoBehaviour
     {
         UnityEngine.Debug.Log("enter");
         APICall api = APICall.getAPICall();
-        StartCoroutine(api.StudentResultGetRequest("1")); // to insert studentId from playerprefs**
+        StartCoroutine(api.AllStudentResultGetRequest("2")); // to insert studentId from playerprefs**
     }
 
     public void BackToTeacherMenu()
@@ -62,6 +63,7 @@ public class SelectStudentManager : MonoBehaviour
             displayResultsList.Add(one_result);
         }
         UnityEngine.Debug.Log(displayResultsList[0].difficulty);
+        SaveCSV();
     }
 
     private string getPath()
@@ -75,25 +77,41 @@ public class SelectStudentManager : MonoBehaviour
 
     public void SaveCSV()
     {
-        string filePath = getPath();
-        if (!File.Exists(filePath))
+        try
         {
-            try
+            string filePath = getPath();
+            if (!File.Exists(filePath))
             {
-                // Create the file, or overwrite if the file exists.
-                using (FileStream fs = File.Create(filePath, 1024))
+                try
                 {
-                    fs.Close();
+                    // Create the file, or overwrite if the file exists.
+                    using (FileStream fs = File.Create(filePath, 1024))
+                    {
+                        fs.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    UnityEngine.Debug.Log(ex.ToString());
+                    CSVerrorMessage.text = "Error! File cannotbe created!";
                 }
             }
-            catch (Exception ex)
+            StreamWriter writer = new StreamWriter(filePath);
+
+            foreach (DisplayResults result in displayResultsList)
             {
-                UnityEngine.Debug.Log(ex.ToString());
+                writer.WriteLine(result.studentId + ", " + result.difficulty + ", " + result.level);
             }
+
+            // writer.WriteLine("11111111111, name, username");
+            writer.Flush();
+            writer.Close();
         }
-        StreamWriter writer = new StreamWriter(filePath);
-        writer.WriteLine("11111111111, name, username");
-        writer.Flush();
-        writer.Close();
+        catch (Exception ex)
+        {
+            UnityEngine.Debug.Log(ex.ToString());
+            // Text CSVerrorMessage = GameObject.GetComponent<Text>
+            this.CSVerrorMessage.text = "Error! Please ensure CSV file is closed!";
+        }
     }
 }

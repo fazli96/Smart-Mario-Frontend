@@ -63,6 +63,14 @@ public class MainMenuScreen : MonoBehaviour
         scene.ToCustomizeCharacter();
     }
     /// <summary>
+    /// Changes scene to Manage Tasks for Students
+    /// </summary>
+    public void ManageTasksScreen()
+    {
+        APICall api = APICall.getAPICall();
+        StartCoroutine(api.StudentResultGetRequest("2"));
+    }
+    /// <summary>
     /// Changes scene to Login Screen
     /// </summary>
     public void LogOut()
