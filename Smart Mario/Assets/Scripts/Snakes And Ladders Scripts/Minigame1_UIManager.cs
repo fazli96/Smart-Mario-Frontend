@@ -23,31 +23,26 @@ public class Minigame1_UIManager : MonoBehaviour
         scene = SceneController.GetSceneController();
         pausePanel.SetActive(false);
         isPaused = false;
-        if (GameObject.Find("NetworkManager") != null)
-            rulesPanel.SetActive(false);
     }
 
     /// <summary>
     /// Update is called once per frame
     /// </summary>
     void Update()
-    {
-        if (GameObject.Find("NetworkManager") == null)
+    {  
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (!isPaused)
             {
-                if (!isPaused)
-                {
-                    isPaused = true;
-                    pausePanel.SetActive(true);
-                }
-                else
-                {
-                    isPaused = false;
-                    pausePanel.SetActive(false);
-                }
+                isPaused = true;
+                pausePanel.SetActive(true);
             }
-        }
+            else
+            {
+                isPaused = false;
+                pausePanel.SetActive(false);
+            }
+        }   
     }
 
     /// <summary>

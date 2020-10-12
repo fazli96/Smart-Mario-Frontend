@@ -44,7 +44,8 @@ public class QuestionController : MonoBehaviour
         wrongPanel.SetActive(false);
         correctPanel.SetActive(false);
         tooLatePanel.SetActive(false);
-        gameStatus = GameObject.Find("GameStatus").GetComponent<GameStatus>();
+        if (GameObject.Find("GameStatus") != null)
+            gameStatus = GameObject.Find("GameStatus").GetComponent<GameStatus>();
         timeLimit = 20;
         questionList.Clear();
 
@@ -70,6 +71,7 @@ public class QuestionController : MonoBehaviour
             default:
                 break;
         }
+        Debug.LogError("something");
         APICall apiCall = APICall.getAPICall();
         StartCoroutine(apiCall.AllQuestionsGetRequest(url));
     }
@@ -85,10 +87,8 @@ public class QuestionController : MonoBehaviour
         JArray data2 = data["allQuestions"].Value<JArray>();
         foreach (JObject questionObject in data2)
         {
-            Debug.Log("question: " + questionObject);
-            Question question1 = questionObject.ToObject<Question>();
-            Debug.Log(question1.option1);
-            questionList.Add(question1);
+            Question question = questionObject.ToObject<Question>();
+            questionList.Add(question);
         }
         Debug.Log("DBResult: " + result);
         Debug.Log("allQuestions" + data2);
@@ -101,6 +101,8 @@ public class QuestionController : MonoBehaviour
     /// </summary>
     public void SetQuestion()
     {
+        if (questionList.Count == 0)
+            Debug.Log("Question Count is ZERO");
         timer.text = "Time Left: "+timeLimit + " seconds";
 
         questionTitle.text = questionList[0].questionTitle;
@@ -128,6 +130,7 @@ public class QuestionController : MonoBehaviour
     /// <returns>Wait for Seconds</returns>
     private IEnumerator Countdown()
     {
+        NetworkManager.instance.CommandAnsweringQuestion();
         questionPanel.SetActive(true);
         int counter = timeLimit;
         while (counter > 0)
@@ -146,14 +149,25 @@ public class QuestionController : MonoBehaviour
     /// the player ran out of time
     /// </summary>
     /// <param name="qnStatus"></param>
-    public void EndResult(QuestionStatus qnStatus)
+    public void EndResult(QuestionStatus _qnStatus)
     {
-        this.qnStatus = qnStatus;
-        if (qnStatus == QuestionStatus.CORRECT)
-            gameStatus.ScoreChange(500);
+        qnStatus = _qnStatus;
+
+        if (GameObject.Find("StrandedMultiplayerGameManager") != null)
+        {
+            if (qnStatus == QuestionStatus.CORRECT)
+                StrandedMultiplayerGameStatus.instance.ScoreChange(500);
+            else
+                StrandedMultiplayerGameStatus.instance.ScoreChange(-500);
+        }
         else
-            gameStatus.ScoreChange(-500);
-        //questionList.RemoveAt(0);
+        {
+            if (qnStatus == QuestionStatus.CORRECT)
+                gameStatus.ScoreChange(500);
+            else
+                gameStatus.ScoreChange(-500);
+        }
+
         StopCoroutine(coroutine);
         coroutine = StartCoroutine(QnResults());
     }
@@ -184,7 +198,10 @@ public class QuestionController : MonoBehaviour
             tooLatePanel.SetActive(false);
         }
         questionPanel.SetActive(false);
-        GameControl.qnEncountered = false;
+        if (GameObject.Find("StrandedMultiplayerGameManager") != null)
+            StrandedMultiplayerGameManager.qnEncountered = false;
+        else
+            GameControl.qnEncountered = false;
     }
 
     /// <summary>
@@ -231,7 +248,6 @@ public class QuestionController : MonoBehaviour
         }
         else
         {
-            Debug.Log(option3.text + " = " + questionList[0].answer);
             EndResult(QuestionStatus.WRONG);
         }
     }

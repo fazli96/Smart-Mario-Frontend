@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// This class is for what happens when player rolls the dice
 /// </summary>
-public class Dice : MonoBehaviour
+public class RollTheDiceMultiplayer : MonoBehaviour
 {
 
     private Sprite[] diceSides;
@@ -25,10 +25,11 @@ public class Dice : MonoBehaviour
     /// </summary>
     private void OnMouseDown()
     {
-        if (!GameControl.levelComplete && coroutineAllowed 
-            && !GameControl.GetMoveAllowed() && !GameControl.qnEncountered)
+        if (!StrandedMultiplayerGameManager.levelComplete && coroutineAllowed
+            && !StrandedMultiplayerGameManager.GetMoveAllowed() && !StrandedMultiplayerGameManager.qnEncountered
+            && StrandedMultiplayerGameManager.currentTurn)
             StartCoroutine("RollTheDice");
-            //GetComponent<AudioSource>().Play();
+        //GetComponent<AudioSource>().Play();
     }
     /// <summary>
     /// A coroutine for rolling the dice. 
@@ -45,12 +46,12 @@ public class Dice : MonoBehaviour
             rend.sprite = diceSides[randomDiceSide];
             yield return new WaitForSeconds(0.01f);
         }
+
+        NetworkManager.instance.CommandRollDice(randomDiceSide + 1);
         yield return new WaitForSeconds(0.1f);
 
-        GameControl.diceSideThrown = randomDiceSide + 1;
-        //randomDiceSide = 5 for six;
-
-        GameControl.MovePlayer();
+        StrandedMultiplayerGameManager.diceSideThrown = randomDiceSide + 1;
+        StrandedMultiplayerGameManager.MovePlayer();
 
         coroutineAllowed = true;
 

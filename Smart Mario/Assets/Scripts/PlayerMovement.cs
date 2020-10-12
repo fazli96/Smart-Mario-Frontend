@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private float moveH, moveV;
     [SerializeField] 
     private float moveSpeed = 1.0f;
+    private PlayerAnimation anim;
 
     //network
     public bool multiplayer = false; //switch back to false when networking
@@ -23,11 +24,13 @@ public class PlayerMovement : MonoBehaviour
     /// <summary>
     /// This is used for initialization
     /// </summary>
-    private void Awake()
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         oldPosition = transform.position;
         currentPosition = oldPosition;
+        Transform p = transform.Find("Player");
+        anim = p.GetComponent<PlayerAnimation>();
     }
 
     /// <summary>
@@ -49,29 +52,26 @@ public class PlayerMovement : MonoBehaviour
         }
         if (!isLocalPlayer)
         {
-            currentPosition = transform.position;
-            Transform p = transform.Find("Player");
-            PlayerAnimation anim = p.GetComponent<PlayerAnimation>();
-
-            if (currentPosition != oldPosition)
+            
+            if (currentPosition != transform.position)
             {
+                Debug.LogError("notLocalPlayer"+transform.name + isLocalPlayer + " " + isOwner + " " + multiplayer);
 
-                moveH = currentPosition.x - oldPosition.x;
+                moveH = transform.position.x - currentPosition.x;
                 Debug.Log("moveH: " + moveH + " = " + currentPosition.x + " - " + oldPosition.x);
                 
-                moveV = currentPosition.y - oldPosition.y;
+                moveV = transform.position.y - currentPosition.y;
                 Debug.Log("moveV: " + moveV + " = " + currentPosition.y + " - " + oldPosition.y);
 
                 Vector2 direction = new Vector2(moveH, moveV);
 
                 anim.SetDirection(direction);
-                oldPosition = currentPosition;
+                currentPosition = transform.position;
             }
-            else
-                anim.SetDirection(new Vector2(0, 0));
         }
         else
         {
+            
             moveH = Input.GetAxis("Horizontal") * moveSpeed;
             moveV = Input.GetAxis("Vertical") * moveSpeed;
             rb.velocity = new Vector2(moveH, moveV);//OPTIONAL rb.MovePosition();
@@ -82,11 +82,10 @@ public class PlayerMovement : MonoBehaviour
 
             if (currentPosition != oldPosition && multiplayer)
             {
+                Debug.LogError("isLocalPlayer" + transform.name + isLocalPlayer + " " + isOwner + " " + multiplayer);
                 NetworkManager.instance.GetComponent<NetworkManager>().CommandMove(transform.position);
                 oldPosition = currentPosition;
             }
-            Transform p = transform.Find("Player");
-            PlayerAnimation anim = p.GetComponent<PlayerAnimation>();
             anim.SetDirection(direction);
         }
 

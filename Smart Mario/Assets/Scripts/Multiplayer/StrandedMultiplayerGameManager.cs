@@ -9,32 +9,37 @@ using System;
 /// This class is the main controller for the Minigame Stranded.
 /// It implement the rules for the Minigame Stranded
 /// </summary>
-public class GameControl : MonoBehaviour {
+public class StrandedMultiplayerGameManager : MonoBehaviour
+{
 
-    public static GameControl instance;
+    public static StrandedMultiplayerGameManager instance;
     private static GameObject player;
     private static List<GameObject> questionBarrels = new List<GameObject>();
     public List<GameObject> waypoints;
 
     public GameObject dice;
-    public GameObject completeLevelPanel, gameOverPanel;
+    public GameObject resultsPanel;
+    public GameObject leaveGameButton;
     public GameObject questionBarrelPrefab;
     public GameObject witchPrefab;
     public GameObject knightPrefab;
     public GameObject spawnPoint;
 
     private static QuestionController questionController;
-    private static GameStatus gameStatus;
 
     public static int diceSideThrown = 0;
     public static int playerStartWaypoint = 0;
     public static bool qnEncountered = false;
 
     public static bool levelComplete = false;
+
+    // these variables are for networking
+    public static bool currentTurn = true;
     /// <summary>
     /// This is for initialization
     /// </summary>
-    void Start () {
+    void Start()
+    {
         if (instance == null)
         {
             instance = this;
@@ -49,46 +54,54 @@ public class GameControl : MonoBehaviour {
         levelComplete = false;
         questionBarrels.Clear();
 
-        completeLevelPanel.gameObject.SetActive(false);
-        gameOverPanel.gameObject.SetActive(false);
-
         questionController = GameObject.Find("QuestionController").GetComponent<QuestionController>();
-        gameStatus = GameObject.Find("GameStatus").GetComponent<GameStatus>();
 
         player = SpawnPlayer(PlayerPrefs.GetString("Selected Player", "Witch"));
         player.GetComponent<FollowThePath>().moveAllowed = false;
-        SpawnQuestionBarrels(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
- 
-        //questionController.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
-        //gameStatus.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
+        player.GetComponent<FollowThePath>().isLocalPlayer = true;
+        player.GetComponent<FollowThePath>().multiplayer = true;
+        Transform t = player.transform.Find("Player Name Canvas");
+        Transform t1 = t.transform.Find("Player Name");
+        Text playerName = t1.GetComponent<Text>();
+        playerName.text = NetworkManager.playerName;
+        player.name = NetworkManager.playerName;
+        if (NetworkManager.isOwner)
+        {
+            player.GetComponent<FollowThePath>().isOwner = true;
+            SpawnQuestionBarrels();
+            dice.SetActive(true);
+        }
+        else
+            dice.SetActive(false);
+        
+        questionController.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
+        StrandedMultiplayerGameStatus.instance.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
 
     }
     /// <summary>
     /// Update is called once per frame
     /// </summary>
-    void Update()
+    void LateUpdate()
     {
-        if(levelComplete)
-        {
-            //update Database accordingly
-        }
-
-// ** PLAYER 1
-        if (player.GetComponent<FollowThePath>().waypointIndex > 
-            playerStartWaypoint + diceSideThrown)
+       
+        if (player.GetComponent<FollowThePath>().waypointIndex >
+            playerStartWaypoint + diceSideThrown && !qnEncountered)
         {
             foreach (GameObject questionBarrel in questionBarrels)
             {
                 if (questionBarrel.transform.position == waypoints[playerStartWaypoint + diceSideThrown].transform.position)
                 {
                     qnEncountered = true;
-                    questionController.AskQuestion();
+                    leaveGameButton.SetActive(false);
+                    Debug.Log("qnEncountered");
                     questionBarrels.Remove(questionBarrel);
-                    questionBarrel.SetActive(false);
-                    Debug.Log("After ask question");
+                    player.GetComponent<FollowThePath>().moveAllowed = false;
+                    questionController.AskQuestion();
                 }
             }
-            
+
+            player.GetComponent<FollowThePath>().moveAllowed = false;
+
             //Debug.Log(playerStartWaypoint+diceSideThrown);
             //Teleport to another waypoint
             /*if(playerStartWaypoint+diceSideThrown == 12){
@@ -97,21 +110,41 @@ public class GameControl : MonoBehaviour {
                 player.GetComponent<FollowThePath>().waypointIndex +=1;
                 MovePlayer();
             }*/
+
+            //networking
+            if (!qnEncountered)
+            {
+                Debug.Log("not question encountered");
+                leaveGameButton.SetActive(true);
+                currentTurn = false;
+                dice.SetActive(false);
+                playerStartWaypoint = player.GetComponent<FollowThePath>().waypointIndex - 1;
+                NetworkManager.instance.GetComponent<NetworkManager>().CommandEndTurn();
+            }
+            //
+
             
-            player.GetComponent<FollowThePath>().moveAllowed = false;            
-            playerStartWaypoint = player.GetComponent<FollowThePath>().waypointIndex - 1;
         }
-        
 
 
-        if (player.GetComponent<FollowThePath>().waypointIndex == waypoints.Count)
+
+        if (player.GetComponent<FollowThePath>().waypointIndex == waypoints.Count && !levelComplete)
         {
-            player.GetComponent<FollowThePath>().moveAllowed = false;
-            if (gameStatus.WinLevel())
-                completeLevelPanel.gameObject.SetActive(true);
-            else
-                gameOverPanel.gameObject.SetActive(true);
-            levelComplete = true;
+            print("levelComplete" + waypoints.Count);
+            NetworkManager.instance.GetComponent<NetworkManager>().CommandEndGame();
+            GameComplete();
+        }
+    }
+
+    public void GameComplete()
+    {
+        levelComplete = true;
+        leaveGameButton.SetActive(false);
+        HideDice();
+        player.GetComponent<FollowThePath>().moveAllowed = false;
+        if (StrandedMultiplayerGameStatus.instance.GameComplete())
+        {
+            resultsPanel.gameObject.SetActive(true);
         }
     }
 
@@ -134,27 +167,11 @@ public class GameControl : MonoBehaviour {
     }
 
     /// <summary>
-    /// This is called to spawn the question barrels on the board based on the difficulty
+    /// This is called to spawn the question barrels on the board
     /// </summary>
-    /// <param name="difficulty"></param>
-    private void SpawnQuestionBarrels(string difficulty)
+    private void SpawnQuestionBarrels()
     {
-        int spacesBetweenBarrels;
-        switch (difficulty)
-        {
-            case "Easy":
-                spacesBetweenBarrels = 6;
-                break;
-            case "Medium":
-                spacesBetweenBarrels = 4;
-                break;
-            case "Hard":
-                spacesBetweenBarrels = 2;
-                break;
-            default:
-                spacesBetweenBarrels = 0;
-                break;
-        }
+        int spacesBetweenBarrels = 3;
         List<int> questionBarrelLocations = new List<int>();
         for (int i = 2; i < 94; i += spacesBetweenBarrels)
         {
@@ -167,6 +184,37 @@ public class GameControl : MonoBehaviour {
             questionBarrelLocations.Add(rndInt);
             //Debug.Log(rndInt);
         }
+        NetworkManager.instance.GetComponent<NetworkManager>().CommandMinigameStart(questionBarrelLocations);
+        
+    }
+
+    /// <summary>
+    /// This is called to spawn the question barrels at locations matching the host of the challenge.
+    /// This is used for multiplayer
+    /// </summary>
+    /// <param name="questionBarrelLocations"></param>
+    public void SpawnQuestionBarrelsMultiplayer(List<int> questionBarrelLocations)
+    {
+        for (int i = 0; i < questionBarrelLocations.Count; i++)
+        {
+            GameObject questionBarrelClone = Instantiate(questionBarrelPrefab,
+                waypoints[questionBarrelLocations[i]].transform.position,
+                Quaternion.Euler(0, 0, 0));
+            questionBarrels.Add(questionBarrelClone);
+        }
+    }
+
+    /// <summary>
+    /// This is called to make the dice object on screen dissapear
+    /// </summary>
+    public void ShowDice()
+    {
+        dice.SetActive(true);
+    }
+
+    public void HideDice()
+    {
+        dice.SetActive(true);
     }
 
     /// <summary>
@@ -182,12 +230,12 @@ public class GameControl : MonoBehaviour {
                 return Instantiate(witchPrefab,
                 spawnPoint.transform.position,
                 Quaternion.Euler(0, 0, 0)) as GameObject;
-                //break;
+            //break;
             case "Knight":
                 return Instantiate(knightPrefab,
                 spawnPoint.transform.position,
                 Quaternion.Euler(0, 0, 0)) as GameObject;
-                //break;
+            //break;
             default:
                 return null;
                 //break;

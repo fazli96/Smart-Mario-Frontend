@@ -61,6 +61,6 @@ public class RoomManager : MonoBehaviour
     /// </summary>
     public void LeaveRoom()
     {
-        NetworkManager.instance.GetComponent<NetworkManager>().CommandLeaveRoom();
+        NetworkManager.instance.GetComponent<NetworkManager>().CommandLeaveChallenge();
     }
 }

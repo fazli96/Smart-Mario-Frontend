@@ -306,5 +306,10 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadScene("MultiplayerRoom");
     }
 
+    public void ToWorld1StrandedMultiplayer()
+    {
+        SceneManager.LoadScene("World1StrandedMultiplayer");
+    }
+
     #endregion
 }

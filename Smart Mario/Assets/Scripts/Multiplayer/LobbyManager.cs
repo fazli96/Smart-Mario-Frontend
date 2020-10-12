@@ -75,6 +75,12 @@ public class LobbyManager : MonoBehaviour
         errorPanel.SetActive(true);
     }
 
+    public void NotEnoughPlayers()
+    {
+        errorText.text = "Not enough players";
+        errorPanel.SetActive(true);
+    }
+
     /// <summary>
     /// This method is called when a player has created a multiplayer challenge room 
     /// </summary>
@@ -107,13 +113,13 @@ public class LobbyManager : MonoBehaviour
             switch (difficultySelectedDropdown.value)
             {
                 case 0:
-                    PlayerPrefs.SetString("Difficulty Selected", "Easy");
+                    PlayerPrefs.SetString("Minigame Difficulty", "Easy");
                     break;
                 case 1:
-                    PlayerPrefs.SetString("Difficulty Selected", "Medium");
+                    PlayerPrefs.SetString("Minigame Difficulty", "Medium");
                     break;
                 case 2:
-                    PlayerPrefs.SetString("Difficulty Selected", "Hard");
+                    PlayerPrefs.SetString("Minigame Difficulty", "Hard");
                     break;
                 default:
                     break;
@@ -138,7 +144,7 @@ public class LobbyManager : MonoBehaviour
         PlayerPrefs.SetString("username", playerNameInputJoin.text);
         PlayerPrefs.SetString("roomID", rooms[index].roomID);
         PlayerPrefs.SetString("Minigame Selected", rooms[index].minigameSelected);
-        PlayerPrefs.SetString("Difficulty Selected", rooms[index].difficultySelected);
+        PlayerPrefs.SetString("Minigame Difficulty", rooms[index].difficultySelected);
         NetworkManager.instance.GetComponent<NetworkManager>().JoinRoom();
     }
 
