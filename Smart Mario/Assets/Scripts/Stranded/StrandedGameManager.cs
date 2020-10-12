@@ -9,9 +9,9 @@ using System;
 /// This class is the main controller for the Minigame Stranded.
 /// It implement the rules for the Minigame Stranded
 /// </summary>
-public class GameControl : MonoBehaviour {
+public class StrandedGameManager : MonoBehaviour {
 
-    public static GameControl instance;
+    public static StrandedGameManager instance;
     private static GameObject player;
     private static List<GameObject> questionBarrels = new List<GameObject>();
     public List<GameObject> waypoints;
@@ -22,9 +22,6 @@ public class GameControl : MonoBehaviour {
     public GameObject witchPrefab;
     public GameObject knightPrefab;
     public GameObject spawnPoint;
-
-    private static QuestionController questionController;
-    private static GameStatus gameStatus;
 
     public static int diceSideThrown = 0;
     public static int playerStartWaypoint = 0;
@@ -52,15 +49,12 @@ public class GameControl : MonoBehaviour {
         completeLevelPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
 
-        questionController = GameObject.Find("QuestionController").GetComponent<QuestionController>();
-        gameStatus = GameObject.Find("GameStatus").GetComponent<GameStatus>();
-
         player = SpawnPlayer(PlayerPrefs.GetString("Selected Player", "Witch"));
-        player.GetComponent<FollowThePath>().moveAllowed = false;
+        player.GetComponent<PlayerPathMovement>().moveAllowed = false;
         SpawnQuestionBarrels(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
  
-        //questionController.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
-        //gameStatus.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
+        StrandedQuestionManager.instance.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
+        StrandedGameStatus.instance.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
 
     }
     /// <summary>
@@ -74,7 +68,7 @@ public class GameControl : MonoBehaviour {
         }
 
 // ** PLAYER 1
-        if (player.GetComponent<FollowThePath>().waypointIndex > 
+        if (player.GetComponent<PlayerPathMovement>().waypointIndex > 
             playerStartWaypoint + diceSideThrown)
         {
             foreach (GameObject questionBarrel in questionBarrels)
@@ -82,7 +76,7 @@ public class GameControl : MonoBehaviour {
                 if (questionBarrel.transform.position == waypoints[playerStartWaypoint + diceSideThrown].transform.position)
                 {
                     qnEncountered = true;
-                    questionController.AskQuestion();
+                    StrandedQuestionManager.instance.AskQuestion();
                     questionBarrels.Remove(questionBarrel);
                     questionBarrel.SetActive(false);
                     Debug.Log("After ask question");
@@ -92,22 +86,22 @@ public class GameControl : MonoBehaviour {
             //Debug.Log(playerStartWaypoint+diceSideThrown);
             //Teleport to another waypoint
             /*if(playerStartWaypoint+diceSideThrown == 12){
-                player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[45].transform.position;
-                player.GetComponent<FollowThePath>().waypointIndex = 45;
-                player.GetComponent<FollowThePath>().waypointIndex +=1;
+                player.GetComponent<PlayerPathMovement>().transform.position = player.GetComponent<PlayerPathMovement>().waypoints[45].transform.position;
+                player.GetComponent<PlayerPathMovement>().waypointIndex = 45;
+                player.GetComponent<PlayerPathMovement>().waypointIndex +=1;
                 MovePlayer();
             }*/
             
-            player.GetComponent<FollowThePath>().moveAllowed = false;            
-            playerStartWaypoint = player.GetComponent<FollowThePath>().waypointIndex - 1;
+            player.GetComponent<PlayerPathMovement>().moveAllowed = false;            
+            playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
         }
         
 
 
-        if (player.GetComponent<FollowThePath>().waypointIndex == waypoints.Count)
+        if (player.GetComponent<PlayerPathMovement>().waypointIndex == waypoints.Count)
         {
-            player.GetComponent<FollowThePath>().moveAllowed = false;
-            if (gameStatus.WinLevel())
+            player.GetComponent<PlayerPathMovement>().moveAllowed = false;
+            if (StrandedGameStatus.instance.WinLevel())
                 completeLevelPanel.gameObject.SetActive(true);
             else
                 gameOverPanel.gameObject.SetActive(true);
@@ -121,7 +115,7 @@ public class GameControl : MonoBehaviour {
     /// </summary>
     public static void MovePlayer()
     {
-        player.GetComponent<FollowThePath>().moveAllowed = true;
+        player.GetComponent<PlayerPathMovement>().moveAllowed = true;
     }
 
     /// <summary>
@@ -130,7 +124,7 @@ public class GameControl : MonoBehaviour {
     /// <returns></returns>
     public static bool GetMoveAllowed()
     {
-        return player.GetComponent<FollowThePath>().moveAllowed;
+        return player.GetComponent<PlayerPathMovement>().moveAllowed;
     }
 
     /// <summary>

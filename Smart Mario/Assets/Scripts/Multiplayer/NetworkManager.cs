@@ -261,7 +261,7 @@ public class NetworkManager : MonoBehaviour
             return;
         }
         GameObject p = Instantiate(playerMinigame, StrandedMultiplayerGameManager.instance.GetStartWayPoint().transform.position, Quaternion.identity) as GameObject;
-        FollowThePath pm = p.GetComponent<FollowThePath>();
+        PlayerPathMovement pm = p.GetComponent<PlayerPathMovement>();
         Transform t = p.transform.Find("Player Name Canvas");
         Transform t1 = t.transform.Find("Player Name");
         Text playerName = t1.GetComponent<Text>();
@@ -385,7 +385,7 @@ public class NetworkManager : MonoBehaviour
         }
         else
         {
-            FollowThePath pm = p.GetComponent<FollowThePath>();
+            PlayerPathMovement pm = p.GetComponent<PlayerPathMovement>();
             pm.isOwner = true;
             if (pm.isLocalPlayer)
                 isOwner = true;

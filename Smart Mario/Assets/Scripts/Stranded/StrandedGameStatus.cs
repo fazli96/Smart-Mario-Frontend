@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameStatus : MonoBehaviour
+public class StrandedGameStatus : MonoBehaviour
 {
 
     public Text scoreText;
@@ -21,8 +21,20 @@ public class GameStatus : MonoBehaviour
     private static int qnsAnsweredCorrectly;
 
     private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/results";
+    public static StrandedGameStatus instance;
 
 
+    void Start()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
     /// <summary>
     /// This is for initialization based on the minigame difficulty
     /// </summary>

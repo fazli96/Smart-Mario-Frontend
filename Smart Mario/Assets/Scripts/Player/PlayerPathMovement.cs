@@ -8,7 +8,7 @@ using System;
 /// This class is for the movement of the player on the board for minigame Stranded.
 /// The movement of the player follows the path on the board.
 /// </summary>
-public class FollowThePath : MonoBehaviour {
+public class PlayerPathMovement : MonoBehaviour {
 
     //networking
     public bool isLocalPlayer = true;
@@ -34,7 +34,7 @@ public class FollowThePath : MonoBehaviour {
     private void Start () {
 
         if (GameObject.Find("NetworkManager") == null)
-            waypoints = GameControl.instance.GetWayPoints();
+            waypoints = StrandedGameManager.instance.GetWayPoints();
         else
             waypoints = StrandedMultiplayerGameManager.instance.GetWayPoints();
         transform.position = waypoints[waypointIndex].transform.position;

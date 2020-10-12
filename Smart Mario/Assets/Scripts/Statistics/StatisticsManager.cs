@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatisticsController : MonoBehaviour
+public class StatisticsManager : MonoBehaviour
 {
-    public static StatisticsController instance;
+    public static StatisticsManager instance;
     private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/results";
 
     public Dropdown minigameDropdown;

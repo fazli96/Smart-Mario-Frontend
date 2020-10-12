@@ -28,7 +28,7 @@ public class RollTheDiceMultiplayer : MonoBehaviour
         if (!StrandedMultiplayerGameManager.levelComplete && coroutineAllowed
             && !StrandedMultiplayerGameManager.GetMoveAllowed() && !StrandedMultiplayerGameManager.qnEncountered
             && StrandedMultiplayerGameManager.currentTurn)
-            StartCoroutine("RollTheDice");
+            StartCoroutine("RollDice");
         //GetComponent<AudioSource>().Play();
     }
     /// <summary>
@@ -36,7 +36,7 @@ public class RollTheDiceMultiplayer : MonoBehaviour
     /// Waits for the dice to finish rolling before the player moves
     /// </summary>
     /// <returns>wait for seconds</returns>
-    private IEnumerator RollTheDice()
+    private IEnumerator RollDice()
     {
         coroutineAllowed = false;
         int randomDiceSide = 0;

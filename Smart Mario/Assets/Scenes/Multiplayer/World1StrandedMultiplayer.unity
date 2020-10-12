@@ -1691,7 +1691,7 @@ GameObject:
   - component: {fileID: 300233230}
   - component: {fileID: 300233229}
   m_Layer: 0
-  m_Name: QuestionController
+  m_Name: StrandedQuestionManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1706,7 +1706,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 300233228}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bafb07ed527ed704697ab077ddec7cef, type: 3}
+  m_Script: {fileID: 11500000, guid: 147d8dfe8b8b83e4ca753d0973f2cbc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   timer: {fileID: 1307703278}

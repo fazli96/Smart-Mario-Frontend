@@ -142,7 +142,7 @@ public class APICall
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
         Debug.Log(convertedStr);
-        StatisticsController.instance.GetComponent<StatisticsController>().ResultsRetrieved(convertedStr);
+        StatisticsManager.instance.GetComponent<StatisticsManager>().ResultsRetrieved(convertedStr);
     }
     /// <summary>
     /// Creates an IEnumerator for coroutines that is used for retrieving game questions for Student via a Get request
@@ -168,14 +168,15 @@ public class APICall
             Debug.Log("Success in finding QuestionManager!");
             questionManager.QuestionsRetrieved(convertedStr);
         }
-        else if (GameObject.Find("QuestionController") != null)
+        else if (GameObject.Find("StrandedQuestionManager") != null)
         {
-            QuestionController questionController = GameObject.Find("QuestionController").GetComponent<QuestionController>();
-            questionController.QuestionsRetrieved(convertedStr);
-            Debug.Log("Success in finding QuestionController!");
+            StrandedQuestionManager.instance.QuestionsRetrieved(convertedStr);
+            Debug.Log("Success in finding StrandedQuestionManager!");
         }
-        
-        Debug.Log("Unable to find questionController");
+        else
+        {
+            Debug.Log("Unable to find questionManager");
+        }
     }
 
     public IEnumerator StudentResultGetRequest(string studentID)

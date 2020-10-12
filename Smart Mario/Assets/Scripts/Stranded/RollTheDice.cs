@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// This class is for what happens when player rolls the dice
 /// </summary>
-public class Dice : MonoBehaviour
+public class RollTheDice : MonoBehaviour
 {
 
     private Sprite[] diceSides;
@@ -25,9 +25,9 @@ public class Dice : MonoBehaviour
     /// </summary>
     private void OnMouseDown()
     {
-        if (!GameControl.levelComplete && coroutineAllowed 
-            && !GameControl.GetMoveAllowed() && !GameControl.qnEncountered)
-            StartCoroutine("RollTheDice");
+        if (!StrandedGameManager.levelComplete && coroutineAllowed 
+            && !StrandedGameManager.GetMoveAllowed() && !StrandedGameManager.qnEncountered)
+            StartCoroutine("RollDice");
             //GetComponent<AudioSource>().Play();
     }
     /// <summary>
@@ -35,7 +35,7 @@ public class Dice : MonoBehaviour
     /// Waits for the dice to finish rolling before the player moves
     /// </summary>
     /// <returns>wait for seconds</returns>
-    private IEnumerator RollTheDice()
+    private IEnumerator RollDice()
     {
         coroutineAllowed = false;
         int randomDiceSide = 0;
@@ -47,10 +47,10 @@ public class Dice : MonoBehaviour
         }
         yield return new WaitForSeconds(0.1f);
 
-        GameControl.diceSideThrown = randomDiceSide + 1;
+        StrandedGameManager.diceSideThrown = randomDiceSide + 1;
         //randomDiceSide = 5 for six;
 
-        GameControl.MovePlayer();
+        StrandedGameManager.MovePlayer();
 
         coroutineAllowed = true;
 

@@ -25,8 +25,6 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
     public GameObject knightPrefab;
     public GameObject spawnPoint;
 
-    private static QuestionController questionController;
-
     public static int diceSideThrown = 0;
     public static int playerStartWaypoint = 0;
     public static bool qnEncountered = false;
@@ -54,12 +52,10 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
         levelComplete = false;
         questionBarrels.Clear();
 
-        questionController = GameObject.Find("QuestionController").GetComponent<QuestionController>();
-
         player = SpawnPlayer(PlayerPrefs.GetString("Selected Player", "Witch"));
-        player.GetComponent<FollowThePath>().moveAllowed = false;
-        player.GetComponent<FollowThePath>().isLocalPlayer = true;
-        player.GetComponent<FollowThePath>().multiplayer = true;
+        player.GetComponent<PlayerPathMovement>().moveAllowed = false;
+        player.GetComponent<PlayerPathMovement>().isLocalPlayer = true;
+        player.GetComponent<PlayerPathMovement>().multiplayer = true;
         Transform t = player.transform.Find("Player Name Canvas");
         Transform t1 = t.transform.Find("Player Name");
         Text playerName = t1.GetComponent<Text>();
@@ -67,14 +63,14 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
         player.name = NetworkManager.playerName;
         if (NetworkManager.isOwner)
         {
-            player.GetComponent<FollowThePath>().isOwner = true;
+            player.GetComponent<PlayerPathMovement>().isOwner = true;
             SpawnQuestionBarrels();
             dice.SetActive(true);
         }
         else
             dice.SetActive(false);
         
-        questionController.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
+        StrandedQuestionManager.instance.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
         StrandedMultiplayerGameStatus.instance.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
 
     }
@@ -84,7 +80,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
     void LateUpdate()
     {
        
-        if (player.GetComponent<FollowThePath>().waypointIndex >
+        if (player.GetComponent<PlayerPathMovement>().waypointIndex >
             playerStartWaypoint + diceSideThrown && !qnEncountered)
         {
             foreach (GameObject questionBarrel in questionBarrels)
@@ -95,19 +91,19 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
                     leaveGameButton.SetActive(false);
                     Debug.Log("qnEncountered");
                     questionBarrels.Remove(questionBarrel);
-                    player.GetComponent<FollowThePath>().moveAllowed = false;
-                    questionController.AskQuestion();
+                    player.GetComponent<PlayerPathMovement>().moveAllowed = false;
+                    StrandedQuestionManager.instance.AskQuestion();
                 }
             }
 
-            player.GetComponent<FollowThePath>().moveAllowed = false;
+            player.GetComponent<PlayerPathMovement>().moveAllowed = false;
 
             //Debug.Log(playerStartWaypoint+diceSideThrown);
             //Teleport to another waypoint
             /*if(playerStartWaypoint+diceSideThrown == 12){
-                player.GetComponent<FollowThePath>().transform.position = player.GetComponent<FollowThePath>().waypoints[45].transform.position;
-                player.GetComponent<FollowThePath>().waypointIndex = 45;
-                player.GetComponent<FollowThePath>().waypointIndex +=1;
+                player.GetComponent<PlayerPathMovement>().transform.position = player.GetComponent<PlayerPathMovement>().waypoints[45].transform.position;
+                player.GetComponent<PlayerPathMovement>().waypointIndex = 45;
+                player.GetComponent<PlayerPathMovement>().waypointIndex +=1;
                 MovePlayer();
             }*/
 
@@ -118,7 +114,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
                 leaveGameButton.SetActive(true);
                 currentTurn = false;
                 dice.SetActive(false);
-                playerStartWaypoint = player.GetComponent<FollowThePath>().waypointIndex - 1;
+                playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
                 NetworkManager.instance.GetComponent<NetworkManager>().CommandEndTurn();
             }
             //
@@ -128,7 +124,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
 
 
 
-        if (player.GetComponent<FollowThePath>().waypointIndex == waypoints.Count && !levelComplete)
+        if (player.GetComponent<PlayerPathMovement>().waypointIndex == waypoints.Count && !levelComplete)
         {
             print("levelComplete" + waypoints.Count);
             NetworkManager.instance.GetComponent<NetworkManager>().CommandEndGame();
@@ -141,7 +137,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
         levelComplete = true;
         leaveGameButton.SetActive(false);
         HideDice();
-        player.GetComponent<FollowThePath>().moveAllowed = false;
+        player.GetComponent<PlayerPathMovement>().moveAllowed = false;
         if (StrandedMultiplayerGameStatus.instance.GameComplete())
         {
             resultsPanel.gameObject.SetActive(true);
@@ -154,7 +150,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
     /// </summary>
     public static void MovePlayer()
     {
-        player.GetComponent<FollowThePath>().moveAllowed = true;
+        player.GetComponent<PlayerPathMovement>().moveAllowed = true;
     }
 
     /// <summary>
@@ -163,7 +159,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
     /// <returns></returns>
     public static bool GetMoveAllowed()
     {
-        return player.GetComponent<FollowThePath>().moveAllowed;
+        return player.GetComponent<PlayerPathMovement>().moveAllowed;
     }
 
     /// <summary>

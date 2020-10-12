@@ -373,7 +373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pausePanel: {fileID: 275912297}
-  rulesPanel: {fileID: 0}
+  rulesPanel: {fileID: 629230842}
 --- !u!114 &82480291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1193,7 +1193,7 @@ GameObject:
   - component: {fileID: 333304682}
   - component: {fileID: 333304681}
   m_Layer: 0
-  m_Name: GameStatus
+  m_Name: StrandedGameStatus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2863,6 +2863,11 @@ PrefabInstance:
 --- !u!224 &629230841 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7285327053239051440, guid: 7f18a3d9bf9f4f9458a297cd4f43ed45, type: 3}
+  m_PrefabInstance: {fileID: 629230840}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &629230842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 578512744937876287, guid: 7f18a3d9bf9f4f9458a297cd4f43ed45, type: 3}
   m_PrefabInstance: {fileID: 629230840}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &632314185
@@ -38997,7 +39002,7 @@ GameObject:
   - component: {fileID: 1243678730}
   - component: {fileID: 1243678729}
   m_Layer: 0
-  m_Name: QuestionController
+  m_Name: StrandedQuestionManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39012,7 +39017,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1243678728}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bafb07ed527ed704697ab077ddec7cef, type: 3}
+  m_Script: {fileID: 11500000, guid: 147d8dfe8b8b83e4ca753d0973f2cbc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   timer: {fileID: 1781090827}
@@ -42777,7 +42782,7 @@ GameObject:
   - component: {fileID: 1993210267}
   - component: {fileID: 1993210266}
   m_Layer: 0
-  m_Name: GameControl
+  m_Name: StrandedGameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

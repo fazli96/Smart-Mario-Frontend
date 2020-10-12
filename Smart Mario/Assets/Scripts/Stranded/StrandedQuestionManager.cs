@@ -12,7 +12,7 @@ using UnityEngine.UI;
 /// <summary>
 /// This class is used for retrieving and managing the questions given to the player
 /// </summary>
-public class QuestionController : MonoBehaviour  
+public class StrandedQuestionManager : MonoBehaviour  
 {
     public Text timer;
     public Text questionTitle;
@@ -24,30 +24,44 @@ public class QuestionController : MonoBehaviour
     public GameObject wrongPanel; 
     public GameObject correctPanel; 
     public GameObject tooLatePanel;
-    private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/questions/mcqtheory"; 
+    private static readonly string theoryUrl = "https://smart-mario-backend-1.herokuapp.com/api/questions/mcqtheory";
+    private static readonly string codeUrl = "https://smart-mario-backend-1.herokuapp.com/api/questions/mcqcode";
 
     private Coroutine coroutine;
-    private static GameStatus gameStatus;
     private QuestionStatus qnStatus = QuestionStatus.CORRECT;
 
-    public GameStatus GameStatus { get { return gameStatus; } }
+    public static StrandedQuestionManager instance;
 
+    private static int difficulty = 1;
     private static int timeLimit = 20;
     private static List<Question> questionList = new List<Question>();
 
     /// <summary>
     /// This is called before the first frame update
     /// </summary>
-    void Awake()
+    void Start()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
         questionPanel.SetActive(false);
         wrongPanel.SetActive(false);
         correctPanel.SetActive(false);
         tooLatePanel.SetActive(false);
-        if (GameObject.Find("GameStatus") != null)
-            gameStatus = GameObject.Find("GameStatus").GetComponent<GameStatus>();
         timeLimit = 20;
         questionList.Clear();
+        string difficultyStr = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
+        if (difficultyStr.Equals("Easy"))
+            difficulty = 1;
+        else if (difficultyStr.Equals("Medium"))
+            difficulty = 2;
+        else
+            difficulty = 3;
 
     }
 
@@ -73,7 +87,10 @@ public class QuestionController : MonoBehaviour
         }
         Debug.LogError("something");
         APICall apiCall = APICall.getAPICall();
-        StartCoroutine(apiCall.AllQuestionsGetRequest(url));
+        if (PlayerPrefs.GetInt("World", 1) == 1)
+            StartCoroutine(apiCall.AllQuestionsGetRequest(theoryUrl));
+        else
+            StartCoroutine(apiCall.AllQuestionsGetRequest(codeUrl));
     }
 
     /// <summary>
@@ -130,7 +147,8 @@ public class QuestionController : MonoBehaviour
     /// <returns>Wait for Seconds</returns>
     private IEnumerator Countdown()
     {
-        NetworkManager.instance.CommandAnsweringQuestion();
+        if (GameObject.Find("NetworkManager") != null)
+            NetworkManager.instance.CommandAnsweringQuestion();
         questionPanel.SetActive(true);
         int counter = timeLimit;
         while (counter > 0)
@@ -163,9 +181,9 @@ public class QuestionController : MonoBehaviour
         else
         {
             if (qnStatus == QuestionStatus.CORRECT)
-                gameStatus.ScoreChange(500);
+                StrandedGameStatus.instance.ScoreChange(500);
             else
-                gameStatus.ScoreChange(-500);
+                StrandedGameStatus.instance.ScoreChange(-500);
         }
 
         StopCoroutine(coroutine);
@@ -201,7 +219,7 @@ public class QuestionController : MonoBehaviour
         if (GameObject.Find("StrandedMultiplayerGameManager") != null)
             StrandedMultiplayerGameManager.qnEncountered = false;
         else
-            GameControl.qnEncountered = false;
+            StrandedGameManager.qnEncountered = false;
     }
 
     /// <summary>

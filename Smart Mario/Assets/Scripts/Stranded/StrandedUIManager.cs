@@ -7,7 +7,7 @@ using UnityEngine.UI;
 /// <summary>
 /// This class manages the UI elements present when the player is in Minigame Stranded.
 /// </summary>
-public class Minigame1_UIManager : MonoBehaviour
+public class StrandedUIManager : MonoBehaviour
 {
 
     public GameObject pausePanel;
