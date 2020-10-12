@@ -75,10 +75,12 @@ public class questionManager : MonoBehaviour
             if (qOrA == 1)
             {
                 qnsOne.GetComponent<UnityEngine.UI.Text>().text = questionList[index]["Question"].ToString();
+                qnsOne.GetComponent<UnityEngine.UI.Text>().color = Color.red;
             }
             else
             {
                 qnsOne.GetComponent<UnityEngine.UI.Text>().text = questionList[index]["Answer"].ToString();
+                qnsOne.GetComponent<UnityEngine.UI.Text>().color = Color.blue;
             }
         }
         else if (choice == 2)
@@ -89,12 +91,15 @@ public class questionManager : MonoBehaviour
             if (qOrA == 1)
             {
                 qnsTwo.GetComponent<UnityEngine.UI.Text>().text = questionList[index]["Question"].ToString();
+                qnsTwo.GetComponent<UnityEngine.UI.Text>().color = Color.red;
             }
             else
             {
                 qnsTwo.GetComponent<UnityEngine.UI.Text>().text = questionList[index]["Answer"].ToString();
+                qnsTwo.GetComponent<UnityEngine.UI.Text>().color = Color.blue;
             }
         }
+        
 
     }
     /// <summary>

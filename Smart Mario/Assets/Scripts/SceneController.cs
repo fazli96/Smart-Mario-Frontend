@@ -251,7 +251,7 @@ public class SceneController : MonoBehaviour
     /// </summary>
     public void ToWorld1Minigame2Level1()
     {
-        SceneManager.LoadScene("Matching Cards");
+        SceneManager.LoadScene("World1_Minigame2_Level1");
     }
 
     /// <summary>
@@ -259,7 +259,7 @@ public class SceneController : MonoBehaviour
     /// </summary>
     public void ToWorld1Minigame2Level2()
     {
-        
+        SceneManager.LoadScene("World1_Minigame2_Level2");
     }
 
     /// <summary>
@@ -267,7 +267,7 @@ public class SceneController : MonoBehaviour
     /// </summary>
     public void ToWorld1Minigame2Level3()
     {
-        
+        SceneManager.LoadScene("World1_Minigame2_Level3");
     }
 
     /// <summary>
@@ -275,7 +275,7 @@ public class SceneController : MonoBehaviour
     /// </summary>
     public void ToWorld1Minigame2Level4()
     {
-        
+        SceneManager.LoadScene("World1_Minigame2_Level4");
     }
 
     /// <summary>
@@ -283,7 +283,7 @@ public class SceneController : MonoBehaviour
     /// </summary>
     public void ToWorld1Minigame2Level5()
     {
-        
+        SceneManager.LoadScene("World1_Minigame2_Level5");
     }
 
     #endregion

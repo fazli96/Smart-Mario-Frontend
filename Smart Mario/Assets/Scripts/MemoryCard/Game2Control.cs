@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -17,7 +16,7 @@ public class Game2Control : MonoBehaviour
     public GameObject finishText;
     public GameObject overlay;
     
-    public int scoreValue = 0;
+    public int scoreValue ;
     /// <summary>
     /// Called at the start of script initialisation
     /// </summary>
@@ -25,7 +24,8 @@ public class Game2Control : MonoBehaviour
     {
         finishText.SetActive(false);
         overlay.SetActive(false);
-        
+        scoreValue = cardManager.GetComponent<CardsManager>().pairs;
+
     }
     /// <summary>
     /// Checks the state of the game whether two cards have been flipped up
@@ -97,14 +97,13 @@ public class Game2Control : MonoBehaviour
         {
             visibleFaces[0] = -1;
             visibleFaces[1] = -2;
-            int pairs = (cardManager.GetComponent<CardsManager>().pairs) - 1;
-            print(pairs);
-            if (pairs == 0)
+            scoreValue -= 1;
+            Debug.Log("pairs " + scoreValue);
+            if (scoreValue == 0)
             {
                 finishText.SetActive(true);
                 overlay.SetActive(true);
             }
-            scoreValue += 1; 
             
             return true;
         }

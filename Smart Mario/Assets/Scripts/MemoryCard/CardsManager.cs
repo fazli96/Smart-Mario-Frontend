@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 
@@ -21,26 +20,40 @@ public class CardsManager: MonoBehaviour
     /// Called at the initialisation of this script
     /// Instantiates the appropriate number of cards and at the right coordinates in accordance to the difficulty level
     /// </summary>
-    public void Start()
+    private void Awake()
     {
         faceindexes.Clear();
         pairs = 0;
         string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
-        switch (difficulty)
+        int level = PlayerPrefs.GetInt("MinigameLevel", 1);
+        level = 5;  //hardcode level here
+        switch (level)
         {
-            case "Easy":
+            case 1:
                 pairs = 4;
                 break;
-            case "Medium":
+            case 2:
                 pairs = 6;
                 break;
-            case "Hard":
+            case 3:
                 pairs = 9;
+                break;
+            case 4:
+                pairs = 12;
+                break;
+            case 5:
+                pairs = 12;
                 break;
             default:
                 pairs = 4;
                 break;
         }
+        //switch (difficulty)
+        //{
+        //    case "Easy":
+        //    case "Medium":
+        //    case "Hard":
+        //}
         for (int k = 0; k < 2; k++)
         {
             for (int i = 0; i < pairs; i++)
@@ -66,7 +79,13 @@ public class CardsManager: MonoBehaviour
                 yPosition = 8.5f;
                 xPosition = -19.5f;
             }
+            else if (pairs == 12)
+            {
+                yPosition = 10.5f;
+                xPosition = -19.5f;
+            }
         }
+        Debug.Log("init pairs " + pairs);
         for (int j = 0; j < pairs*2; j++)
         {
             shuffleNum = rnd.Next(0, faceindexes.Count);      //randomising faceindex
@@ -118,6 +137,24 @@ public class CardsManager: MonoBehaviour
                     xPosition = -19.5f;
                 }
             }
+            else if (pairs == 12)
+            {
+                if (j == 5)
+                {
+                    yPosition = 5.5f;
+                    xPosition = -19.5f;
+                }
+                else if (j == 11)
+                {
+                    yPosition = 0.5f;
+                    xPosition = -19.5f;
+                }
+                else if (j == 17)
+                {
+                    yPosition = -4.5f;
+                    xPosition = -19.5f;
+                }
+            }
 
         }
         faceindexes.Clear();
@@ -139,4 +176,6 @@ public class CardsManager: MonoBehaviour
             UnityEngine.Debug.Log(i.GetComponent<CardControl>().faceIndex);
         }
     }
+    
+ 
 }
