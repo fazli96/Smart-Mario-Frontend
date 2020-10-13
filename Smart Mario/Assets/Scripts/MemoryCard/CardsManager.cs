@@ -26,7 +26,7 @@ public class CardsManager: MonoBehaviour
         pairs = 0;
         string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
         int level = PlayerPrefs.GetInt("MinigameLevel", 1);
-        level = 5;  //hardcode level here
+        level = 1;  //hardcode level here
         switch (level)
         {
             case 1:
@@ -172,6 +172,17 @@ public class CardsManager: MonoBehaviour
             if (i.GetComponent<CardControl>().faceIndex == index)
             {
                 i.GetComponent<CardControl>().Change();
+            }
+            UnityEngine.Debug.Log(i.GetComponent<CardControl>().faceIndex);
+        }
+    }
+    public void Close(int index)
+    {
+        foreach (var i in cards)
+        {
+            if (i.GetComponent<CardControl>().faceIndex == index)
+            {
+                i.GetComponent<CardControl>().Hide();
             }
             UnityEngine.Debug.Log(i.GetComponent<CardControl>().faceIndex);
         }

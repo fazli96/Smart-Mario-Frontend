@@ -12,19 +12,38 @@ public class Game2Control : MonoBehaviour
     GameObject questionManager;
     GameObject cardManager;
     GameObject canvas;
+    public bool paused;
     int[] visibleFaces = { -1, -2 };
     public GameObject finishText;
     public GameObject overlay;
+    public GameObject time;
+    public GameObject qns;
     
-    public int scoreValue ;
+    public int scoreValue;
     /// <summary>
     /// Called at the start of script initialisation
     /// </summary>
-    private void Start()
+    void Awake()
+    {
+        questionManager = GameObject.Find("QuestionManager");
+        cardManager = GameObject.Find("CardsManager");
+        canvas = GameObject.Find("Canvas");
+    }
+    void Start()
     {
         finishText.SetActive(false);
         overlay.SetActive(false);
+        qns.SetActive(false);
+        time.SetActive(false);
         scoreValue = cardManager.GetComponent<CardsManager>().pairs;
+        paused = false;
+        MatchingGameStatus.instance.Initialize();
+    }
+    public void changePauseState(bool p)
+    {
+        paused = p;
+        MatchingGameStatus.instance.Pause(p);
+        Debug.Log("Paused " + p);
 
     }
     /// <summary>
@@ -81,11 +100,22 @@ public class Game2Control : MonoBehaviour
     /// <param name="index"></param>
     public void ShowMatch(int index)
     {
+        canvas.GetComponent<CanvasControl>().ShowMatch();
+        StartCoroutine(RightCards(index));
+    }
+    IEnumerator RightCards(int index)
+    {
+        Debug.Log(Time.time);
+        yield return new WaitForSeconds(2);
+        Debug.Log(Time.time);
         cardManager.GetComponent<CardsManager>().faceindexes.Add(index);
         cardManager.GetComponent<CardsManager>().Open(index);
-        canvas.GetComponent<CanvasControl>().ShowMatch();
-        questionManager.GetComponent<questionManager>().hideQuestion(1, true );
-        questionManager.GetComponent<questionManager>().hideQuestion(2, true );
+        questionManager.GetComponent<questionManager>().hideQuestion(1, true);
+        questionManager.GetComponent<questionManager>().hideQuestion(2, true);
+        if (scoreValue == 0)
+        {
+            MatchingGameStatus.instance.WinLevel();
+        }
     }
    /// <summary>
    /// Checks whether two visible faces are matching or not
@@ -98,28 +128,45 @@ public class Game2Control : MonoBehaviour
             visibleFaces[0] = -1;
             visibleFaces[1] = -2;
             scoreValue -= 1;
+            MatchingGameStatus.instance.ScoreIncrease();
             Debug.Log("pairs " + scoreValue);
-            if (scoreValue == 0)
-            {
-                finishText.SetActive(true);
-                overlay.SetActive(true);
-            }
-            
             return true;
         }
         else
         {
+            StartCoroutine(WrongCards());
+            
             return false;
         }
     }
-    /// <summary>
-    /// Called before the first frame update
-    /// </summary>
-    private void Awake()
+    IEnumerator WrongCards()
     {
-        questionManager = GameObject.Find("QuestionManager");
-        cardManager = GameObject.Find("CardsManager");
-        canvas = GameObject.Find("Canvas");
+        Debug.Log(Time.time);
+        yield return new WaitForSeconds(2);
+        Debug.Log(Time.time);
+        if (TwoCards())
+        {
+            MatchingGameStatus.instance.QnsAttemptIncrease();
+            foreach (int index in visibleFaces)
+            {
+                RemoveVisibleFace(index);
+                cardManager.GetComponent<CardsManager>().Close(index);
+            }
+        }
     }
+
+    public void Win(float t, int correct, int attempt)
+    {
+        float accuracy = ((float)correct / (float)attempt) *100;
+        Debug.Log(t + " " + correct + " " + attempt + " " + accuracy);
+        qns.GetComponent<UnityEngine.UI.Text>().text = "Accuracy: " + accuracy.ToString("F2") +"%";
+        time.GetComponent<UnityEngine.UI.Text>().text = "Time taken: " + t.ToString("F2")+ " sec";
+        finishText.SetActive(true);
+        overlay.SetActive(true);
+        time.SetActive(true);
+        qns.SetActive(true);
+
+    }
+    
 
 }

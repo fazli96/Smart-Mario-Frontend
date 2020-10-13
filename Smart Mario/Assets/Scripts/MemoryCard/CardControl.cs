@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// This class controls the behavior of a specific card in the game
@@ -22,7 +23,7 @@ public class CardControl : MonoBehaviour
     /// </summary>
     public void OnMouseDown()       //detecting mouseclick
     {
-        if (matched == false && !cardsManager.GetComponent<CardsManager>().faceindexes.Contains(faceIndex)) //not matched and not flipped up
+        if (matched == false && !cardsManager.GetComponent<CardsManager>().faceindexes.Contains(faceIndex) /*&& EventSystem.current.IsPointerOverGameObject() == false*/ && !GameControl.GetComponent<Game2Control>().paused) //not matched and not flipped up
         {
             if (spriteRenderer.sprite == back)    //check if its back of the card
             {
@@ -53,6 +54,10 @@ public class CardControl : MonoBehaviour
     public void Change()
     {
         spriteRenderer.sprite = faces[faceIndex];       //reveal the true sprite
+    }
+    public void Hide()
+    {
+        spriteRenderer.sprite = back;
     }
     /// <summary>
     /// This is called before the first frame update

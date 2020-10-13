@@ -24,6 +24,6 @@ public class ScoreManager: MonoBehaviour
    /// </summary>
     void Update()
     {
-        score.text = "Score : " + GameControl.GetComponent<Game2Control>().scoreValue;
+        score.text = "Pairs left: " + GameControl.GetComponent<Game2Control>().scoreValue;
     }
 }

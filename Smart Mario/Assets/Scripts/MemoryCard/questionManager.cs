@@ -16,7 +16,8 @@ public class questionManager : MonoBehaviour
     public GameObject qnsTwo;
     public GameObject panelOne;
     public GameObject panelTwo;
-    private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/questions/shorttheory";
+    private static readonly string theoryUrl = "https://smart-mario-backend-1.herokuapp.com/api/questions/shorttheory";
+    private static readonly string codeUrl = "https://smart-mario-backend-1.herokuapp.com/api/questions/mcqcode";
     private static List<JObject> questionList = new List<JObject>();
 
     /// <summary>
@@ -31,7 +32,10 @@ public class questionManager : MonoBehaviour
         panelTwo.SetActive(false);
         questionList.Clear();
         APICall apiCall = APICall.getAPICall();
-        StartCoroutine(apiCall.AllQuestionsGetRequest(url));
+        if (PlayerPrefs.GetInt("World", 1) == 1)
+            StartCoroutine(apiCall.AllQuestionsGetRequest(theoryUrl));
+        else
+            StartCoroutine(apiCall.AllQuestionsGetRequest(codeUrl));
 
     }
     /// <summary>

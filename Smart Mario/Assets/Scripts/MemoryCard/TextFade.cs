@@ -30,13 +30,13 @@ public class TextFade : MonoBehaviour
     IEnumerator FadeImage(double t, Text i)
     {
         i.color = new Color(i.color.r, i.color.g, i.color.b, 0);
-        while (i.color.a < 1.0f)
+        while (i.color.a < 0.5f)
         {
             i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a + (float)(Time.deltaTime / t));
             rT.Translate(Vector3.up * (float)(Time.deltaTime / t));
             yield return null;
         }
-        yield return new WaitForSeconds((float)0.6);
+        yield return new WaitForSeconds((float)0.7);
         while (i.color.a > 0.0f)
         {
             i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a - (float)(Time.deltaTime / t));

@@ -3040,6 +3040,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   matchText: {fileID: 8968059394393405072, guid: 652b7c6893d165f46b53a6ba4a7bb31d, type: 3}
+  pausePanel: {fileID: 4541136305001630665, guid: 372125fbe6ab9ed448e6c0e61537b4fb, type: 3}
+  rulesPanel: {fileID: 578512744937876287, guid: 638709f6da3009b46ad460fef093fa36, type: 3}
 --- !u!1 &984086285
 GameObject:
   m_ObjectHideFlags: 0
