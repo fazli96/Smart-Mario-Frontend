@@ -171,7 +171,7 @@ public class SceneController : MonoBehaviour
     /// <summary>
     /// This is to load the page for all the tasks the teacher has assigned to the students
     /// </summary>
-    public void ToCheckAssignedTasksScreen()
+    public void ToViewAssignedTasksScreen()
     {
         SceneManager.LoadScene("ViewAssignedTasks");
     }

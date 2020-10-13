@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -28,10 +31,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f3a9d535-d384-499f-a6fc-a284b0742246" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Smart Mario/Assets/Scenes/MainMenu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Smart Mario/Assets/Scenes/MainMenu.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Smart Mario/Assets/Scenes/Start.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Smart Mario/Assets/Scenes/Start.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Smart Mario/Assets/Scripts/Entities/Results.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Smart Mario/Assets/Scripts/Entities/Results.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Smart Mario/Assets/Scripts/TaskCompletionCell.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Smart Mario/Assets/Scripts/TaskCompletionCell.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Smart Mario/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Smart Mario/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Smart Mario/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Smart Mario/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Smart Mario/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Smart Mario/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Smart Mario/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Smart Mario/ProjectSettings/ProjectVersion.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Smart Mario/ProjectSettings/QualitySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Smart Mario/ProjectSettings/QualitySettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,9 +69,9 @@
     <property name="settings.editor.selected.configurable" value="CPPToolchains" />
   </component>
   <component name="RunManager">
-    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
   </component>
@@ -80,6 +86,7 @@
       <workItem from="1600234995338" duration="73000" />
       <workItem from="1601364405964" duration="62000" />
       <workItem from="1601364480549" duration="1355000" />
+      <workItem from="1602592959741" duration="806000" />
     </task>
     <servers />
   </component>
@@ -97,5 +104,15 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="552" y="161" key="#Plugins" timestamp="1602593108359">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="161" key="#Plugins/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1602593108359" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1602593120056">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/-1920.0.1536.832/0.0.1920.1040@0.0.1920.1040" timestamp="1602593120056" />
   </component>
 </project>

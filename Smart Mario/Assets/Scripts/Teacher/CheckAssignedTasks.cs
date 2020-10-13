@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class CheckAssignedTasks : MonoBehaviour
 {
-    private SceneController scene;
+    //Singleton
     private static CheckAssignedTasks instance = null;
+
+    private SceneController scene;
     public Button backButton;
     public Text GameIDText;
     public Text DifficultyText;
@@ -21,8 +23,9 @@ public class CheckAssignedTasks : MonoBehaviour
     {
         if (instance == null)
         {
-            GameObject go = new GameObject();
-            instance = go.AddComponent<CheckAssignedTasks>();
+            instance = new CheckAssignedTasks();
+            // GameObject go = new GameObject();
+            // instance = go.AddComponent<CheckAssignedTasks>();
         }
         return instance;
     }
