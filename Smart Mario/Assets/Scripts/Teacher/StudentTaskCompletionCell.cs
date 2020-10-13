@@ -14,20 +14,11 @@ public class StudentTaskCompletionCell : MonoBehaviour
     public Text CellCompletionStatusText;
     public StudentScrollView ScrollView;
 
-    public void SetName(string name)
+    public void SetCell(string name, bool completionStatus)
     {
         Name = name;
         CellNameText.text = name;
-    }
-
-    public void SetCompletionStatus(bool completionStatus)
-    {
         CompletionStatus = completionStatus;
         CellCompletionStatusText.text = completionStatus ? "Completed" : "Incomplete";
-    }
-
-    public void ButtonClick()
-    {
-        
     }
 }

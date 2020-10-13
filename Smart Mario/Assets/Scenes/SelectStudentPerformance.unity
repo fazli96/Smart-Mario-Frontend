@@ -205,8 +205,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1355195944}
-        m_TargetAssemblyTypeName: SelectStudentScreen, Assembly-CSharp
+      - m_Target: {fileID: 1574804611}
+        m_TargetAssemblyTypeName: SelectStudentManager, Assembly-CSharp
         m_MethodName: BackToTeacherMenu
         m_Mode: 1
         m_Arguments:
@@ -541,8 +541,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 240}
-  m_SizeDelta: {x: 24, y: 240}
+  m_AnchoredPosition: {x: 0, y: 235}
+  m_SizeDelta: {x: 24, y: 235}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &616805323
 MonoBehaviour:
@@ -787,8 +787,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1355195944}
-        m_TargetAssemblyTypeName: SelectStudentScreen, Assembly-CSharp
+      - m_Target: {fileID: 1574804611}
+        m_TargetAssemblyTypeName: SelectStudentManager, Assembly-CSharp
         m_MethodName: ExportCSV
         m_Mode: 1
         m_Arguments:
@@ -849,7 +849,7 @@ GameObject:
   - component: {fileID: 832923033}
   - component: {fileID: 832923032}
   m_Layer: 5
-  m_Name: ErrorMessage
+  m_Name: NoStudentsErrorMessage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -871,7 +871,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -40}
+  m_AnchoredPosition: {x: 0, y: 95}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &832923032
@@ -994,6 +994,85 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 835357340}
+  m_CullTransparentMesh: 0
+--- !u!1 &1020304900
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1020304901}
+  - component: {fileID: 1020304903}
+  - component: {fileID: 1020304902}
+  m_Layer: 5
+  m_Name: CSVErrorMessage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1020304901
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020304900}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1574804610}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -215}
+  m_SizeDelta: {x: 500, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1020304902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020304900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
+    m_FontSize: 26
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 40
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 
+--- !u!222 &1020304903
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1020304900}
   m_CullTransparentMesh: 0
 --- !u!1 &1060192934
 GameObject:
@@ -1390,7 +1469,6 @@ GameObject:
   - component: {fileID: 1355195942}
   - component: {fileID: 1355195941}
   - component: {fileID: 1355195940}
-  - component: {fileID: 1355195944}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1479,20 +1557,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1355195944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1355195939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 861cd30d07745a448a07a1012801d9d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  exportCSVButton: {fileID: 830817271}
-  backToTeacherMenuButton: {fileID: 29044880}
 --- !u!1 &1435601582
 GameObject:
   m_ObjectHideFlags: 0
@@ -1554,7 +1618,7 @@ MonoBehaviour:
   m_CellSize: {x: 97.4, y: 60}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
-  m_ConstraintCount: 6
+  m_ConstraintCount: 5
 --- !u!114 &1435601585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1578,6 +1642,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1574804610}
+  - component: {fileID: 1574804611}
   m_Layer: 5
   m_Name: Performances
   m_TagString: Untagged
@@ -1600,6 +1665,7 @@ RectTransform:
   - {fileID: 2004391583}
   - {fileID: 830817270}
   - {fileID: 29044879}
+  - {fileID: 1020304901}
   m_Father: {fileID: 1355195943}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1608,6 +1674,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1574804611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574804609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 861cd30d07745a448a07a1012801d9d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exportCSVButton: {fileID: 830817271}
+  backToTeacherMenuButton: {fileID: 29044880}
+  CSVerrorMessage: {fileID: 1020304902}
 --- !u!1 &1733103747
 GameObject:
   m_ObjectHideFlags: 0
@@ -1842,7 +1923,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 240}
+  m_SizeDelta: {x: 0, y: 235}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2004391584
 MonoBehaviour:

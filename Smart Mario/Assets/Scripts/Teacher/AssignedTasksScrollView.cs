@@ -20,42 +20,35 @@ public class AssignedTasksScrollView : MonoBehaviour
     {
         scene = SceneController.GetSceneController();
 
-        // Get Logic of whether task had been assigned or not.
-        TaskisAssigned = false;
+        DisplayMessage("");
 
-        if (TaskisAssigned)
+        StudentList.Add(new StudentTaskCell("Alan", true));
+        StudentList.Add(new StudentTaskCell("Amy"));
+        StudentList.Add(new StudentTaskCell("Brian"));
+        StudentList.Add(new StudentTaskCell("Carrie"));
+        StudentList.Add(new StudentTaskCell("David", true));
+        StudentList.Add(new StudentTaskCell("Joe"));
+        StudentList.Add(new StudentTaskCell("Jason"));
+        StudentList.Add(new StudentTaskCell("Michelle", true));
+        StudentList.Add(new StudentTaskCell("Stephanie"));
+        StudentList.Add(new StudentTaskCell("Zoe"));
+        StudentList.Add(new StudentTaskCell("Alan2", true));
+        StudentList.Add(new StudentTaskCell("Amy2"));
+        StudentList.Add(new StudentTaskCell("Brian2"));
+        StudentList.Add(new StudentTaskCell("Carrie2", true));
+        StudentList.Add(new StudentTaskCell("David2"));
+        StudentList.Add(new StudentTaskCell("Joe2"));
+        StudentList.Add(new StudentTaskCell("Jason2"));
+        StudentList.Add(new StudentTaskCell("Michelle2", true));
+        StudentList.Add(new StudentTaskCell("Stephanie2"));
+        StudentList.Add(new StudentTaskCell("Zoe2"));
+
+        GenerateStudentCells();
+
+        if (StudentList.Count == 0)
         {
-            DisplayMessage("");
-
-            // StudentList.Add(new StudentTaskCell("Alan", true));
-            // StudentList.Add(new StudentTaskCell("Amy"));
-            // StudentList.Add(new StudentTaskCell("Brian"));
-            // StudentList.Add(new StudentTaskCell("Carrie"));
-            // StudentList.Add(new StudentTaskCell("David", true));
-            // StudentList.Add(new StudentTaskCell("Joe"));
-            // StudentList.Add(new StudentTaskCell("Jason"));
-            // StudentList.Add(new StudentTaskCell("Michelle", true));
-            // StudentList.Add(new StudentTaskCell("Stephanie"));
-            // StudentList.Add(new StudentTaskCell("Zoe"));
-            // StudentList.Add(new StudentTaskCell("Alan2", true));
-            // StudentList.Add(new StudentTaskCell("Amy2"));
-            // StudentList.Add(new StudentTaskCell("Brian2"));
-            // StudentList.Add(new StudentTaskCell("Carrie2", true));
-            // StudentList.Add(new StudentTaskCell("David2"));
-            // StudentList.Add(new StudentTaskCell("Joe2"));
-            // StudentList.Add(new StudentTaskCell("Jason2"));
-            // StudentList.Add(new StudentTaskCell("Michelle2", true));
-            // StudentList.Add(new StudentTaskCell("Stephanie2"));
-            // StudentList.Add(new StudentTaskCell("Zoe2"));
-
-            GenerateStudentCells();
+            DisplayMessage("There are no students to display.");
         }
-        
-        else
-        {
-            DisplayMessage("Task has not been assigned yet!");
-        }
-        
     }
 
     private void GenerateStudentCells()
@@ -65,8 +58,7 @@ public class AssignedTasksScrollView : MonoBehaviour
             GameObject newButton = Instantiate(Button_Template) as GameObject;
             newButton.SetActive(true);
             StudentTaskCompletionCell cell = newButton.GetComponent<StudentTaskCompletionCell>();
-            cell.SetName(student.GetName());
-            cell.SetCompletionStatus(student.GetCompletionStatus());
+            cell.SetCell(student.GetName(), student.GetCompletionStatus());
             newButton.transform.SetParent(Button_Template.transform.parent);
         }
     }

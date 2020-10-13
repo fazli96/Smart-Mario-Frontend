@@ -34,9 +34,9 @@ public class TeacherMenu : MonoBehaviour
         scene.ToAssignTasksScreen();
     }
 
-    public void CheckAssignedTasksScreen()
+    public void SelectTaskScreen()
     {
-        scene.ToCheckAssignedTasksScreen();
+        scene.ToTeacherSelectTaskScreen();
     }
 
     public void LogOut()

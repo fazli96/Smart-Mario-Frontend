@@ -65,6 +65,14 @@ public class SceneController : MonoBehaviour
     }
 
     /// <summary>
+    /// This is to load Manage Tasks page and display it on the screen
+    /// </summary>
+    public void ToStudentManageTasks()
+    {
+        SceneManager.LoadScene("StudentManageTasks");
+    }
+
+    /// <summary>
     /// This is to load the main menu and display it on the screen
     /// </summary>
     public void ToMainMenu()
@@ -134,6 +142,14 @@ public class SceneController : MonoBehaviour
     public void ToSelectStudentPerformance()
     {
         SceneManager.LoadScene("SelectStudentPerformance");
+    }
+
+    /// <summary>
+    /// This is to load the screen for selecting the task to view for the teacher
+    /// </summary>
+    public void ToTeacherSelectTaskScreen()
+    {
+        SceneManager.LoadScene("TeacherSelectTask");
     }
 
     /// <summary>
