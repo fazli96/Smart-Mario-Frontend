@@ -28,6 +28,7 @@ public class PlayerPathMovement : MonoBehaviour {
     public int waypointIndex = 0;
     public bool moveAllowed = false;
     private PlayerAnimation anim;
+    private int counter = 0;
     /// <summary>
     /// This is for initialization
     /// </summary>
@@ -75,22 +76,22 @@ public class PlayerPathMovement : MonoBehaviour {
 
             if (currentPosition != oldPosition)
             {
-
                 moveH = currentPosition.x - oldPosition.x;
-                Debug.Log("moveH: " + moveH + " = " + currentPosition.x + " - " + oldPosition.x);
-
                 moveV = currentPosition.y - oldPosition.y;
-                Debug.Log("moveV: " + moveV + " = " + currentPosition.y + " - " + oldPosition.y);
 
                 Vector2 direction = new Vector2(moveH, moveV);
 
                 anim.SetDirection(direction);
                 oldPosition = currentPosition;
+                counter = 0;
             }
-            else
+            else 
             {
-                anim.SetDirection(new Vector2(0, 0));
+                if (counter < 10)
+                    counter++;
             }
+            if (counter >= 10)
+                anim.SetDirection(new Vector2(0, 0));
         }
         
 	}

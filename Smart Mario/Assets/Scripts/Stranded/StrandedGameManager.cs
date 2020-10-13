@@ -51,23 +51,14 @@ public class StrandedGameManager : MonoBehaviour {
 
         player = SpawnPlayer(PlayerPrefs.GetString("Selected Player", "Witch"));
         player.GetComponent<PlayerPathMovement>().moveAllowed = false;
-        SpawnQuestionBarrels(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
- 
-        StrandedQuestionManager.instance.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
-        StrandedGameStatus.instance.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
+        SpawnQuestionBarrels(PlayerPrefs.GetInt("MinigameLevel", 1));
 
     }
     /// <summary>
     /// Update is called once per frame
     /// </summary>
-    void Update()
+    void LateUpdate()
     {
-        if(levelComplete)
-        {
-            //update Database accordingly
-        }
-
-// ** PLAYER 1
         if (player.GetComponent<PlayerPathMovement>().waypointIndex > 
             playerStartWaypoint + diceSideThrown)
         {
@@ -98,14 +89,14 @@ public class StrandedGameManager : MonoBehaviour {
         
 
 
-        if (player.GetComponent<PlayerPathMovement>().waypointIndex == waypoints.Count)
+        if (player.GetComponent<PlayerPathMovement>().waypointIndex == waypoints.Count && !levelComplete)
         {
+            levelComplete = true;
             player.GetComponent<PlayerPathMovement>().moveAllowed = false;
             if (StrandedGameStatus.instance.WinLevel())
                 completeLevelPanel.gameObject.SetActive(true);
             else
                 gameOverPanel.gameObject.SetActive(true);
-            levelComplete = true;
         }
     }
 
@@ -131,22 +122,28 @@ public class StrandedGameManager : MonoBehaviour {
     /// This is called to spawn the question barrels on the board based on the difficulty
     /// </summary>
     /// <param name="difficulty"></param>
-    private void SpawnQuestionBarrels(string difficulty)
+    private void SpawnQuestionBarrels(int level)
     {
         int spacesBetweenBarrels;
-        switch (difficulty)
+        switch (level)
         {
-            case "Easy":
+            case 1:
                 spacesBetweenBarrels = 6;
                 break;
-            case "Medium":
+            case 2:
+                spacesBetweenBarrels = 5;
+                break;
+            case 3:
                 spacesBetweenBarrels = 4;
                 break;
-            case "Hard":
+            case 4:
+                spacesBetweenBarrels = 3;
+                break;
+            case 5:
                 spacesBetweenBarrels = 2;
                 break;
             default:
-                spacesBetweenBarrels = 0;
+                spacesBetweenBarrels = 4;
                 break;
         }
         List<int> questionBarrelLocations = new List<int>();

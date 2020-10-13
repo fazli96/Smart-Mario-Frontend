@@ -34,22 +34,22 @@ public class StrandedGameStatus : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-    /// <summary>
-    /// This is for initialization based on the minigame difficulty
-    /// </summary>
-    /// <param name="difficulty"></param>
-    public void Initialize(string difficulty)
-    {
-        switch(difficulty)
+        int level = PlayerPrefs.GetInt("MinigameLevel", 1);
+        switch (level)
         {
-            case "Easy":
+            case 1:
                 targetScore = currentScore = 1000;
                 break;
-            case "Medium":
+            case 2:
+                targetScore = currentScore = 1500;
+                break;
+            case 3:
                 targetScore = currentScore = 2000;
                 break;
-            case "Hard":
+            case 4:
+                targetScore = currentScore = 2500;
+                break;
+            case 5:
                 targetScore = currentScore = 3000;
                 break;
             default:
@@ -58,7 +58,9 @@ public class StrandedGameStatus : MonoBehaviour
         qnsAttempted = 0;
         qnsAnsweredCorrectly = 0;
         DisplayScore();
+
     }
+    
 
     /// <summary>
     /// This is to change the current score of the player

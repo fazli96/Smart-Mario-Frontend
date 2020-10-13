@@ -69,7 +69,7 @@ public class StrandedUIManager : MonoBehaviour
     /// </summary>
     public void RestartLevel()
     {
-        switch (PlayerPrefs.GetInt("World1Minigame1Level", 1))
+        switch (PlayerPrefs.GetInt("MinigameLevel", 1))
         {
             case 1:
                 scene.ToWorld1Minigame1Level1();
@@ -96,27 +96,27 @@ public class StrandedUIManager : MonoBehaviour
     /// </summary>
     public void NextLevel()
     {
-        switch (PlayerPrefs.GetInt("World1Minigame1Level", 1))
+        switch (PlayerPrefs.GetInt("MinigameLevel", 1))
         {
             
             case 1:
-                PlayerPrefs.SetInt("World1Minigame1Level", 2);
+                PlayerPrefs.SetInt("MinigameLevel", 2);
                 scene.ToWorld1Minigame1Level2();
                 break;
             case 2:
-                PlayerPrefs.SetInt("World1Minigame1Level", 3);
+                PlayerPrefs.SetInt("MinigameLevel", 3);
                 scene.ToWorld1Minigame1Level3();
                 break;
             case 3:
-                PlayerPrefs.SetInt("World1Minigame1Level", 4);
+                PlayerPrefs.SetInt("MinigameLevel", 4);
                 scene.ToWorld1Minigame1Level4();
                 break;
             case 4:
-                PlayerPrefs.SetInt("World1Minigame1Level", 5);
+                PlayerPrefs.SetInt("MinigameLevel", 5);
                 scene.ToWorld1Minigame1Level5();
                 break;
             case 5:
-                PlayerPrefs.SetInt("World1Minigame1Level", 1);
+                PlayerPrefs.SetInt("MinigameLevel", 1);
                 scene.ToLevelSelection();
                 break;
             default:

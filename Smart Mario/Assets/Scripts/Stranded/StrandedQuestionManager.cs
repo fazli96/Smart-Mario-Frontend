@@ -53,8 +53,8 @@ public class StrandedQuestionManager : MonoBehaviour
         wrongPanel.SetActive(false);
         correctPanel.SetActive(false);
         tooLatePanel.SetActive(false);
-        timeLimit = 20;
         questionList.Clear();
+        
         string difficultyStr = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
         if (difficultyStr.Equals("Easy"))
             difficulty = 1;
@@ -62,25 +62,17 @@ public class StrandedQuestionManager : MonoBehaviour
             difficulty = 2;
         else
             difficulty = 3;
-
-    }
-
-    /// <summary>
-    /// This is called to retrieve the questions based on the difficulty of the minigame
-    /// </summary>
-    /// <param name="difficulty"></param>
-    public void Initialize(string difficulty)
-    {
-        switch (difficulty)
+        
+        switch (difficultyStr)
         {
             case "Easy":
-                timeLimit = 25;
+                timeLimit = 60;
                 break;
             case "Medium":
-                timeLimit = 20;
+                timeLimit = 50;
                 break;
             case "Hard":
-                timeLimit = 15;
+                timeLimit = 40;
                 break;
             default:
                 break;
@@ -92,6 +84,7 @@ public class StrandedQuestionManager : MonoBehaviour
         else
             StartCoroutine(apiCall.AllQuestionsGetRequest(codeUrl));
     }
+
 
     /// <summary>
     /// This is called when the data has been retrieved from the database

@@ -61,37 +61,11 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
             Destroy(gameObject);
         }
         players = new List<string>();
-    }
 
-    /// <summary>
-    /// This is for initialization based on the minigame difficulty
-    /// </summary>
-    /// <param name="difficulty"></param>
-    public void Initialize(string difficulty)
-    {
-        switch (difficulty)
-        {
-            case "Easy":
-                currentScore1 = 1000;
-                currentScore2 = 1000;
-                currentScore3 = 1000;
-                currentScore4 = 1000;
-                break;
-            case "Medium":
-                currentScore1 = 2000;
-                currentScore2 = 2000;
-                currentScore3 = 2000;
-                currentScore4 = 2000;
-                break;
-            case "Hard":
-                currentScore1 = 3000;
-                currentScore2 = 3000;
-                currentScore3 = 3000;
-                currentScore4 = 3000;
-                break;
-            default:
-                break;
-        }
+        currentScore1 = 3000;
+        currentScore2 = 3000;
+        currentScore3 = 3000;
+        currentScore4 = 3000;
         qnsAttempted1 = 0;
         qnsAttempted2 = 0;
         qnsAttempted3 = 0;

@@ -69,9 +69,6 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
         }
         else
             dice.SetActive(false);
-        
-        StrandedQuestionManager.instance.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
-        StrandedMultiplayerGameStatus.instance.Initialize(PlayerPrefs.GetString("Minigame Difficulty", "Easy"));
 
     }
     /// <summary>
