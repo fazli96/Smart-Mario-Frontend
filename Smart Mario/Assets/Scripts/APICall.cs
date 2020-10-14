@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 /// <summary>
 /// Control that offers consolidated API calls to database
 /// </summary>
@@ -123,7 +124,7 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        Debug.Log(convertedStr);
+        UnityEngine.Debug.Log(convertedStr);
     }
     /// <summary>
     /// Creates an IEnumerator for coroutines that is used for retrieving best game results of Student via a Get request
@@ -132,7 +133,7 @@ public class APICall
     /// <returns></returns>
     public IEnumerator BestResultsGetRequest(string url)
     {
-        Debug.Log(url);
+        UnityEngine.Debug.Log(url);
         var request = new UnityWebRequest(url, "GET");
         //byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
         //request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
@@ -141,7 +142,7 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        Debug.Log(convertedStr);
+        UnityEngine.Debug.Log(convertedStr);
         StatisticsManager.instance.GetComponent<StatisticsManager>().ResultsRetrieved(convertedStr);
     }
     /// <summary>
@@ -160,22 +161,22 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        Debug.Log("converted" + convertedStr);
-        Debug.Log("Before!");
+        UnityEngine.Debug.Log("converted" + convertedStr);
+        UnityEngine.Debug.Log("Before!");
         if (GameObject.Find("QuestionManager") != null)
         {
             questionManager questionManager = GameObject.Find("QuestionManager").GetComponent<questionManager>();
-            Debug.Log("Success in finding QuestionManager!");
+            UnityEngine.Debug.Log("Success in finding QuestionManager!");
             questionManager.QuestionsRetrieved(convertedStr);
         }
         else if (GameObject.Find("StrandedQuestionManager") != null)
         {
             StrandedQuestionManager.instance.QuestionsRetrieved(convertedStr);
-            Debug.Log("Success in finding StrandedQuestionManager!");
+            UnityEngine.Debug.Log("Success in finding StrandedQuestionManager!");
         }
         else
         {
-            Debug.Log("Unable to find questionManager");
+            UnityEngine.Debug.Log("Unable to find questionManager");
         }
     }
 
@@ -206,6 +207,24 @@ public class APICall
         selectStudentManager.CSVRetrieved(convertedStr);
     }
 
+    public IEnumerator SpecificTaskResult(string teacherId, string minigameId, string difficulty, string level)
+    {
+        string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/teacher/" + teacherId + "&" + minigameId + "&" + difficulty + "&" + level;
+        var request = new UnityWebRequest(url, "GET");
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.chunkedTransfer = false;
+        yield return request.SendWebRequest();
+        string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        UnityEngine.Debug.Log("Getrequest" + convertedStr);
+        /*JArray data = (JArray)JsonConvert.DeserializeObject(convertedStr);
+        int count = 0;
+        foreach (JObject one_result in data)
+        {
+            UnityEngine.Debug.Log("student " + count + "=" + one_result["student"]["name"]);
+            UnityEngine.Debug.Log(count++);
+            
+        }*/
+    }
 
 }
 

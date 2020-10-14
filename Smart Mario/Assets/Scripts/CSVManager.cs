@@ -40,6 +40,8 @@ public class CSVManager : MonoBehaviour
         {
             Debug.Log(one_result);
         }
+
+
         /*JArray data2 = data["allQuestions"].Value<JArray>();
         foreach (JObject questionObject in data2)
         {

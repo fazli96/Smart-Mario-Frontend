@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
@@ -66,6 +67,7 @@ public class LoginManager : MonoBehaviour
         else
         {
             UnityEngine.Debug.Log("Student");
+            APICall api = APICall.getAPICall();
             ValidateStudentLogin(username, password, msg);
         }
     }
