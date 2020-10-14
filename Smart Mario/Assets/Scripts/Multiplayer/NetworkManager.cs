@@ -286,7 +286,10 @@ public class NetworkManager : MonoBehaviour
     {
         string data = socketIOEvent.data.ToString();
         MessageJSON currentMessage = MessageJSON.CreateFromJSON(data);
-        StartCoroutine(UpdateMessage(currentMessage.message));
+        if (currentMessage.message.Equals(storedUserJSON.name + "'s turn"))
+            StartCoroutine(UpdateMessage("Your turn"));
+        else
+            StartCoroutine(UpdateMessage(currentMessage.message));
     }
 
     IEnumerator UpdateMessage(string message)

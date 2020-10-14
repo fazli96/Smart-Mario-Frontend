@@ -57,11 +57,11 @@ public class StrandedQuestionManager : MonoBehaviour
         
         string difficultyStr = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
         if (difficultyStr.Equals("Easy"))
-            difficulty = 1;
+            difficulty = 0;
         else if (difficultyStr.Equals("Medium"))
-            difficulty = 2;
+            difficulty = 1;
         else
-            difficulty = 3;
+            difficulty = 2;
         
         switch (difficultyStr)
         {
@@ -95,10 +95,15 @@ public class StrandedQuestionManager : MonoBehaviour
     {
         var data = (JObject)JsonConvert.DeserializeObject(result);
         JArray data2 = data["allQuestions"].Value<JArray>();
+        //int counter = 0;
         foreach (JObject questionObject in data2)
         {
-            Question question = questionObject.ToObject<Question>();
-            questionList.Add(question);
+            //if (counter % 3 == difficulty)
+            //{
+                Question question = questionObject.ToObject<Question>();
+                questionList.Add(question);
+            //}
+            //counter++;
         }
         Debug.Log("DBResult: " + result);
         Debug.Log("allQuestions" + data2);
