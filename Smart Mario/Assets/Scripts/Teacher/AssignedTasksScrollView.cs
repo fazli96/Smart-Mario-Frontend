@@ -2,19 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 public class AssignedTasksScrollView : MonoBehaviour
 {
+    //Singleton
+    private static AssignedTasksScrollView instance = null;
+ 
     private SceneController scene;
 
-    [SerializeField]
-    private GameObject Button_Template;
-    [SerializeField]
-    private GridLayoutGroup gridGroup;
-    private bool TaskisAssigned = false;
-    private List<StudentTaskCell> StudentList = new List<StudentTaskCell>();
+    public GameObject Button_Template;
+    public GridLayoutGroup gridGroup;
+
+    public AssignedTasksManager assignedTasksManager = AssignedTasksManager.GetAssignedTasksManager();
+
+    private List<StudentTaskCell> studentList = new List<StudentTaskCell>();
     public Text msg;
+
+    private bool taskisAssigned = false;
     
+    public static AssignedTasksScrollView GetAssignedTasksScrollView()
+    {
+        if (instance == null)
+        {
+            instance = new AssignedTasksScrollView();
+        }
+        return instance;
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,30 +39,10 @@ public class AssignedTasksScrollView : MonoBehaviour
 
         DisplayMessage("");
 
-        StudentList.Add(new StudentTaskCell("Alan", true));
-        StudentList.Add(new StudentTaskCell("Amy"));
-        StudentList.Add(new StudentTaskCell("Brian"));
-        StudentList.Add(new StudentTaskCell("Carrie"));
-        StudentList.Add(new StudentTaskCell("David", true));
-        StudentList.Add(new StudentTaskCell("Joe"));
-        StudentList.Add(new StudentTaskCell("Jason"));
-        StudentList.Add(new StudentTaskCell("Michelle", true));
-        StudentList.Add(new StudentTaskCell("Stephanie"));
-        StudentList.Add(new StudentTaskCell("Zoe"));
-        StudentList.Add(new StudentTaskCell("Alan2", true));
-        StudentList.Add(new StudentTaskCell("Amy2"));
-        StudentList.Add(new StudentTaskCell("Brian2"));
-        StudentList.Add(new StudentTaskCell("Carrie2", true));
-        StudentList.Add(new StudentTaskCell("David2"));
-        StudentList.Add(new StudentTaskCell("Joe2"));
-        StudentList.Add(new StudentTaskCell("Jason2"));
-        StudentList.Add(new StudentTaskCell("Michelle2", true));
-        StudentList.Add(new StudentTaskCell("Stephanie2"));
-        StudentList.Add(new StudentTaskCell("Zoe2"));
-
+        studentList = assignedTasksManager.GetStudentList();
         GenerateStudentCells();
 
-        if (StudentList.Count == 0)
+        if (studentList.Count == 0)
         {
             DisplayMessage("There are no students to display.");
         }
@@ -53,7 +50,7 @@ public class AssignedTasksScrollView : MonoBehaviour
 
     private void GenerateStudentCells()
     {
-        foreach(StudentTaskCell student in StudentList)
+        foreach(StudentTaskCell student in studentList)
         {
             GameObject newButton = Instantiate(Button_Template) as GameObject;
             newButton.SetActive(true);
@@ -68,7 +65,7 @@ public class AssignedTasksScrollView : MonoBehaviour
         msg.text = str;
     }
 
-    // Update is called once per frame
+    // Update is called once per fram
     void Update()
     {
         

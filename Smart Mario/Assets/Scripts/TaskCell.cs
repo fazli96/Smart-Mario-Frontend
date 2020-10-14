@@ -6,28 +6,28 @@ using UnityEngine.UI;
 public class TaskCell : MonoBehaviour
 {
     [SerializeField]
-    private int GameID;
+    private string gameName;
     [SerializeField]
-    private string Difficulty;
+    private string difficulty;
     [SerializeField]
-    private string Level;
+    private string level;
     [SerializeField]
-    private string CompletionStatus;
+    private string completionStatus;
 
-    public Text GameIDText;
-    public Text DifficultyText;
-    public Text LevelText;
-    public Text CompletionStatusText;
+    public Text gameNameText;
+    public Text difficultyText;
+    public Text levelText;
+    public Text completionStatusText;
 
-    public void SetCell(int gameID, string difficultyText, string levelText, string completionStatus)
+    public void SetCell(string gameName, string difficultyText, string levelText, string completionStatus)
     {
-        GameID = gameID;
-        GameIDText.text = gameID.ToString();
-        Difficulty = difficultyText;
-        DifficultyText.text = difficultyText;
-        Level = levelText;
-        LevelText.text = levelText;
-        CompletionStatus = completionStatus;
-        CompletionStatusText.text = completionStatus;
+        this.gameName = gameName;
+        this.gameNameText.text = gameName;
+        this.difficulty = difficultyText;
+        this.difficultyText.text = difficultyText;
+        this.level = levelText;
+        this.levelText.text = levelText;
+        this.completionStatus = completionStatus;
+        this.completionStatusText.text = completionStatus;
     }
 }

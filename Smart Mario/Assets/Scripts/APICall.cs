@@ -216,14 +216,10 @@ public class APICall
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
         UnityEngine.Debug.Log("Getrequest" + convertedStr);
-        /*JArray data = (JArray)JsonConvert.DeserializeObject(convertedStr);
-        int count = 0;
-        foreach (JObject one_result in data)
-        {
-            UnityEngine.Debug.Log("student " + count + "=" + one_result["student"]["name"]);
-            UnityEngine.Debug.Log(count++);
-            
-        }*/
+        AssignedTasksManager assignedTasksManager = AssignedTasksManager.GetAssignedTasksManager();
+        assignedTasksManager.RetrieveData(convertedStr);
+        SceneController scene = SceneController.GetSceneController();
+        scene.ToViewAssignedTasksScreen();
     }
 
 }

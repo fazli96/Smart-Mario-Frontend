@@ -3,37 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class CheckAssignedTasks : MonoBehaviour
 {
-    //Singleton
-    private static CheckAssignedTasks instance = null;
-
     private SceneController scene;
     public Button backButton;
-    public Text GameIDText;
-    public Text DifficultyText;
-    public Text LevelText;
 
-    // public string GameID;
-    // public string Difficulty;
-    // public string Level;
+    private SelectTaskManager selectTaskManager;
 
-    public static CheckAssignedTasks GetCheckAssignedTasks()
-    {
-        if (instance == null)
-        {
-            instance = new CheckAssignedTasks();
-            // GameObject go = new GameObject();
-            // instance = go.AddComponent<CheckAssignedTasks>();
-        }
-        return instance;
-    }
+    public Text gameNameText;
+    public Text difficultyText;
+    public Text levelText;
+
+    public string gameName;
+    public string difficulty;
+    public string level;
 
     // Start is called before the first frame update
     void Start()
     {
         scene = SceneController.GetSceneController();
+        selectTaskManager = SelectTaskManager.GetSelectTaskManager();
+        
+        SetAttributes();
+
+        DisplayAttributes();
     }
 
     // Update is called once per frame
@@ -47,17 +40,17 @@ public class CheckAssignedTasks : MonoBehaviour
         scene.ToTeacherSelectTaskScreen();
     }
 
-    public void SetAttributes(string gameID, Text GameID, string difficulty, Text Difficulty, string level, Text Level)
+    public void DisplayAttributes()
     {
-        // GameID = gameID;
-        GameIDText = GameID;
-        // Difficulty = difficulty;
-        DifficultyText = Difficulty;
-        // Level = level;
-        LevelText = Level;
+        gameNameText.text = gameName;
+        difficultyText.text = difficulty;
+        levelText.text = level;
+    }
 
-        GameIDText.text = gameID;
-        DifficultyText.text = difficulty;
-        LevelText.text = level;
+    public void SetAttributes()
+    {
+        this.gameName = selectTaskManager.GetGameID();
+        this.difficulty = selectTaskManager.GetDifficulty();
+        this.level = selectTaskManager.GetLevel();
     }
 }

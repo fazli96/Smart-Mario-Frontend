@@ -7,9 +7,9 @@ public class StudentTaskCell : MonoBehaviour
     [SerializeField]
     private string Name;
     [SerializeField]
-    private bool CompletionStatus;
+    private string CompletionStatus;
 
-    public StudentTaskCell(string name, bool completionStatus = false)
+    public StudentTaskCell(string name, string completionStatus)
     {
         Name = name;
         CompletionStatus = completionStatus;
@@ -17,5 +17,5 @@ public class StudentTaskCell : MonoBehaviour
 
     public string GetName() { return Name; }
 
-    public bool GetCompletionStatus() { return CompletionStatus; }
+    public string GetCompletionStatus() { return CompletionStatus; }
 }

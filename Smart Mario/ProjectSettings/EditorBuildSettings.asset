@@ -45,8 +45,14 @@ EditorBuildSettings:
     path: Assets/Scenes/Matching Cards/World1_Minigame2_Level4.unity
     guid: 51c1e204d68d98b408b6ee2638365dfc
   - enabled: 1
+    path: Assets/Scenes/Teacher/TeacherSelectTask.unity
+    guid: d00d415ac82f5d94b930e9f19e9af9cf
+  - enabled: 1
     path: Assets/Scenes/Statistics/Statistics.unity
     guid: 28f865913c1c316408b600c9435f48c7
+  - enabled: 1
+    path: Assets/Scenes/StudentManageTasks.unity
+    guid: 9bf2e7af124f7694c8ba8bbee22a69ac
   - enabled: 1
     path: Assets/Scenes/Stranded/World1_Minigame1_Level1.unity
     guid: 6744bfa6d977a3140967319bcca3f1de

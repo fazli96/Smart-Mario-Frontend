@@ -11,14 +11,13 @@ public class ManageTasksScrollView : MonoBehaviour
     private static ManageTasksScrollView instance = null;
 
     private SceneController scene;
+    private Translator translator;
 
-    [SerializeField]
-    private GameObject Button_Template;
-    [SerializeField]
-    private GridLayoutGroup gridGroup;
+    public GameObject Button_Template;
+    public GridLayoutGroup gridGroup;
 
-    private List<DisplayResults> displayResultsList;
-    private List<TaskCompletionCell> TasksList = new List<TaskCompletionCell>();
+    private static List<DisplayResults> displayResultsList;
+    private static List<TaskCompletionCell> TasksList = new List<TaskCompletionCell>();
     public Text noTasksMessage;
 
     public static ManageTasksScrollView GetManageTasksScrollView()
@@ -35,12 +34,20 @@ public class ManageTasksScrollView : MonoBehaviour
     void Start()
     {
         scene = SceneController.GetSceneController();
-        
+        translator  = Translator.GetTranslator();
+                
         DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();
         displayResultsList = displayListManager.GetDisplayResultsList();
-        
         TasksList = ParseList(displayResultsList);
-        GenerateTaskCells(TasksList);
+
+        if (TasksList.Count != 0)
+        {
+            GenerateTaskCells(TasksList);
+        }
+        else
+        {
+            DisplayNoTasksMessage();
+        }
     }
 
     // Update is called once per frame
@@ -52,9 +59,12 @@ public class ManageTasksScrollView : MonoBehaviour
     private List<TaskCompletionCell> ParseList(List<DisplayResults> ls)
     {
         List<TaskCompletionCell> newList = new List<TaskCompletionCell>();
+        int count = 0;
         foreach (DisplayResults item in ls)
         {
-            newList.Add(new TaskCompletionCell(item.minigameId, item.difficulty, item.level, item.completed));
+            string gameName = translator.GameIDToName(item.minigameId);
+            string level = "Level " + item.level;
+            newList.Add(new TaskCompletionCell(gameName, item.difficulty, level, item.completed));
         }
         return newList;
     }
@@ -66,7 +76,7 @@ public class ManageTasksScrollView : MonoBehaviour
             GameObject newButton = Instantiate(Button_Template) as GameObject;
             newButton.SetActive(true);
             TaskCell cell = newButton.GetComponent<TaskCell>();
-            cell.SetCell(task.GetGameID(), task.GetDifficulty(), task.GetLevel(), task.GetCompletionStatus());
+            cell.SetCell(task.GetGameName(), task.GetDifficulty(), task.GetLevel(), task.GetCompletionStatus());
             newButton.transform.SetParent(Button_Template.transform.parent);
         }
     }

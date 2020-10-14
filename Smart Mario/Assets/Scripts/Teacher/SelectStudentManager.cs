@@ -15,6 +15,7 @@ public class SelectStudentManager : MonoBehaviour
     private static SelectStudentManager instance = null;
     private SceneController scene;
     private List<DisplayResults> displayResultsList;
+    // private List<CSVDisplay> csvDisplay;
     public Button exportCSVButton;
     public Button backToTeacherMenuButton;
     public Text CSVerrorMessage;
@@ -43,7 +44,6 @@ public class SelectStudentManager : MonoBehaviour
 
     public void ExportCSV()
     {
-        UnityEngine.Debug.Log("enter");
         APICall api = APICall.getAPICall();
         StartCoroutine(api.AllStudentResultGetRequest("2")); // to insert studentId from playerprefs**
     }
@@ -53,29 +53,30 @@ public class SelectStudentManager : MonoBehaviour
         scene.ToTeacherMenu();
     }
 
-    public void CSVRetrieved(string result)
-    {
-        displayResultsList = new List<DisplayResults>();
-        JArray data = (JArray)JsonConvert.DeserializeObject(result);
-        foreach (JObject one_resultJobj in data)
-        {
-            DisplayResults one_result = one_resultJobj.ToObject<DisplayResults>();
-            displayResultsList.Add(one_result);
-        }
-        UnityEngine.Debug.Log(displayResultsList[0].difficulty);
-        SaveCSV();
-    }
+
 
     private string getPath()
     {
-#if UNITY_EDITOR
-        return Application.dataPath + "/CSV/" + "Student_Statistics.csv";
-#else
-        return Application.dataPath + "/" + "Student_Statistics.csv";
-#endif
+        #if UNITY_EDITOR
+                return Application.dataPath + "/CSV/" + "Student_Statistics.csv";
+        #else
+                return Application.dataPath + "/" + "Student_Statistics.csv";
+        #endif
     }
 
-    public void SaveCSV()
+    // public void CSVRetrieved(string result)
+    // {
+    //     displayResultsList = new List<DisplayResults>();
+    //     JArray data = (JArray)JsonConvert.DeserializeObject(result);
+    //     foreach (JObject one_resultJobj in data)
+    //     {
+    //         DisplayResults one_result = one_resultJobj.ToObject<DisplayResults>();
+    //         displayResultsList.Add(one_result);
+    //     }
+    //     SaveCSV();
+    // }
+
+    public void CSVRetrieved(string result)
     {
         try
         {
@@ -98,11 +99,17 @@ public class SelectStudentManager : MonoBehaviour
             }
             StreamWriter writer = new StreamWriter(filePath);
 
-            foreach (DisplayResults result in displayResultsList)
+            JArray data = (JArray)JsonConvert.DeserializeObject(result);
+            writer.WriteLine("Student Name, " + "Difficulty, " + "Level" + ", " + "Score");
+            foreach (JObject one_result in data)
             {
-                writer.WriteLine(result.studentId + ", " + result.difficulty + ", " + result.level);
+                string studentID = one_result["name"].ToString();
+                string difficulty = one_result["difficulty"].ToString();
+                string level = one_result["level"].ToString();
+                string score = one_result["results"]["score"].ToString();
+                writer.WriteLine(studentID + ", " + difficulty + ", " + level + "," + score);
             }
-
+            
             // writer.WriteLine("11111111111, name, username");
             writer.Flush();
             writer.Close();

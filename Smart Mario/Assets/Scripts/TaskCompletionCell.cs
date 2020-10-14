@@ -5,27 +5,27 @@ using UnityEngine;
 public class TaskCompletionCell : MonoBehaviour
 {
     [SerializeField]
-    private int GameID;
+    private string gameName;
     [SerializeField]
-    private string Difficulty;
+    private string difficulty;
     [SerializeField]
-    private string Level;
+    private string level;
     [SerializeField]
-    private string CompletionStatus;
+    private string completionStatus;
     
-    public TaskCompletionCell(int gameID, string difficulty, string level, string completionStatus)
+    public TaskCompletionCell(string gameName, string difficulty, string level, string completionStatus)
     {
-        GameID = gameID;
-        Difficulty = difficulty;
-        Level = level;
-        CompletionStatus = completionStatus;
+        this.gameName = gameName;
+        this.difficulty = difficulty;
+        this.level = level;
+        this.completionStatus = completionStatus;
     }
 
-    public int GetGameID() { return GameID; }
+    public string GetGameName() { return gameName; }
 
-    public string GetDifficulty() { return Difficulty; }
+    public string GetDifficulty() { return difficulty; }
 
-    public string GetLevel() { return Level; }
+    public string GetLevel() { return level; }
 
-    public string GetCompletionStatus() { return CompletionStatus; }
+    public string GetCompletionStatus() { return completionStatus; }
 }
