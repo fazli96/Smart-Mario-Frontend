@@ -17,7 +17,8 @@ public class AssignedTasksScrollView : MonoBehaviour
 
     public AssignedTasksManager assignedTasksManager = AssignedTasksManager.GetAssignedTasksManager();
 
-    private List<StudentTaskCell> studentList = new List<StudentTaskCell>();
+
+    private static List<StudentTaskCell> studentList = new List<StudentTaskCell>();
     public Text msg;
 
     private bool taskisAssigned = false;

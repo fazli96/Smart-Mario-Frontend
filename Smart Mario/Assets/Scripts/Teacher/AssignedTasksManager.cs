@@ -9,7 +9,7 @@ public class AssignedTasksManager
     //Singleton
     private static AssignedTasksManager instance = null;
     
-    private List<StudentTaskCell> studentList = new List<StudentTaskCell>();
+    private static List<StudentTaskCell> studentList;
 
     public static AssignedTasksManager GetAssignedTasksManager()
     {
@@ -22,6 +22,7 @@ public class AssignedTasksManager
 
     public void RetrieveData(string str)
     {
+        studentList = new List<StudentTaskCell>();
         JArray data = (JArray)JsonConvert.DeserializeObject(str);
         int count = 0;
         foreach (JObject one_result in data)

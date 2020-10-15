@@ -12,7 +12,7 @@ public class StudentTaskCompletionCell : MonoBehaviour
     
     public Text CellNameText;
     public Text CellCompletionStatusText;
-    public StudentScrollView ScrollView;
+    public StudentScrollViewController ScrollView;
 
     public void SetCell(string name, string completionStatus)
     {

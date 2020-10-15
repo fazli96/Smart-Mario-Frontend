@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StudentScrollView : MonoBehaviour
+public class StudentScrollViewController : MonoBehaviour
 {
     private SceneController scene;
 

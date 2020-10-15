@@ -8,7 +8,7 @@ public class StudentButton : MonoBehaviour
     [SerializeField]
     private string Name;
     public Text ButtonText;
-    public StudentScrollView ScrollView;
+    public StudentScrollViewController ScrollView;
 
     public void SetName(string name)
     {

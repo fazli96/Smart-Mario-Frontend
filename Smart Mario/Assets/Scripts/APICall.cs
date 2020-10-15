@@ -215,7 +215,6 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        UnityEngine.Debug.Log("Getrequest" + convertedStr);
         AssignedTasksManager assignedTasksManager = AssignedTasksManager.GetAssignedTasksManager();
         assignedTasksManager.RetrieveData(convertedStr);
         SceneController scene = SceneController.GetSceneController();

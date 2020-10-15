@@ -18,7 +18,7 @@ public class SelectStudentManager : MonoBehaviour
     // private List<CSVDisplay> csvDisplay;
     public Button exportCSVButton;
     public Button backToTeacherMenuButton;
-    public Text CSVerrorMessage;
+    public Text CSVErrorMessage;
 
     public static SelectStudentManager GetSelectStudentManager()
     {
@@ -94,7 +94,7 @@ public class SelectStudentManager : MonoBehaviour
                 catch (Exception ex)
                 {
                     UnityEngine.Debug.Log(ex.ToString());
-                    CSVerrorMessage.text = "Error! File cannotbe created!";
+                    CSVErrorMessage.text = "Error! File cannot be created!";
                 }
             }
             StreamWriter writer = new StreamWriter(filePath);
@@ -103,7 +103,8 @@ public class SelectStudentManager : MonoBehaviour
             writer.WriteLine("Student Name, " + "Difficulty, " + "Level" + ", " + "Score");
             foreach (JObject one_result in data)
             {
-                string studentID = one_result["name"].ToString();
+                UnityEngine.Debug.Log(one_result["student"]["name"]);
+                string studentID = one_result["student"]["name"].ToString();
                 string difficulty = one_result["difficulty"].ToString();
                 string level = one_result["level"].ToString();
                 string score = one_result["results"]["score"].ToString();
@@ -118,7 +119,7 @@ public class SelectStudentManager : MonoBehaviour
         {
             UnityEngine.Debug.Log(ex.ToString());
             // Text CSVerrorMessage = GameObject.GetComponent<Text>
-            this.CSVerrorMessage.text = "Error! Please ensure CSV file is closed!";
+            this.CSVErrorMessage.text = "Error! Please ensure CSV file is closed!";
         }
     }
 }
