@@ -67,7 +67,7 @@ public class LoginManager : MonoBehaviour
         else
         {
             UnityEngine.Debug.Log("Student");
-            APICall api = APICall.getAPICall();
+            //APICall api = APICall.getAPICall();
             ValidateStudentLogin(username, password, msg);
         }
     }
@@ -84,10 +84,16 @@ public class LoginManager : MonoBehaviour
     /// <summary>
     /// Changes scene to Main Menu
     /// </summary>
-    public void LoginSuccess()
+    public void StudentLoginSuccess()
     {
         scene = SceneController.GetSceneController();
         scene.ToMainMenu();
+    }
+
+    public void TeacherLoginSuccess()
+    {
+        scene = SceneController.GetSceneController();
+        scene.ToTeacherMenu();
     }
 
     /// <summary>
@@ -101,7 +107,7 @@ public class LoginManager : MonoBehaviour
         APICall apiCall = APICall.getAPICall();
         Student student = new Student(username, "", password, "");
         string bodyJsonString = apiCall.saveToJSONString(student);
-        StartCoroutine(apiCall.LoginPostRequest(url + "students/authenticate", bodyJsonString, msg));
+        StartCoroutine(apiCall.StudentLoginPostRequest(url + "students/authenticate", bodyJsonString, msg));
     }
 
     public void ValidateTeacherLogin(string username, string password, Text msg)
@@ -109,6 +115,6 @@ public class LoginManager : MonoBehaviour
         APICall apiCall = APICall.getAPICall();
         Teacher teacher = new Teacher(username, "", password, "");
         string bodyJsonString = apiCall.saveToJSONString(teacher);
-        StartCoroutine(apiCall.LoginPostRequest(url + "teachers/authenticate", bodyJsonString, msg));
+        StartCoroutine(apiCall.TeacherLoginPostRequest(url + "teachers/authenticate", bodyJsonString, msg));
     }
 }

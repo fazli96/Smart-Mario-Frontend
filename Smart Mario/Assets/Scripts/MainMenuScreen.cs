@@ -10,6 +10,7 @@ public class MainMenuScreen : MonoBehaviour
     private static MainMenuScreen instance = null;
     private SceneController scene;
     public Text msg;
+    public Text customError;
     /// <summary>
     /// Creates a singleton instance if none exist, returns the existing instance if one exists
     /// </summary>
@@ -77,10 +78,4 @@ public class MainMenuScreen : MonoBehaviour
     {
         scene.ToLogin();
     }
-
-  /*  public void DisplayMessage(string message)
-    {
-        msg = instance.GetComponent<Text>();
-        msg.text = message;
-    }*/
 }

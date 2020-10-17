@@ -100,14 +100,11 @@ public class RegisterManager : MonoBehaviour
     }
     private void RegisterTeacherDetails(string username, string name, string password, string school_key, Text msg)
     {
-        CSVManager csvManager = new CSVManager();
-        csvManager.SaveCSV();
-        /*
         APICall apiCall = APICall.getAPICall();
         UnityEngine.Debug.Log(username + " " + name + " " + password + " " + school_key);
         Teacher teacher = new Teacher(username, name, password, school_key);
         string bodyJsonString = apiCall.saveToJSONString(teacher);
-        StartCoroutine(apiCall.RegisterPostRequest(url + "teachers", bodyJsonString, msg));*/
+        StartCoroutine(apiCall.RegisterPostRequest(url + "teachers", bodyJsonString, msg));
     }
     /// <summary>
     /// Sends entered registration details of Student for validation and pontential subsequent registration 

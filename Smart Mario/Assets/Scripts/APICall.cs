@@ -7,6 +7,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 /// <summary>
 /// Control that offers consolidated API calls to database
 /// </summary>
@@ -76,7 +77,7 @@ public class APICall
     /// <param name="bodyJsonString"></param>
     /// <param name="msg"></param>
     /// <returns></returns>
-    public IEnumerator LoginPostRequest(string url, string bodyJsonString, Text msg)
+    public IEnumerator TeacherLoginPostRequest(string url, string bodyJsonString, Text msg)
     {
         var request = new UnityWebRequest(url, "POST");
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
@@ -100,14 +101,81 @@ public class APICall
 
         else
         {
-            logManager.LoginSuccess();
-            int startIndex = convertedStr.IndexOf("username") + 11;
-            string username = convertedStr.Substring(startIndex);
-            int len = username.IndexOf('"');
-            username = username.Substring(0, len);
-            PlayerPrefs.SetString("username", username);
+            var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
+            PlayerPrefs.SetString("username", data["data"]["username"].ToString());
+            logManager.TeacherLoginSuccess();
+            UnityEngine.Debug.Log(PlayerPrefs.GetString("username"));
         }
     }
+
+    public IEnumerator StudentLoginPostRequest(string url, string bodyJsonString, Text msg)
+    {
+        var request = new UnityWebRequest(url, "POST");
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.chunkedTransfer = false;
+        yield return request.SendWebRequest();
+        LoginManager logManager = LoginManager.GetLoginManager();
+        UnityEngine.Debug.Log("here");
+        UnityEngine.Debug.Log(request.downloadHandler.text);
+        string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        UnityEngine.Debug.Log(convertedStr);
+
+        if (convertedStr.Contains("Error"))
+        {
+            string errorMsg = convertedStr.Substring(convertedStr.IndexOf(":") + 1);
+            errorMsg = errorMsg.Substring(0, errorMsg.Length - 1);
+            errorMsg = errorMsg.Substring(0, errorMsg.IndexOf(","));
+            logManager.DisplayMessage(errorMsg, msg);
+        }
+
+        else
+        {
+            var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
+            UnityEngine.Debug.Log(data);
+            PlayerPrefs.SetString("username", data["data"]["username"].ToString());
+            PlayerPrefs.SetString("id", data["data"]["id"].ToString());
+            PlayerPrefs.SetString("customChar", data["data"]["custom"].ToString());
+            logManager.StudentLoginSuccess();
+            //UnityEngine.Debug.Log(PlayerPrefs.GetString("username"));
+            //UnityEngine.Debug.Log(PlayerPrefs.GetString("customChar"));
+        }       
+    }
+
+    public IEnumerator CustomCharacterPutRequest(string id, string custom)
+    {
+
+        string url = "https://smart-mario-backend-1.herokuapp.com/api/students/" + id + "&" + custom;
+        UnityEngine.Debug.Log(url);
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(saveToJSONString(" "));
+        var request = new UnityWebRequest(url, "PUT");
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.chunkedTransfer = false;
+        UnityEngine.Debug.Log("here2");
+        yield return request.SendWebRequest();
+        UnityEngine.Debug.Log(request.downloadHandler.text);
+        string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        UnityEngine.Debug.Log(convertedStr);
+        var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
+        SceneController scene = SceneController.GetSceneController();
+        if (data["success"].ToString() == "True")
+        {
+            UnityEngine.Debug.Log(data["success"].ToString());
+            PlayerPrefs.SetString("customChar", custom);
+        }
+
+        else
+        {
+            UnityEngine.Debug.Log(data["success"].ToString());
+            scene.ToMainMenu();
+        }
+        scene.ToMainMenu();
+    }
+
     /// <summary>
     /// Creates an IEnumerator for coroutines that is used for logging game results for Students via a Put request
     /// </summary>
@@ -159,10 +227,11 @@ public class APICall
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         // request.SetRequestHeader("Content-Type", "application/json");
         request.chunkedTransfer = false;
+        UnityEngine.Debug.Log("Before!");
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        UnityEngine.Debug.Log("converted" + convertedStr);
-        UnityEngine.Debug.Log("Before!");
+        UnityEngine.Debug.Log(convertedStr);
+        UnityEngine.Debug.Log("After!");
         if (GameObject.Find("QuestionManager") != null)
         {
             questionManager questionManager = GameObject.Find("QuestionManager").GetComponent<questionManager>();
@@ -220,6 +289,7 @@ public class APICall
         SceneController scene = SceneController.GetSceneController();
         scene.ToViewAssignedTasksScreen();
     }
+
 
 }
 

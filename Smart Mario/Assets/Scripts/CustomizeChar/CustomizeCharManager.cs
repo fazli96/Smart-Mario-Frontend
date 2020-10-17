@@ -34,13 +34,13 @@ public class CustomizeCharManager : MonoBehaviour
         switch(charInt)
         {
             case 1:
-                PlayerPrefs.SetString("Selected Player", "Knight");
+                //PlayerPrefs.SetString("Selected Player", "Knight");
                 knight.SetActive(true);
                 witch.SetActive(false);
-                charInt++;
+                charInt = 2;
                 break;
             case 2:
-                PlayerPrefs.SetString("Selected Player", "Witch");
+                //PlayerPrefs.SetString("Selected Player", "Witch");
                 witch.SetActive(true);
                 knight.SetActive(false);
                 charInt = 1;
@@ -54,13 +54,13 @@ public class CustomizeCharManager : MonoBehaviour
         switch (charInt)
         {
             case 1:
-                PlayerPrefs.SetString("Selected Player", "Knight");
+                //PlayerPrefs.SetString("Selected Player", "Knight");
                 knight.SetActive(true);
                 witch.SetActive(false);
-                charInt++;
+                charInt = 2;
                 break;
             case 2:
-                PlayerPrefs.SetString("Selected Player", "Witch");
+                //PlayerPrefs.SetString("Selected Player", "Witch");
                 witch.SetActive(true);
                 knight.SetActive(false);
                 charInt = 1;
@@ -72,6 +72,7 @@ public class CustomizeCharManager : MonoBehaviour
 
     public void SelectPlayer()
     {
-        scene.ToMainMenu();
+        APICall api = APICall.getAPICall();
+        StartCoroutine(api.CustomCharacterPutRequest(PlayerPrefs.GetString("id"), charInt.ToString()));
     }
 }
