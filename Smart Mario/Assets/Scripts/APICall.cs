@@ -171,9 +171,36 @@ public class APICall
         else
         {
             UnityEngine.Debug.Log(data["success"].ToString());
-            scene.ToMainMenu();
         }
         scene.ToMainMenu();
+    }
+
+    public IEnumerator AssignTaskPutRequest(string teacherId, string minigameId, string difficulty, string level)
+    {
+
+        string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/" + teacherId + "&" + minigameId + "&" + difficulty + "&" + level;
+        UnityEngine.Debug.Log(url);
+        byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(saveToJSONString(" "));
+        var request = new UnityWebRequest(url, "PUT");
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.chunkedTransfer = false;
+        yield return request.SendWebRequest();
+        UnityEngine.Debug.Log(request.downloadHandler.text);
+        string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        UnityEngine.Debug.Log(convertedStr);
+        var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
+        SceneController scene = SceneController.GetSceneController();
+        if (data["success"].ToString() == "True")
+        {
+            UnityEngine.Debug.Log(data["success"].ToString());
+        }
+
+        else
+        {
+            UnityEngine.Debug.Log(data["success"].ToString());
+        }
     }
 
     /// <summary>

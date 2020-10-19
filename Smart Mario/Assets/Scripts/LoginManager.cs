@@ -67,7 +67,6 @@ public class LoginManager : MonoBehaviour
         else
         {
             UnityEngine.Debug.Log("Student");
-            //APICall api = APICall.getAPICall();
             ValidateStudentLogin(username, password, msg);
         }
     }
