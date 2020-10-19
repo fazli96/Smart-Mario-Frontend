@@ -11,13 +11,12 @@ public class ManageTasksScrollView : MonoBehaviour
     private static ManageTasksScrollView instance = null;
 
     private SceneController scene;
-    private Translator translator;
 
     public GameObject Button_Template;
     public GridLayoutGroup gridGroup;
 
     private static List<DisplayResults> displayResultsList;
-    private static List<TaskCompletionCell> TasksList = new List<TaskCompletionCell>();
+    private static List<TaskCompletionCell> tasksList = new List<TaskCompletionCell>();
     public Text noTasksMessage;
 
     public static ManageTasksScrollView GetManageTasksScrollView()
@@ -34,15 +33,14 @@ public class ManageTasksScrollView : MonoBehaviour
     void Start()
     {
         scene = SceneController.GetSceneController();
-        translator  = Translator.GetTranslator();
                 
         DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();
         displayResultsList = displayListManager.GetDisplayResultsList();
-        TasksList = ParseList(displayResultsList);
+        tasksList = ParseList(displayResultsList);
 
-        if (TasksList.Count != 0)
+        if (tasksList.Count != 0)
         {
-            GenerateTaskCells(TasksList);
+            GenerateTaskCells();
         }
         else
         {
@@ -59,19 +57,19 @@ public class ManageTasksScrollView : MonoBehaviour
     private List<TaskCompletionCell> ParseList(List<DisplayResults> ls)
     {
         List<TaskCompletionCell> newList = new List<TaskCompletionCell>();
-        int count = 0;
         foreach (DisplayResults item in ls)
         {
-            string gameName = translator.GameIDToName(item.minigameId);
+            Translator translator  = Translator.GetTranslator();
+            string gameName = translator.GameIDToName(item.minigameId.ToString());
             string level = "Level " + item.level;
             newList.Add(new TaskCompletionCell(gameName, item.difficulty, level, item.completed));
         }
         return newList;
     }
 
-    private void GenerateTaskCells(List<TaskCompletionCell> ls)
+    private void GenerateTaskCells()
     {
-        foreach(TaskCompletionCell task in ls)
+        foreach(TaskCompletionCell task in tasksList)
         {
             GameObject newButton = Instantiate(Button_Template) as GameObject;
             newButton.SetActive(true);

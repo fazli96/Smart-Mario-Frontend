@@ -6,18 +6,22 @@ using UnityEngine.UI;
 public class StudentButton : MonoBehaviour
 {
     [SerializeField]
-    private string Name;
+    private string name;
+    private string studentId;
     public Text ButtonText;
     public StudentScrollViewController ScrollView;
 
-    public void SetName(string name)
+    public void SetAttributes(string name, string studentId)
     {
-        Name = name;
+        this.name = name;
         ButtonText.text = name;
+        this.studentId = studentId;
     }
 
     public void ButtonClick()
     {
-        ScrollView.ButtonClicked(Name);
+        StudentPerformanceManager studentPerformanceManager = StudentPerformanceManager.GetStudentPerformanceManager();
+        studentPerformanceManager.SetStudentAttributes(name, studentId);
+        ScrollView.ButtonClicked();
     }
 }

@@ -5,15 +5,28 @@ using UnityEngine.UI;
 
 public class StudentScrollViewController : MonoBehaviour
 {
+    //Singleton
+    private static StudentScrollViewController instance = null;
+
     private SceneController scene;
 
     [SerializeField]
     private GameObject Button_Template;
     [SerializeField]
     private GridLayoutGroup gridGroup;
-    private List<string> NameList = new List<string>();
+    
+    private static List<DisplayResults> displayResultsList;
+    private static List<(string, string)> nameList;
     public Text msg;
 
+    public static StudentScrollViewController GetStudentScrollViewController()
+    {
+        if (instance == null)
+        {
+            instance = new StudentScrollViewController();
+        }
+        return instance;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -22,44 +35,46 @@ public class StudentScrollViewController : MonoBehaviour
 
         scene = SceneController.GetSceneController();
 
-        // NameList.Add("Alan");
-        // NameList.Add("Amy");
-        // NameList.Add("Brian");
-        // NameList.Add("Carrie");
-        // NameList.Add("David");
-        // NameList.Add("Joe");
-        // NameList.Add("Jason");
-        // NameList.Add("Michelle");
-        // NameList.Add("Stephanie");
-        // NameList.Add("Zoe");
-        // NameList.Add("Alan2");
-        // NameList.Add("Amy2");
-        // NameList.Add("Brian2");
-        // NameList.Add("Carrie2");
-        // NameList.Add("David2");
-        // NameList.Add("Joe2");
-        // NameList.Add("Jason2");
-        // NameList.Add("Michelle2");
-        // NameList.Add("Stephanie2");
-        // NameList.Add("Zoe2");
-        
-        GenerateStudentButtons();
+        DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();
+        displayResultsList = displayListManager.GetDisplayResultsList();
+        nameList = ParseList(displayResultsList);
 
-        if (NameList.Count == 0)
+        if (nameList.Count != 0)
+        {
+            GenerateStudentButtons();
+        }
+        else
         {
             DisplayMessage("There are no students to display.");
         }
-
     }
+
+    private List<(string, string)> ParseList(List<DisplayResults> ls)
+    {
+        List<(string, string)> newList = new List<(string, string)>();
+        foreach (DisplayResults item in ls)
+        {
+            string name = item.studentName;
+            var student = (name, item.studentId.ToString());
+            if (!newList.Contains(student))
+            {
+                newList.Add(student);
+            }
+        }
+        return newList;
+    }
+
 
     private void GenerateStudentButtons()
     {
-        foreach(string str in NameList)
+        foreach(var student in nameList)
         {
+            string name = student.Item1;
+            string id = student.Item2;
             GameObject newButton = Instantiate(Button_Template) as GameObject;
             newButton.SetActive(true);
             StudentButton SB = newButton.GetComponent<StudentButton>();
-            SB.SetName(str);
+            SB.SetAttributes(name, id);
             newButton.transform.SetParent(Button_Template.transform.parent);
         }
     }
@@ -75,7 +90,7 @@ public class StudentScrollViewController : MonoBehaviour
         
     }
 
-    public void ButtonClicked(string str)
+    public void ButtonClicked()
     {
         scene.ToStudentPerformance();
     }

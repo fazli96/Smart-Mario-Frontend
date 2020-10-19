@@ -28,6 +28,7 @@ public class DisplayListManager
         foreach (JObject one_resultJobj in data)
         {
             DisplayResults one_result = one_resultJobj.ToObject<DisplayResults>();
+            one_result.studentName = one_resultJobj["student"]["name"].ToString();
             displayResultsList.Add(one_result);
         }
     }

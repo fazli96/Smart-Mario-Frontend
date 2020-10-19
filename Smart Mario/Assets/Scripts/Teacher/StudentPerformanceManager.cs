@@ -5,21 +5,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatisticsManager : MonoBehaviour
+public class StudentPerformanceManager : MonoBehaviour
 {
-    public static StatisticsManager instance;
-    private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/results";
+    //Singleton
+    public static StudentPerformanceManager instance = null;
+
+    private SceneController scene;
 
     public Dropdown minigameDropdown;
     public Dropdown difficultyDropdown;
     public Dropdown levelDropdown;
 
+    public Text studentNameText;
     public Text highScoreText;
     public Text QnsCorrectText;
     public Text QnsAttemptedText;
     public Text QnsAccuracyText;
 
-    private static string studentId = "1"; 
+    public Button backButton;
+
+    private static List<DisplayResults> displayResultsList;
+
+    private static string studentName;
+    private static string studentId;
+    private static string minigameId;
+    private static string difficulty;
+    private static string level;
+
+    public static StudentPerformanceManager GetStudentPerformanceManager()
+    {
+        if (instance == null)
+        {
+            instance = new StudentPerformanceManager();
+        }
+        return instance;
+    }
+
 
     void Awake()
     {
@@ -32,18 +53,21 @@ public class StatisticsManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     // Start is called before the first frame update
     void Start()
     {
+        scene = SceneController.GetSceneController();
+        DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();
+        displayResultsList = displayListManager.GetDisplayResultsList();
+        SetDefaultValues();
+
+        studentNameText.text = studentName;
+
         LoadingResults();
         //LoadDummyData();
         
-        string customUrl = url + "/"+studentId+"&1&easy&1";
-        Debug.Log(customUrl);
         APICall apiCall = APICall.getAPICall();
-        // StartCoroutine(apiCall.BestResultsGetRequest(customUrl));
-        
+        StartCoroutine(apiCall.BestResultsGetRequest(studentId, minigameId, difficulty, level));
     }
 
     public void LoadDummyData()
@@ -79,7 +103,7 @@ public class StatisticsManager : MonoBehaviour
         {
             APICall apiCall = APICall.getAPICall();
             string bodyJsonString = apiCall.saveToJSONString(dummyResults[i]);
-            // StartCoroutine(apiCall.ResultsPutRequest(url, bodyJsonString));
+            StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString));
             yield return new WaitForSeconds(1f);
         }
     }
@@ -88,6 +112,19 @@ public class StatisticsManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetStudentAttributes(string newStudentName, string newStudentId)
+    {
+        studentId = newStudentId;
+        studentName = newStudentName;
+    }
+    
+    private void SetDefaultValues()
+    {
+        minigameId = "1";
+        difficulty = "easy";
+        level = "1"; 
     }
 
     public void LoadingResults()
@@ -132,9 +169,8 @@ public class StatisticsManager : MonoBehaviour
     {
         LoadingResults();
 
-        int minigameId = minigameDropdown.value + 1;
-        int level = levelDropdown.value + 1;
-        string difficulty;
+        minigameId = (minigameDropdown.value + 1).ToString();
+        level = (levelDropdown.value + 1).ToString();
         switch (difficultyDropdown.value)
         {
             case 0:
@@ -150,9 +186,13 @@ public class StatisticsManager : MonoBehaviour
                 difficulty = "easy";
                 break;
         }
-        string customUrl = url + "/" + studentId + "&" + minigameId + "&" + difficulty+ "&" + level;
-        Debug.Log(customUrl);
+        Debug.Log(minigameId + difficulty + level);
         APICall apiCall = APICall.getAPICall();
-        // StartCoroutine(apiCall.BestResultsGetRequest(customUrl));
+        StartCoroutine(apiCall.BestResultsGetRequest(studentId, minigameId, difficulty, level));
+    }
+
+    public void backToSelectStudent()
+    {
+        scene.ToSelectStudentPerformance();
     }
 }

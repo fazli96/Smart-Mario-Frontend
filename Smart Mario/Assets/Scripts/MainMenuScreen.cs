@@ -11,6 +11,8 @@ public class MainMenuScreen : MonoBehaviour
     private SceneController scene;
     public Text msg;
     public Text customError;
+    public static string studentId;
+
     /// <summary>
     /// Creates a singleton instance if none exist, returns the existing instance if one exists
     /// </summary>
@@ -69,6 +71,7 @@ public class MainMenuScreen : MonoBehaviour
     public void ManageTasksScreen()
     {
         APICall api = APICall.getAPICall();
+        // StartCoroutine(api.StudentResultGetRequest(studentId));
         StartCoroutine(api.StudentResultGetRequest("2"));
     }
     /// <summary>

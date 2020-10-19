@@ -177,9 +177,7 @@ public class APICall
 
     public IEnumerator AssignTaskPutRequest(string teacherId, string minigameId, string difficulty, string level)
     {
-
         string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/" + teacherId + "&" + minigameId + "&" + difficulty + "&" + level;
-        UnityEngine.Debug.Log(url);
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(saveToJSONString(" "));
         var request = new UnityWebRequest(url, "PUT");
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
@@ -187,20 +185,14 @@ public class APICall
         request.SetRequestHeader("Content-Type", "application/json");
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
-        UnityEngine.Debug.Log(request.downloadHandler.text);
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        UnityEngine.Debug.Log(convertedStr);
         var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
+        AssignTask assignTask = AssignTask.GetAssignTask();
+        assignTask.setRefresh();
+        string boolstring = data["success"].ToString();
+        assignTask.setSuccessStatus(boolstring == "True");
         SceneController scene = SceneController.GetSceneController();
-        if (data["success"].ToString() == "True")
-        {
-            UnityEngine.Debug.Log(data["success"].ToString());
-        }
-
-        else
-        {
-            UnityEngine.Debug.Log(data["success"].ToString());
-        }
+        scene.ToAssignTasksScreen();
     }
 
     /// <summary>
@@ -209,7 +201,7 @@ public class APICall
     /// <param name="url"></param>
     /// <param name="bodyJsonString"></param>
     /// <returns></returns>
-    public IEnumerator ResultsPutRequest(string url, string bodyJsonString)
+    public IEnumerator ResultsPutRequest(string bodyJsonString, string url = "https://smart-mario-backend-1.herokuapp.com/api/results")
     {
         var request = new UnityWebRequest(url , "PUT");
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
@@ -226,9 +218,9 @@ public class APICall
     /// </summary>
     /// <param name="url"></param>
     /// <returns></returns>
-    public IEnumerator BestResultsGetRequest(string url)
+    public IEnumerator BestResultsGetRequest(string studentId, string minigameId, string difficulty, string level)
     {
-        UnityEngine.Debug.Log(url);
+        string url = "https://smart-mario-backend-1.herokuapp.com/api/results/" + studentId + "&" + minigameId + "&" + difficulty + "&" + level;
         var request = new UnityWebRequest(url, "GET");
         //byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
         //request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
@@ -238,7 +230,7 @@ public class APICall
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
         UnityEngine.Debug.Log(convertedStr);
-        StatisticsManager.instance.GetComponent<StatisticsManager>().ResultsRetrieved(convertedStr);
+        StudentPerformanceManager.instance.GetComponent<StudentPerformanceManager>().ResultsRetrieved(convertedStr);
     }
     /// <summary>
     /// Creates an IEnumerator for coroutines that is used for retrieving game questions for Student via a Get request
@@ -279,6 +271,7 @@ public class APICall
     public IEnumerator StudentResultGetRequest(string studentID)
     {
         string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/student/" + studentID;
+        UnityEngine.Debug.Log(url);
         var request = new UnityWebRequest(url, "GET");
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.chunkedTransfer = false;
@@ -290,7 +283,7 @@ public class APICall
         scene.ToStudentManageTasks();
     }
 
-    public IEnumerator AllStudentResultGetRequest(string teacherID)
+    public IEnumerator AllStudentResultGetRequest(string teacherID, int sceneNumber)
     {
         string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/teacher/" + teacherID;
         var request = new UnityWebRequest(url, "GET");
@@ -298,9 +291,20 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        UnityEngine.Debug.Log("Getrequest" + convertedStr);
-        SelectStudentManager selectStudentManager = SelectStudentManager.GetSelectStudentManager();
-        selectStudentManager.CSVRetrieved(convertedStr);
+        DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();
+        displayListManager.RetrieveData(convertedStr);
+        SceneController scene = SceneController.GetSceneController();
+        switch (sceneNumber)
+        {
+            case 0:
+                SelectStudentManager selectStudentManager = SelectStudentManager.GetSelectStudentManager();
+                selectStudentManager.CSVGetRequest(convertedStr);
+                scene.ToSelectStudentPerformance();
+                break;
+            case 1:
+                scene.ToTeacherSelectTaskScreen();
+                break;
+        }
     }
 
     public IEnumerator SpecificTaskResult(string teacherId, string minigameId, string difficulty, string level)
@@ -316,8 +320,6 @@ public class APICall
         SceneController scene = SceneController.GetSceneController();
         scene.ToViewAssignedTasksScreen();
     }
-
-
 }
 
 

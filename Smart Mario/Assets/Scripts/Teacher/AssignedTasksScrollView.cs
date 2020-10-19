@@ -20,8 +20,6 @@ public class AssignedTasksScrollView : MonoBehaviour
 
     private static List<StudentTaskCell> studentList = new List<StudentTaskCell>();
     public Text msg;
-
-    private bool taskisAssigned = false;
     
     public static AssignedTasksScrollView GetAssignedTasksScrollView()
     {
@@ -37,8 +35,6 @@ public class AssignedTasksScrollView : MonoBehaviour
     void Start()
     {
         scene = SceneController.GetSceneController();
-
-        DisplayMessage("");
 
         studentList = assignedTasksManager.GetStudentList();
         GenerateStudentCells();

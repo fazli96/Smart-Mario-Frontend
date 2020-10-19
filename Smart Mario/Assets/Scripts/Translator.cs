@@ -17,25 +17,25 @@ public class Translator : MonoBehaviour
         return instance;
     }
     
-    private static Dictionary<int, string> GameNames = new Dictionary<int, string>()
+    private static Dictionary<string, string> GameNames = new Dictionary<string, string>()
     {
-        {1, "World 1 Stranded"},
-        {2, "World 1 Card Matching"},
-        {3, "World 2 Stranded"},
-        {4, "World 2 Card Matching"}
+        {"1", "World 1 Stranded"},
+        {"2", "World 1 Card Matching"},
+        {"3", "World 2 Stranded"},
+        {"4", "World 2 Card Matching"}
     };
 
-    private static Dictionary<string, int> GameIds = new Dictionary<string, int>()
+    private static Dictionary<string, string> GameIds = new Dictionary<string, string>()
     {
-        {"World 1 Stranded", 1},
-        {"World 1 Card Matching", 2},
-        {"World 2 Stranded", 3},
-        {"World 2 Card Matching", 4}
+        {"World 1 Stranded", "1"},
+        {"World 1 Card Matching", "2"},
+        {"World 2 Stranded", "3"},
+        {"World 2 Card Matching", "4"}
     };
 
-    public string GameIDToName(int gameId) { return GameNames[gameId]; }
+    public string GameIDToName(string gameId) { return GameNames[gameId]; }
 
-    public int GameNameToID(string gameName) { return GameIds[gameName]; }
+    public string GameNameToID(string gameName) { return GameIds[gameName]; }
 
     public int LevelStringToInt(string levelstr)
     {

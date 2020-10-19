@@ -9,6 +9,7 @@ public class CheckAssignedTasks : MonoBehaviour
     public Button backButton;
 
     private SelectTaskManager selectTaskManager;
+    private Translator translator = Translator.GetTranslator();
 
     public Text gameNameText;
     public Text difficultyText;
@@ -25,7 +26,6 @@ public class CheckAssignedTasks : MonoBehaviour
         selectTaskManager = SelectTaskManager.GetSelectTaskManager();
         
         SetAttributes();
-
         DisplayAttributes();
     }
 
@@ -49,8 +49,8 @@ public class CheckAssignedTasks : MonoBehaviour
 
     public void SetAttributes()
     {
-        this.gameName = selectTaskManager.GetGameID();
+        this.gameName = translator.GameIDToName(selectTaskManager.GetMiniGameID());
         this.difficulty = selectTaskManager.GetDifficulty();
-        this.level = selectTaskManager.GetLevel();
+        this.level = "Level " + selectTaskManager.GetLevel();
     }
 }

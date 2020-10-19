@@ -314,7 +314,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 585188cdc4600544eb408bee749e4b3a, type: 3}
-    m_FontSize: 23
+    m_FontSize: 18
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -393,10 +393,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 585188cdc4600544eb408bee749e4b3a, type: 3}
-    m_FontSize: 23
+    m_FontSize: 18
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 2
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 3
     m_AlignByGeometry: 0
@@ -1131,7 +1131,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 0}
+  m_SizeDelta: {x: 80, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &505174054
 MonoBehaviour:
@@ -1228,9 +1228,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1137241519}
-        m_TargetAssemblyTypeName: StatisticsController, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 1574804611}
+        m_TargetAssemblyTypeName: SelectTaskManager, Assembly-CSharp
+        m_MethodName: OnDropdownValueChange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1504,7 +1504,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 585188cdc4600544eb408bee749e4b3a, type: 3}
-    m_FontSize: 23
+    m_FontSize: 18
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -2004,7 +2004,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 120, y: 0}
+  m_SizeDelta: {x: 100, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &817454982
 MonoBehaviour:
@@ -2105,9 +2105,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1137241519}
-        m_TargetAssemblyTypeName: StatisticsController, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 1574804611}
+        m_TargetAssemblyTypeName: SelectTaskManager, Assembly-CSharp
+        m_MethodName: OnDropdownValueChange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2574,56 +2574,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1087187660}
   m_CullTransparentMesh: 0
---- !u!1 &1137241518
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1137241520}
-  - component: {fileID: 1137241519}
-  m_Layer: 0
-  m_Name: StatisticsController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1137241519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1137241518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 048a0052668afd440ac291cc51a24d8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minigameDropdown: {fileID: 1344988559}
-  difficultyDropdown: {fileID: 505174056}
-  levelDropdown: {fileID: 817454984}
-  highScoreText: {fileID: 0}
-  QnsCorrectText: {fileID: 0}
-  QnsAttemptedText: {fileID: 0}
-  QnsAccuracyText: {fileID: 0}
---- !u!4 &1137241520
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1137241518}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 236.62685, y: 178.33401, z: -813.27606}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1144683234
 GameObject:
   m_ObjectHideFlags: 0
@@ -3019,7 +2969,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 220, y: 0}
+  m_SizeDelta: {x: 240, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1344988557
 MonoBehaviour:
@@ -3118,9 +3068,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1137241519}
-        m_TargetAssemblyTypeName: StatisticsController, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 1574804611}
+        m_TargetAssemblyTypeName: SelectTaskManager, Assembly-CSharp
+        m_MethodName: OnDropdownValueChange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3645,6 +3595,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b789408bb6b50f4ba6c90e71deb8bb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minigameDropdown: {fileID: 1344988559}
+  difficultyDropdown: {fileID: 505174056}
+  levelDropdown: {fileID: 817454984}
   nextButton: {fileID: 503837950}
   backButton: {fileID: 29044880}
   errorMessage: {fileID: 511352154}
@@ -3682,7 +3635,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 51, y: 90}
+  m_AnchoredPosition: {x: 66, y: 90}
   m_SizeDelta: {x: 250, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1604560093
@@ -4611,7 +4564,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -130, y: 90}
+  m_AnchoredPosition: {x: -120, y: 90}
   m_SizeDelta: {x: 250, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2119356907

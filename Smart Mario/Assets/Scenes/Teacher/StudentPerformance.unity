@@ -155,7 +155,7 @@ RectTransform:
   m_Children:
   - {fileID: 835357341}
   m_Father: {fileID: 1574804610}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -206,8 +206,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1574804611}
-        m_TargetAssemblyTypeName: TeacherViewPerformance, Assembly-CSharp
-        m_MethodName: BackToSelectStudentPerformanceScreen
+        m_TargetAssemblyTypeName: StudentPerformanceManager, Assembly-CSharp
+        m_MethodName: backToSelectStudent
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1017,7 +1017,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1137241519}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: StatisticsController, Assembly-CSharp
         m_MethodName: OnDropdownValueChange
         m_Mode: 1
@@ -1815,7 +1815,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1137241519}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: StatisticsController, Assembly-CSharp
         m_MethodName: OnDropdownValueChange
         m_Mode: 1
@@ -2094,6 +2094,85 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Qns Answered Correctly: 1'
+--- !u!1 &1005743726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1005743727}
+  - component: {fileID: 1005743729}
+  - component: {fileID: 1005743728}
+  m_Layer: 5
+  m_Name: StudentName
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1005743727
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005743726}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1574804610}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 130}
+  m_SizeDelta: {x: 450, y: 384}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1005743728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005743726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0.088213705, b: 0.8490566, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
+    m_FontSize: 35
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 54
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 
+--- !u!222 &1005743729
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005743726}
+  m_CullTransparentMesh: 0
 --- !u!1 &1016622654
 GameObject:
   m_ObjectHideFlags: 0
@@ -2554,7 +2633,7 @@ RectTransform:
   - {fileID: 2028672750}
   - {fileID: 1030385563}
   m_Father: {fileID: 1574804610}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -2587,56 +2666,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
---- !u!1 &1137241518
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1137241520}
-  - component: {fileID: 1137241519}
-  m_Layer: 0
-  m_Name: StatisticsController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1137241519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1137241518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 048a0052668afd440ac291cc51a24d8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minigameDropdown: {fileID: 1344988559}
-  difficultyDropdown: {fileID: 505174056}
-  levelDropdown: {fileID: 817454984}
-  highScoreText: {fileID: 1016622657}
-  QnsCorrectText: {fileID: 909451462}
-  QnsAttemptedText: {fileID: 2028672752}
-  QnsAccuracyText: {fileID: 1030385561}
---- !u!4 &1137241520
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1137241518}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 236.62685, y: 178.33401, z: -813.27606}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1144683234
 GameObject:
   m_ObjectHideFlags: 0
@@ -3131,7 +3160,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1137241519}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: StatisticsController, Assembly-CSharp
         m_MethodName: OnDropdownValueChange
         m_Mode: 1
@@ -3613,7 +3642,7 @@ GameObject:
   - component: {fileID: 1574804610}
   - component: {fileID: 1574804611}
   m_Layer: 5
-  m_Name: StatisticsUI
+  m_Name: StudentPerformanceUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3631,6 +3660,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 319400028}
+  - {fileID: 1005743727}
   - {fileID: 2134366781}
   - {fileID: 1129820341}
   - {fileID: 29044879}
@@ -3651,10 +3681,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1574804609}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1a141a9da57d9d42a98b790636cab21, type: 3}
+  m_Script: {fileID: 11500000, guid: 92a5b842133555b41b3c44653e9e2dbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backButton: {fileID: 0}
+  minigameDropdown: {fileID: 1344988559}
+  difficultyDropdown: {fileID: 505174056}
+  levelDropdown: {fileID: 817454984}
+  studentNameText: {fileID: 1005743728}
+  highScoreText: {fileID: 1016622657}
+  QnsCorrectText: {fileID: 909451462}
+  QnsAttemptedText: {fileID: 2028672752}
+  QnsAccuracyText: {fileID: 1030385561}
+  backButton: {fileID: 29044880}
 --- !u!1 &1659826955
 GameObject:
   m_ObjectHideFlags: 0
@@ -4537,7 +4575,7 @@ RectTransform:
   - {fileID: 505174053}
   - {fileID: 817454981}
   m_Father: {fileID: 1574804610}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}

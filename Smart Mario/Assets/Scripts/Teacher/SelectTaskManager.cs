@@ -9,19 +9,22 @@ public class SelectTaskManager : MonoBehaviour
     private static SelectTaskManager instance = null;
     
     private SceneController scene;
+    private TeacherMenu teacherMenu;
 
-    public static string gameName;
-    public static string difficulty;
-    public static string level;
+    public Dropdown minigameDropdown;
+    public Dropdown difficultyDropdown;
+    public Dropdown levelDropdown;
 
     public Button nextButton;
     public Button backButton;
     public Text errorMessage;
 
-    // string teacherId;
-    // string minigameId;
-    // string difficulty;
-    // string level;
+    private static List<DisplayResults> displayResultsList;
+    private static List<(string, string, string)> tasksList;
+    private static string teacherId;
+    private static string minigameId;
+    private static string difficulty;
+    private static string level;
 
     public static SelectTaskManager GetSelectTaskManager()
     {
@@ -36,7 +39,13 @@ public class SelectTaskManager : MonoBehaviour
     void Start()
     {
         scene = SceneController.GetSceneController();
+        teacherMenu = TeacherMenu.GetTeacherMenu();
+        teacherId = teacherMenu.GetTeacherId();
         SetDefaultValues();
+
+        DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();
+        displayResultsList = displayListManager.GetDisplayResultsList();
+        tasksList = ParseList(displayResultsList);
     }
 
     // Update is called once per frame
@@ -47,9 +56,44 @@ public class SelectTaskManager : MonoBehaviour
 
     private void SetDefaultValues()
     {
-        gameName = "World 1 Stranded";
-        difficulty = "Easy";
-        level = "Level 1"; 
+        minigameId = "1";
+        difficulty = "easy";
+        level = "1"; 
+    }
+
+    public void OnDropdownValueChange()
+    {
+        minigameId = (minigameDropdown.value + 1).ToString();
+        level = (levelDropdown.value + 1).ToString();
+        switch (difficultyDropdown.value)
+        {
+            case 0:
+                difficulty = "easy";
+                break;
+            case 1:
+                difficulty = "medium";
+                break;
+            case 2:
+                difficulty = "hard";
+                break;
+            default:
+                difficulty = "easy";
+                break;
+        }
+    }
+
+    private List<(string, string, string)> ParseList(List<DisplayResults> ls)
+    {
+        List<(string, string, string)> newList = new List<(string, string, string)>();
+        foreach (DisplayResults item in ls)
+        {
+            var newTask = (item.minigameId.ToString(), item.difficulty.ToString(), item.level.ToString());
+            if (!newList.Contains(newTask))
+            {
+                newList.Add(newTask);
+            }
+        }
+        return newList;
     }
 
     public void DisplayErrorMessage()
@@ -64,11 +108,22 @@ public class SelectTaskManager : MonoBehaviour
 
     public void Next()
     {
-        APICall api = APICall.getAPICall();
-        StartCoroutine(api.SpecificTaskResult("2", "2", "hard", "1"));
+        var currentSelection = (minigameId, difficulty, level);
+        UnityEngine.Debug.Log(currentSelection);
+        bool taskIsAssigned = tasksList.Contains(currentSelection);
+        if (taskIsAssigned)
+        {
+            APICall api = APICall.getAPICall();
+            StartCoroutine(api.SpecificTaskResult(teacherId, minigameId, difficulty, level));
+        }
+        else
+        {
+            DisplayErrorMessage();
+        }
     }
 
-    public string GetGameID() { return gameName; }
+
+    public string GetMiniGameID() { return minigameId; }
 
     public string GetDifficulty() { return difficulty; }
 

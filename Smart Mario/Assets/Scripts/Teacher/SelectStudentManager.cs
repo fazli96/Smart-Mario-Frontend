@@ -13,12 +13,14 @@ public class SelectStudentManager : MonoBehaviour
 {
     //Singleton
     private static SelectStudentManager instance = null;
+
     private SceneController scene;
-    private List<DisplayResults> displayResultsList;
-    // private List<CSVDisplay> csvDisplay;
+    private static List<DisplayResults> displayResultsList;
+    private static string CSVRawData;
     public Button exportCSVButton;
     public Button backToTeacherMenuButton;
     public Text CSVErrorMessage;
+    public Text successMessage;
 
     public static SelectStudentManager GetSelectStudentManager()
     {
@@ -42,18 +44,10 @@ public class SelectStudentManager : MonoBehaviour
         
     }
 
-    public void ExportCSV()
-    {
-        APICall api = APICall.getAPICall();
-        StartCoroutine(api.AllStudentResultGetRequest("2")); // to insert studentId from playerprefs**
-    }
-
     public void BackToTeacherMenu()
     {
         scene.ToTeacherMenu();
     }
-
-
 
     private string getPath()
     {
@@ -64,20 +58,17 @@ public class SelectStudentManager : MonoBehaviour
         #endif
     }
 
-    // public void CSVRetrieved(string result)
-    // {
-    //     displayResultsList = new List<DisplayResults>();
-    //     JArray data = (JArray)JsonConvert.DeserializeObject(result);
-    //     foreach (JObject one_resultJobj in data)
-    //     {
-    //         DisplayResults one_result = one_resultJobj.ToObject<DisplayResults>();
-    //         displayResultsList.Add(one_result);
-    //     }
-    //     SaveCSV();
-    // }
 
-    public void CSVRetrieved(string result)
+    public void CSVGetRequest(string result)
     {
+        CSVRawData = result;
+    }
+
+    public void ExportCSV()
+    {
+        successMessage.text = "";
+        CSVErrorMessage.text = "";
+
         try
         {
             string filePath = getPath();
@@ -99,27 +90,27 @@ public class SelectStudentManager : MonoBehaviour
             }
             StreamWriter writer = new StreamWriter(filePath);
 
-            JArray data = (JArray)JsonConvert.DeserializeObject(result);
-            writer.WriteLine("Student Name, " + "Difficulty, " + "Level" + ", " + "Score");
+            JArray data = (JArray)JsonConvert.DeserializeObject(CSVRawData);
+            writer.WriteLine("Student Name, " + "Game, " + "Difficulty, " + "Level" + ", " + "Score");
             foreach (JObject one_result in data)
             {
-                UnityEngine.Debug.Log(one_result["student"]["name"]);
-                string studentID = one_result["student"]["name"].ToString();
+                string studentName = one_result["student"]["name"].ToString();
+                string minigameName = one_result["minigame"]["name"].ToString();
                 string difficulty = one_result["difficulty"].ToString();
                 string level = one_result["level"].ToString();
-                string score = one_result["results"]["score"].ToString();
-                writer.WriteLine(studentID + ", " + difficulty + ", " + level + "," + score);
+                // string score = one_result["score"].ToString();
+                string score = "100";
+                writer.WriteLine(studentName + ", " + minigameName + ", " + difficulty + ", " + level + "," + score);
             }
-            
-            // writer.WriteLine("11111111111, name, username");
+
             writer.Flush();
             writer.Close();
+
+            successMessage.text = "Successfully exported to CSV!";
         }
         catch (Exception ex)
         {
-            UnityEngine.Debug.Log(ex.ToString());
-            // Text CSVerrorMessage = GameObject.GetComponent<Text>
-            this.CSVErrorMessage.text = "Error! Please ensure CSV file is closed!";
+            CSVErrorMessage.text = "Unable to Export! CSV file is in use!";
         }
     }
 }

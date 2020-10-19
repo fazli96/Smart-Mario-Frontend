@@ -150,7 +150,7 @@ public class StrandedGameStatus : MonoBehaviour
         Results result = new Results(studentId, minigameId, difficulty, currentLevel, currentScore, qnsAttempted, qnsAnsweredCorrectly);
         //Results result = new Results("1", 1, "Easy", 1, 50, 1, 1);
         string bodyJsonString = apiCall.saveToJSONString(result);
-        StartCoroutine(apiCall.ResultsPutRequest(url, bodyJsonString));
+        StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));
     }
 }
 
