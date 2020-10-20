@@ -1017,8 +1017,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: StatisticsController, Assembly-CSharp
+      - m_Target: {fileID: 1574804611}
+        m_TargetAssemblyTypeName: StudentPerformanceManager, Assembly-CSharp
         m_MethodName: OnDropdownValueChange
         m_Mode: 1
         m_Arguments:
@@ -1815,8 +1815,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: StatisticsController, Assembly-CSharp
+      - m_Target: {fileID: 1574804611}
+        m_TargetAssemblyTypeName: StudentPerformanceManager, Assembly-CSharp
         m_MethodName: OnDropdownValueChange
         m_Mode: 1
         m_Arguments:
@@ -2093,7 +2093,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Qns Answered Correctly: 1'
+  m_Text: 
 --- !u!1 &1005743726
 GameObject:
   m_ObjectHideFlags: 0
@@ -2144,7 +2144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.088213705, b: 0.8490566, a: 1}
+  m_Color: {r: 0, g: 0.2465775, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2251,7 +2251,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'HighScore: 2000'
+  m_Text: Loading Results...
 --- !u!1 &1022175119
 GameObject:
   m_ObjectHideFlags: 0
@@ -2389,7 +2389,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Questions Accuracy: 100%'
+  m_Text: 
 --- !u!222 &1030385562
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3160,8 +3160,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: StatisticsController, Assembly-CSharp
+      - m_Target: {fileID: 1574804611}
+        m_TargetAssemblyTypeName: StudentPerformanceManager, Assembly-CSharp
         m_MethodName: OnDropdownValueChange
         m_Mode: 1
         m_Arguments:
@@ -4542,7 +4542,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Questions Attempted: 1'
+  m_Text: 
 --- !u!1 &2134366780
 GameObject:
   m_ObjectHideFlags: 0
