@@ -88,6 +88,14 @@ public class SceneController : MonoBehaviour
     }
 
     /// <summary>
+    /// This is to load the leaderboard page and display it on the screen
+    /// </summary>
+    public void ToLeaderboard()
+    {
+        SceneManager.LoadScene("Leaderboard");
+    }
+
+    /// <summary>
     /// This is to load register page and display it on the screen
     /// </summary>
     public void ToCreateAccount()

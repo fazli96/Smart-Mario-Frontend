@@ -268,6 +268,8 @@ public class APICall
         }
     }
 
+
+
     public IEnumerator StudentResultGetRequest(string studentID)
     {
         string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/student/" + studentID;
@@ -320,6 +322,22 @@ public class APICall
         SceneController scene = SceneController.GetSceneController();
         scene.ToViewAssignedTasksScreen();
     }
+
+    public IEnumerator LeaderboardGetRequest(string url)
+    {
+        UnityEngine.Debug.Log(url);
+        var request = new UnityWebRequest(url, "GET");
+        //byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
+        //request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        //request.SetRequestHeader("Content-Type", "application/json");
+        request.chunkedTransfer = false;
+        yield return request.SendWebRequest();
+        string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        UnityEngine.Debug.Log(convertedStr);
+        LeaderboardManager.instance.GetComponent<LeaderboardManager>().LeaderboardRetrieved(convertedStr);
+    }
+
 }
 
 

@@ -43,6 +43,14 @@ public class MainMenuScreen : MonoBehaviour
     {
         scene.ToStatistics();
     }
+
+    /// <summary>
+    /// Changes scene to Leaderboard
+    /// </summary>
+    public void LeaderboardScreen()
+    {
+        scene.ToLeaderboard();
+    }
     /// <summary>
     /// Changes scene to World Selection
     /// </summary>
