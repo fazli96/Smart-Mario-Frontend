@@ -76,8 +76,8 @@ public class LevelSelectionScreen : MonoBehaviour
         {
             if (minigameSelected.Equals("Stranded"))
                 scene.ToWorld2Minigame1Level1();
-            //else
-            //scene.ToWorld2Minigame2Level1();
+            else
+                scene.ToWorld2Minigame2();
         }
     }
 
@@ -99,8 +99,8 @@ public class LevelSelectionScreen : MonoBehaviour
         {
             if (minigameSelected.Equals("Stranded"))
                 scene.ToWorld2Minigame1Level2();
-            //else
-            //scene.ToWorld2Minigame2Level2();
+            else
+                scene.ToWorld2Minigame2();
         }
     }
 
@@ -122,8 +122,8 @@ public class LevelSelectionScreen : MonoBehaviour
         {
             if (minigameSelected.Equals("Stranded"))
                 scene.ToWorld2Minigame1Level3();
-            //else
-            //scene.ToWorld2Minigame2Level3();
+            else
+                scene.ToWorld2Minigame2();
         }
     }
 
@@ -145,8 +145,8 @@ public class LevelSelectionScreen : MonoBehaviour
         {
             if (minigameSelected.Equals("Stranded"))
                 scene.ToWorld2Minigame1Level4();
-            //else
-            //scene.ToWorld2Minigame2Level4();
+            else
+                scene.ToWorld2Minigame2();
         }
     }
 
@@ -168,8 +168,8 @@ public class LevelSelectionScreen : MonoBehaviour
         {
             if (minigameSelected.Equals("Stranded"))
                 scene.ToWorld2Minigame1Level5();
-            //else
-            //scene.ToWorld2Minigame2Level5();
+            else
+                scene.ToWorld2Minigame2();
         }
     }
 

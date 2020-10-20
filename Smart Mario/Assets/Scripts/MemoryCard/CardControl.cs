@@ -54,20 +54,20 @@ public class CardControl : MonoBehaviour
     public void Change()
     {
         spriteRenderer.sprite = faces[faceIndex];
-        spriteRenderer.material.color = new Color(spriteRenderer.material.color.r, spriteRenderer.material.color.g, spriteRenderer.material.color.b, 0);
-        FadeImage(1.0f, 0.1f);  //reveal the true sprite
+        //spriteRenderer.material.color = new Color(spriteRenderer.material.color.r, spriteRenderer.material.color.g, spriteRenderer.material.color.b, 0);
+        //FadeImage(1.0f, 0.1f);  //reveal the true sprite
     }
-    IEnumerator FadeImage(float aValue, float aTime)
-    {
-        float alpha = spriteRenderer.material.color.a;
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
-        {
-            Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha, aValue, t));
-            spriteRenderer.material.color = newColor;
-            yield return null;
-        }
+    //IEnumerator FadeImage(float aValue, float aTime)
+    //{
+    //    float alpha = spriteRenderer.material.color.a;
+    //    for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+    //    {
+    //        Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha, aValue, t));
+    //        spriteRenderer.material.color = newColor;
+    //        yield return null;
+    //    }
          
-    }
+    //}
     public void Hide()
     {
         spriteRenderer.sprite = back;

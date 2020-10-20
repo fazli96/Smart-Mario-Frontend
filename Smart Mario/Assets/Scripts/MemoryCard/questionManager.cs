@@ -17,7 +17,7 @@ public class questionManager : MonoBehaviour
     public GameObject panelOne;
     public GameObject panelTwo;
     private static readonly string theoryUrl = "https://smart-mario-backend-1.herokuapp.com/api/questions/shorttheory";
-    private static readonly string codeUrl = "https://smart-mario-backend-1.herokuapp.com/api/questions/mcqcode";
+    private static readonly string codeUrl = "https://smart-mario-backend-1.herokuapp.com/api/questions/shortcode";
     private static List<JObject> questionList = new List<JObject>();
     public static questionManager instance;
 
@@ -63,7 +63,11 @@ public class questionManager : MonoBehaviour
             Debug.Log("question: " + questionObject);
             //Question question1 = questionObject.ToObject<Question2>();
             //Debug.Log(question1.option1);
-            questionList.Add(questionObject);
+            //if (counter % 3 == difficulty)
+            //{
+                questionList.Add(questionObject);
+            //}
+            //counter++;
         }
         Debug.Log("DBResult: " + result);
         Debug.Log("Questions" + data2);
@@ -90,7 +94,7 @@ public class questionManager : MonoBehaviour
                 qnsOne.GetComponent<UnityEngine.UI.Text>().text = questionList[index]["Question"].ToString();
                 if (PlayerPrefs.GetInt("MinigameLevel") != 5)
                 {
-                    qnsOne.GetComponent<UnityEngine.UI.Text>().color = Color.red;
+                    qnsOne.GetComponent<UnityEngine.UI.Text>().color = new Color(126f/255f, 25f/255f, 27f/255f);
                 }
             }
             else
@@ -98,7 +102,7 @@ public class questionManager : MonoBehaviour
                 qnsOne.GetComponent<UnityEngine.UI.Text>().text = questionList[index]["Answer"].ToString();
                 if (PlayerPrefs.GetInt("MinigameLevel") != 5)
                 {
-                    qnsOne.GetComponent<UnityEngine.UI.Text>().color = Color.blue;
+                    qnsOne.GetComponent<UnityEngine.UI.Text>().color = new Color(14f / 255f, 77f / 255f, 146f / 255f);
                 }
             }
         }
@@ -112,7 +116,7 @@ public class questionManager : MonoBehaviour
                 qnsTwo.GetComponent<UnityEngine.UI.Text>().text = questionList[index]["Question"].ToString();
                 if (PlayerPrefs.GetInt("MinigameLevel") != 5)
                 {
-                    qnsTwo.GetComponent<UnityEngine.UI.Text>().color = Color.red;
+                    qnsTwo.GetComponent<UnityEngine.UI.Text>().color = new Color(126f / 255f, 25f / 255f, 27f / 255f);
                 }
             }
             else
@@ -120,7 +124,7 @@ public class questionManager : MonoBehaviour
                 qnsTwo.GetComponent<UnityEngine.UI.Text>().text = questionList[index]["Answer"].ToString();
                 if (PlayerPrefs.GetInt("MinigameLevel") != 5)
                 {
-                    qnsTwo.GetComponent<UnityEngine.UI.Text>().color = Color.blue;
+                    qnsTwo.GetComponent<UnityEngine.UI.Text>().color = new Color(14f / 255f, 77f / 255f, 146f / 255f);
                 }
             }
         }

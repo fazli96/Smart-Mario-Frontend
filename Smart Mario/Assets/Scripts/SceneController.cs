@@ -277,8 +277,14 @@ public class SceneController : MonoBehaviour
     {
         SceneManager.LoadScene("World1_Minigame2");
     }
+    /// <summary>
+    /// This is to load World 2 Stranded Level 1 game and display it on the screen
+    /// </summary>
+    public void ToWorld2Minigame2()
+    {
+        SceneManager.LoadScene("World2_Minigame2");
+    }
 
-    
     #endregion
 
     #region Multiplayer
