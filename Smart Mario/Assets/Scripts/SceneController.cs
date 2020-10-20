@@ -192,14 +192,14 @@ public class SceneController : MonoBehaviour
     /// </summary>
     public void ToWorld1Minigame1Level2()
     {
-        SceneManager.LoadScene("World1_Minigame1_Level2");
+        SceneManager.LoadScene("World1_Minigame1_Level1");
     }
     /// <summary>
     /// This is to load World 1 Stranded Level 3 game and display it on the screen
     /// </summary>
     public void ToWorld1Minigame1Level3()
     {
-        SceneManager.LoadScene("World1_Minigame1_Level3");
+        SceneManager.LoadScene("World1_Minigame1_Level1");
     }
 
     /// <summary>
@@ -207,7 +207,7 @@ public class SceneController : MonoBehaviour
     /// </summary>
     public void ToWorld1Minigame1Level4()
     {
-        SceneManager.LoadScene("World1_Minigame1_Level4");
+        SceneManager.LoadScene("World1_Minigame1_Level1");
     }
 
     /// <summary>
@@ -215,7 +215,7 @@ public class SceneController : MonoBehaviour
     /// </summary>
     public void ToWorld1Minigame1Level5()
     {
-        SceneManager.LoadScene("World1_Minigame1_Level5");
+        SceneManager.LoadScene("World1_Minigame1_Level1");
     }
 
     /// <summary>
@@ -265,43 +265,12 @@ public class SceneController : MonoBehaviour
     /// <summary>
     /// This is to load World 1 Matching Cards Level 1 game and display it on the screen
     /// </summary>
-    public void ToWorld1Minigame2Level1()
+    public void ToWorld1Minigame2()
     {
-        SceneManager.LoadScene("World1_Minigame2_Level1");
+        SceneManager.LoadScene("World1_Minigame2");
     }
 
-    /// <summary>
-    /// This is to load World 1 Matching Cards Level 2 game and display it on the screen
-    /// </summary>
-    public void ToWorld1Minigame2Level2()
-    {
-        SceneManager.LoadScene("World1_Minigame2_Level2");
-    }
-
-    /// <summary>
-    /// This is to load World 1 Matching Cards Level 3 game and display it on the screen
-    /// </summary>
-    public void ToWorld1Minigame2Level3()
-    {
-        SceneManager.LoadScene("World1_Minigame2_Level3");
-    }
-
-    /// <summary>
-    /// This is to load World 1 Matching Cards Level 4 game and display it on the screen
-    /// </summary>
-    public void ToWorld1Minigame2Level4()
-    {
-        SceneManager.LoadScene("World1_Minigame2_Level4");
-    }
-
-    /// <summary>
-    /// This is to load World 1 Matching Cards Level 5 game and display it on the screen
-    /// </summary>
-    public void ToWorld1Minigame2Level5()
-    {
-        SceneManager.LoadScene("World1_Minigame2_Level5");
-    }
-
+    
     #endregion
 
     #region Multiplayer

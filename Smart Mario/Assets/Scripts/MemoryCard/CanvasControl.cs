@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 /// <summary>
 /// This class controls the behavior of the canvas  
 /// </summary>
@@ -15,11 +16,26 @@ public class CanvasControl : MonoBehaviour
     public bool isPaused;
     private SceneController scene;
     GameObject GameManager;
+
+    public static CanvasControl instance;
     /// <summary>
     /// This is called at the start of initialisation
     /// </summary>
+    /// 
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+    void Start()
+    {
+        
         canvas = GetComponent<Canvas>();
         GameManager = GameObject.Find("GameManager");
         scene = SceneController.GetSceneController();
@@ -38,14 +54,14 @@ public class CanvasControl : MonoBehaviour
                 isPaused = true;
                 pausePanel.SetActive(true);
                 Time.timeScale = 0;
-                GameManager.GetComponent<Game2Control>().changePauseState(isPaused);
+                GameManager.GetComponent<Game2Control>().changePauseState();
                 Debug.Log("Pause panel");
             }
             else
             {
                 isPaused = false;
                 pausePanel.SetActive(false);
-                GameManager.GetComponent<Game2Control>().changePauseState(isPaused);
+                GameManager.GetComponent<Game2Control>().changePauseState();
                 Time.timeScale = 1;
             }
             Debug.Log("Esc pressed");
@@ -73,26 +89,27 @@ public class CanvasControl : MonoBehaviour
     /// </summary>
     public void RestartLevel()
     {
-        switch (PlayerPrefs.GetInt("World1Minigame2Level", 1))
-        {
-            case 1:
-                scene.ToWorld1Minigame2Level1();
-                break;
-            case 2:
-                scene.ToWorld1Minigame2Level2();
-                break;
-            case 3:
-                scene.ToWorld1Minigame2Level3();
-                break;
-            case 4:
-                scene.ToWorld1Minigame2Level4();
-                break;
-            case 5:
-                scene.ToWorld1Minigame2Level5();
-                break;
-            default:
-                break;
-        }
+        //switch (PlayerPrefs.GetInt("World1Minigame2Level", 1))
+        //{
+        //    case 1:
+        //        scene.ToWorld1Minigame2Level1();
+        //        break;
+        //    case 2:
+        //        scene.ToWorld1Minigame2Level2();
+        //        break;
+        //    case 3:
+        //        scene.ToWorld1Minigame2Level3();
+        //        break;
+        //    case 4:
+        //        scene.ToWorld1Minigame2Level4();
+        //        break;
+        //    case 5:
+        //        scene.ToWorld1Minigame2Level5();
+        //        break;
+        //    default:
+        //        break;
+        //}
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     /// <summary>
     /// This method is called when the 'Next Level'button is pressed

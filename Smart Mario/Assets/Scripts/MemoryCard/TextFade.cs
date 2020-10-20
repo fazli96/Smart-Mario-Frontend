@@ -36,7 +36,7 @@ public class TextFade : MonoBehaviour
             rT.Translate(Vector3.up * (float)(Time.deltaTime / t));
             yield return null;
         }
-        yield return new WaitForSeconds((float)0.7);
+        yield return new WaitForSeconds((float)0.5);
         while (i.color.a > 0.0f)
         {
             i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a - (float)(Time.deltaTime / t));

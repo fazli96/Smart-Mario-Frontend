@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 /// <summary>
 /// Control for World providing scene transitions and setting player objects
@@ -34,6 +35,7 @@ public class WorldManager : MonoBehaviour
             default:
                 break;
         }
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame

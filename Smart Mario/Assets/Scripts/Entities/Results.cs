@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 /// <summary>
 /// Entity that stores information for results specific to student, minigame, difficulty and level
@@ -13,6 +14,7 @@ public class Results
     public int score;
     public int questions_attempted;
     public int questions_correct;
+    public float time_taken;
     /// <summary>
     /// Constructor for Results object
     /// </summary>
@@ -23,7 +25,7 @@ public class Results
     /// <param name="score"></param>
     /// <param name="questions_attempted"></param>
     /// <param name="questions_correct"></param>
-    public Results(string studentId, int minigameId, string difficulty, int level, int score, int questions_attempted, int questions_correct)
+    public Results(string studentId, int minigameId, string difficulty, int level, int score, int questions_attempted, int questions_correct, float time_taken = 0)
     {
         this.studentId = studentId;
         this.minigameId = minigameId;
@@ -32,6 +34,7 @@ public class Results
         this.score = score;
         this.questions_attempted = questions_attempted;
         this.questions_correct = questions_correct;
+        this.time_taken = time_taken;
     }
 
     /// <summary>

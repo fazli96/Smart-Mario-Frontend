@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using System;
 
 public class MatchingGameStatus : MonoBehaviour
 {
@@ -9,10 +10,10 @@ public class MatchingGameStatus : MonoBehaviour
     public GameObject timeText;
 
     private static float time;
-    private static int currentScore;
     private static int qnsAttempted;
     private static int qnsAnsweredCorrectly;
     private bool paused;
+
 
     GameObject GameManager;
 
@@ -31,6 +32,8 @@ public class MatchingGameStatus : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        time = 0;
+        paused = true;
     }
     void Update()
     {
@@ -38,13 +41,13 @@ public class MatchingGameStatus : MonoBehaviour
         {
             time += Time.deltaTime;
         }
-        timeText.GetComponent<UnityEngine.UI.Text>().text = "Time : "+ time.ToString("F2");
+        timeText.GetComponent<UnityEngine.UI.Text>().text = "Time : " + time.ToString("F2");
     }
     public void Pause(bool p)
     {
         paused = p;
     }
-    
+
     public void Initialize()
     {
         qnsAttempted = 0;
@@ -66,7 +69,169 @@ public class MatchingGameStatus : MonoBehaviour
     public void WinLevel()
     {
         paused = true;
-        GameManager.GetComponent<Game2Control>().Win(time, qnsAnsweredCorrectly, qnsAttempted);
+        ComputeResults();
     }
+    private void ComputeResults()
+    {
+        string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
+        int currentLevel = PlayerPrefs.GetInt("MinigameLevel", 1);
+        int timeScore = 0;
+        int accScore = 0;
+        float acc = (float)qnsAnsweredCorrectly / (float)qnsAttempted;
+
+        switch (currentLevel)
+        {
+            case 1:
+                if (difficulty == "Easy")
+                {
+                    if (time < 35) { timeScore = 2000; }
+                    else if (time < 60) { timeScore = 1500; }
+                    else { timeScore = 1000; }
+                }
+                else if (difficulty == "Medium")
+                {
+                    if (time < 45) { timeScore = 2000; }
+                    else if (time < 70) { timeScore = 1500; }
+                    else { timeScore = 1000; }
+                }
+                else if (difficulty == "Hard")
+                {
+                    if (time < 55) { timeScore = 2000; }
+                    else if (time < 70) { timeScore = 1500; }
+                    else { timeScore = 1000; }
+                }
+                break;
+            case 2:
+                if (difficulty == "Easy")
+                {
+                    if (time < 50) { timeScore = 2500; }
+                    else if (time < 75) { timeScore = 2000; }
+                    else { timeScore = 1500; }
+                }
+                else if (difficulty == "Medium")
+                {
+                    if (time < 60) { timeScore = 2500; }
+                    else if (time < 85) { timeScore = 2000; }
+                    else { timeScore = 1500; }
+                }
+                else if (difficulty == "Hard")
+                {
+                    if (time < 70) { timeScore = 2500; }
+                    else if (time < 95) { timeScore = 2000; }
+                    else { timeScore = 1500; }
+                }
+                break;
+            case 3:
+                if (difficulty == "Easy")
+                {
+                    if (time < 65) { timeScore = 3000; }
+                    else if (time < 90) { timeScore = 2500; }
+                    else { timeScore = 2000; }
+                }
+                else if (difficulty == "Medium")
+                {
+                    if (time < 75) { timeScore = 3000; }
+                    else if (time < 100) { timeScore = 2500; }
+                    else { timeScore = 2000; }
+                }
+                else if (difficulty == "Hard")
+                {
+                    if (time < 85) { timeScore = 3000; }
+                    else if (time < 110) { timeScore = 2500; }
+                    else { timeScore = 2000; }
+                }
+                break;
+            case 4:
+                if (difficulty == "Easy")
+                {
+                    if (time < 80) { timeScore = 3500; }
+                    else if (time < 105) { timeScore = 3000; }
+                    else { timeScore = 2500; }
+                }
+                else if (difficulty == "Medium")
+                {
+                    if (time < 90) { timeScore = 3500; }
+                    else if (time < 115) { timeScore = 3000; }
+                    else { timeScore = 2500; }
+                }
+                else if (difficulty == "Hard")
+                {
+                    if (time < 100) { timeScore = 3500; }
+                    else if (time < 125) { timeScore = 3000; }
+                    else { timeScore = 2500; }
+                }
+                break;
+            case 5:
+                if (difficulty == "Easy")
+                {
+                    if (time < 90) { timeScore = 3500; }
+                    else if (time < 115) { timeScore = 3000; }
+                    else { timeScore = 2500; }
+                }
+                else if (difficulty == "Medium")
+                {
+                    if (time < 100) { timeScore = 3500; }
+                    else if (time < 125) { timeScore = 3000; }
+                    else { timeScore = 2500; }
+                }
+                else if (difficulty == "Hard")
+                {
+                    if (time < 1120) { timeScore = 3500; }
+                    else if (time < 135) { timeScore = 3000; }
+                    else { timeScore = 2500; }
+                }
+                break;
+        }
+        if (acc < 0.25) 
+        {
+            accScore = 1500;
+        }
+        else if (acc < 0.5)
+        {
+            accScore = 2000;
+        }
+        else if (acc < 0.75)
+        {
+            accScore = 2500;
+        }
+        else accScore = 3000;
+
+        Debug.Log("Time Score is " + timeScore + " and acc score is " + accScore);
+        GameManager.GetComponent<Game2Control>().Win(time, qnsAnsweredCorrectly, qnsAttempted, accScore, timeScore);
+        SaveResults(difficulty, currentLevel, (accScore + timeScore));
+        //UI manager instantiate stars, need to have foreach loop in UI manager 
+    }
+
     //code to put results into DB...
+    private void SaveResults( string difficulty, int currentLevel, int score)
+    {
+        int worldSelected = PlayerPrefs.GetInt("World", 1);
+        string minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Matching Cards");
+        string studentId = "1";
+        int minigameId;
+
+        if (worldSelected == 1)
+        {
+            if (minigameSelected.Equals("Stranded"))
+                minigameId = 1;
+            else
+                minigameId = 2; //minigame 1 is 2 for matching cards world 1
+        }
+        else
+        {
+            if (minigameSelected.Equals("Stranded"))
+                minigameId = 3;
+            else
+                minigameId = 4; //minigame 1 is 4 for matching cards world 2
+        }
+        time =(float) Math.Round(time, 3);
+        APICall apiCall = APICall.getAPICall();
+        Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + score + qnsAttempted + ", " + qnsAnsweredCorrectly + time);
+        Results result = new Results(studentId, minigameId, difficulty, currentLevel, score, qnsAttempted, qnsAnsweredCorrectly, time);
+        //Results result = new Results("1", 1, "Easy", 1, 4000, 1, 1, time);
+        //Debug.Log(result);
+        string bodyJsonString = apiCall.saveToJSONString(result);
+        StartCoroutine(apiCall.ResultsPutRequest(url, bodyJsonString));
+        Debug.Log("Sucess");
+    }
 }

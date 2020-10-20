@@ -33,7 +33,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Teacher/ViewAssignedTasks.unity
     guid: e757b254c93d62e4c88c56144f3811fc
   - enabled: 1
-    path: Assets/Scenes/Matching Cards/World1_Minigame2_Level1.unity
+    path: Assets/Scenes/Matching Cards/World1_Minigame2.unity
     guid: dfdcd71a29f73fe46a4647b49ae6ff50
   - enabled: 1
     path: Assets/Scenes/Matching Cards/World1_Minigame2_Level2.unity

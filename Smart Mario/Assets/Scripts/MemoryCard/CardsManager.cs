@@ -16,17 +16,27 @@ public class CardsManager: MonoBehaviour
     float xPosition;
     float yPosition;
     public List<GameObject> cards = new List<GameObject>();
+    public static CardsManager instance;
     /// <summary>
     /// Called at the initialisation of this script
     /// Instantiates the appropriate number of cards and at the right coordinates in accordance to the difficulty level
     /// </summary>
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
         faceindexes.Clear();
         pairs = 0;
         string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
         int level = PlayerPrefs.GetInt("MinigameLevel", 1);
-        level = 1;  //hardcode level here
+        //int level = 2 //hardcode level here
+        //PlayerPrefs.SetInt("MinigameLevel", level); //hardcode level 
         switch (level)
         {
             case 1:

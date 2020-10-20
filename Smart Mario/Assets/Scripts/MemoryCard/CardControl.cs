@@ -23,7 +23,7 @@ public class CardControl : MonoBehaviour
     /// </summary>
     public void OnMouseDown()       //detecting mouseclick
     {
-        if (matched == false && !cardsManager.GetComponent<CardsManager>().faceindexes.Contains(faceIndex) /*&& EventSystem.current.IsPointerOverGameObject() == false*/ && !GameControl.GetComponent<Game2Control>().paused) //not matched and not flipped up
+        if (matched == false && !cardsManager.GetComponent<CardsManager>().faceindexes.Contains(faceIndex)  && !GameControl.GetComponent<Game2Control>().paused && !GameControl.GetComponent<Game2Control>().disable) //not matched and not flipped up
         {
             if (spriteRenderer.sprite == back)    //check if its back of the card
             {
@@ -53,7 +53,20 @@ public class CardControl : MonoBehaviour
     /// </summary>
     public void Change()
     {
-        spriteRenderer.sprite = faces[faceIndex];       //reveal the true sprite
+        spriteRenderer.sprite = faces[faceIndex];
+        spriteRenderer.material.color = new Color(spriteRenderer.material.color.r, spriteRenderer.material.color.g, spriteRenderer.material.color.b, 0);
+        FadeImage(1.0f, 0.1f);  //reveal the true sprite
+    }
+    IEnumerator FadeImage(float aValue, float aTime)
+    {
+        float alpha = spriteRenderer.material.color.a;
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+        {
+            Color newColor = new Color(1, 1, 1, Mathf.Lerp(alpha, aValue, t));
+            spriteRenderer.material.color = newColor;
+            yield return null;
+        }
+         
     }
     public void Hide()
     {
@@ -62,7 +75,7 @@ public class CardControl : MonoBehaviour
     /// <summary>
     /// This is called before the first frame update
     /// </summary>
-    private void Awake()
+    private void Start()
     {
 
         GameControl = GameObject.Find("GameManager");

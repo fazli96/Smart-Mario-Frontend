@@ -19,6 +19,7 @@ public class questionManager : MonoBehaviour
     private static readonly string theoryUrl = "https://smart-mario-backend-1.herokuapp.com/api/questions/shorttheory";
     private static readonly string codeUrl = "https://smart-mario-backend-1.herokuapp.com/api/questions/mcqcode";
     private static List<JObject> questionList = new List<JObject>();
+    public static questionManager instance;
 
     /// <summary>
     /// These actions are done before the first frame update
@@ -26,6 +27,14 @@ public class questionManager : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
         qnsOne.SetActive(false);
         qnsTwo.SetActive(false);
         panelOne.SetActive(false);
@@ -79,12 +88,18 @@ public class questionManager : MonoBehaviour
             if (qOrA == 1)
             {
                 qnsOne.GetComponent<UnityEngine.UI.Text>().text = questionList[index]["Question"].ToString();
-                qnsOne.GetComponent<UnityEngine.UI.Text>().color = Color.red;
+                if (PlayerPrefs.GetInt("MinigameLevel") != 5)
+                {
+                    qnsOne.GetComponent<UnityEngine.UI.Text>().color = Color.red;
+                }
             }
             else
             {
                 qnsOne.GetComponent<UnityEngine.UI.Text>().text = questionList[index]["Answer"].ToString();
-                qnsOne.GetComponent<UnityEngine.UI.Text>().color = Color.blue;
+                if (PlayerPrefs.GetInt("MinigameLevel") != 5)
+                {
+                    qnsOne.GetComponent<UnityEngine.UI.Text>().color = Color.blue;
+                }
             }
         }
         else if (choice == 2)
@@ -95,12 +110,18 @@ public class questionManager : MonoBehaviour
             if (qOrA == 1)
             {
                 qnsTwo.GetComponent<UnityEngine.UI.Text>().text = questionList[index]["Question"].ToString();
-                qnsTwo.GetComponent<UnityEngine.UI.Text>().color = Color.red;
+                if (PlayerPrefs.GetInt("MinigameLevel") != 5)
+                {
+                    qnsTwo.GetComponent<UnityEngine.UI.Text>().color = Color.red;
+                }
             }
             else
             {
                 qnsTwo.GetComponent<UnityEngine.UI.Text>().text = questionList[index]["Answer"].ToString();
-                qnsTwo.GetComponent<UnityEngine.UI.Text>().color = Color.blue;
+                if (PlayerPrefs.GetInt("MinigameLevel") != 5)
+                {
+                    qnsTwo.GetComponent<UnityEngine.UI.Text>().color = Color.blue;
+                }
             }
         }
         

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Media;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// This class checks the logic of minigame 2 as well as keeping track of the states in the game
@@ -13,18 +15,34 @@ public class Game2Control : MonoBehaviour
     GameObject cardManager;
     GameObject canvas;
     public bool paused;
-    int[] visibleFaces = { -1, -2 };
+    public bool disable;
+    int [] visibleFaces = new int[2];
     public GameObject finishText;
     public GameObject overlay;
     public GameObject time;
     public GameObject qns;
-    
+    public GameObject timeScore;
+    public GameObject accScore;
+    public GameObject backButton;
+    public GameObject rulesText;
+
+    public static Game2Control instance;
+
     public int scoreValue;
     /// <summary>
     /// Called at the start of script initialisation
     /// </summary>
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+        Time.timeScale = 1;
         questionManager = GameObject.Find("QuestionManager");
         cardManager = GameObject.Find("CardsManager");
         canvas = GameObject.Find("Canvas");
@@ -35,16 +53,31 @@ public class Game2Control : MonoBehaviour
         overlay.SetActive(false);
         qns.SetActive(false);
         time.SetActive(false);
-        scoreValue = cardManager.GetComponent<CardsManager>().pairs;
-        paused = false;
-        MatchingGameStatus.instance.Initialize();
-    }
-    public void changePauseState(bool p)
-    {
-        paused = p;
-        MatchingGameStatus.instance.Pause(p);
-        Debug.Log("Paused " + p);
+        timeScore.SetActive(false);
+        accScore.SetActive(false);
+        backButton.SetActive(false);
 
+        scoreValue = cardManager.GetComponent<CardsManager>().pairs;
+        paused = true;
+        disable = false;
+        visibleFaces[0] = -1;
+        visibleFaces[1] = -2;
+        Debug.Log("Entering new game");
+
+        MatchingGameStatus.instance.Initialize();
+        if (PlayerPrefs.GetInt("MinigameLevel") == 5)
+        {
+            //GetComponent<UnityEngine.UI.Text>().text
+            rulesText.GetComponent<UnityEngine.UI.Text>().text = "Objective:\nUncover boundless treasure for your player by opening up the treasure chests. Clear the field by pairing two cards with matching descriptions, and be the fastest to find all the pairs\n" +
+                "\nRules:\nClick on one chest to open it up and reveal the short description.Open up more chests to match the two descriptions together.If the chests don't match, they will close. Match all the pairs of descriptions to win. Try to take the shortest time possible to match all the cards.\n" +
+                "\nControls: \nLeft click on chest to reveal the description\nPress the 'Esc' key to pause the game";
+        }
+    }
+    public void changePauseState()
+    {
+        paused = !paused;
+        MatchingGameStatus.instance.Pause(paused);
+        Debug.Log("Paused " + paused);
     }
     /// <summary>
     /// Checks the state of the game whether two cards have been flipped up
@@ -106,12 +139,14 @@ public class Game2Control : MonoBehaviour
     IEnumerator RightCards(int index)
     {
         Debug.Log(Time.time);
-        yield return new WaitForSeconds(2);
+        disable = true;
+        yield return new WaitForSeconds((float)1.5);
         Debug.Log(Time.time);
         cardManager.GetComponent<CardsManager>().faceindexes.Add(index);
         cardManager.GetComponent<CardsManager>().Open(index);
         questionManager.GetComponent<questionManager>().hideQuestion(1, true);
         questionManager.GetComponent<questionManager>().hideQuestion(2, true);
+        disable = false;
         if (scoreValue == 0)
         {
             MatchingGameStatus.instance.WinLevel();
@@ -155,16 +190,23 @@ public class Game2Control : MonoBehaviour
         }
     }
 
-    public void Win(float t, int correct, int attempt)
+    public void Win(float t, int correct, int attempt, int accSc, int timeSc)
     {
         float accuracy = ((float)correct / (float)attempt) *100;
         Debug.Log(t + " " + correct + " " + attempt + " " + accuracy);
         qns.GetComponent<UnityEngine.UI.Text>().text = "Accuracy: " + accuracy.ToString("F2") +"%";
         time.GetComponent<UnityEngine.UI.Text>().text = "Time taken: " + t.ToString("F2")+ " sec";
+        timeScore.GetComponent<UnityEngine.UI.Text>().text =  timeSc.ToString()+ " Points";
+        accScore.GetComponent<UnityEngine.UI.Text>().text = accSc.ToString()+ " Points";
+
+
         finishText.SetActive(true);
         overlay.SetActive(true);
         time.SetActive(true);
         qns.SetActive(true);
+        timeScore.SetActive(true);
+        accScore.SetActive(true);
+        backButton.SetActive(true);
 
     }
     
