@@ -32,6 +32,7 @@ public class StatisticsManager : MonoBehaviour
     private static string minigameId;
     private static string difficulty;
     private static string level;
+    private static bool teacherUser;
 
     public static StatisticsManager GetStatisticsManager()
     {
@@ -75,10 +76,11 @@ public class StatisticsManager : MonoBehaviour
         
     }
 
-    public void SetStudentAttributes(string newStudentName, string newStudentId)
+    public void SetStudentAttributes(string newStudentName, string newStudentId, bool teacherUserBool)
     {
         studentId = newStudentId;
         studentName = newStudentName;
+        teacherUser = teacherUserBool;
     }
     
     private void SetDefaultValues()
@@ -154,6 +156,13 @@ public class StatisticsManager : MonoBehaviour
 
     public void backToSelectStudent()
     {
-        scene.ToSelectStudentPerformance();
+        if (teacherUser)
+        {
+            scene.ToSelectStudentPerformance();
+        }
+        else
+        {
+            scene.ToMainMenu();
+        }
     }
 }

@@ -6,8 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Start.unity
+    guid: f1b83a665f56a524b81ec4cdb11b89e7
+  - enabled: 1
     path: Assets/Scenes/CreateAccount.unity
     guid: b8139214933fe5a4e87c13116e5fce7e
+  - enabled: 1
+    path: Assets/Scenes/Leaderboard.unity
+    guid: 7b983534fcd6adb4d8ec50e55837c14a
   - enabled: 1
     path: Assets/Scenes/Login.unity
     guid: b53317f734faeaa42ba8580cd0af030e
@@ -15,14 +21,29 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 2c56d8d432da7e14ba246d12ec75f736
   - enabled: 1
+    path: Assets/Scenes/StudentManageTasks.unity
+    guid: 9bf2e7af124f7694c8ba8bbee22a69ac
+  - enabled: 1
+    path: Assets/Scenes/World1 Sample.unity
+    guid: ae16472a58ddc9c44b11edb10973af7d
+  - enabled: 1
+    path: Assets/Scenes/WorldSelection.unity
+    guid: 1ceaa2bfb934270439271d1172bcb4bd
+  - enabled: 1
+    path: Assets/Scenes/World/SelectDifficulty.unity
+    guid: 9a2ca22e23446484b8112c807662c743
+  - enabled: 1
+    path: Assets/Scenes/World/SelectLevel.unity
+    guid: aa42c79bb9bc24b4c952a627a685075e
+  - enabled: 1
+    path: Assets/Scenes/World/World1.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/World/World2.unity
+    guid: 312b77a1a2a8f59429fbbfcffb85b866
+  - enabled: 1
     path: Assets/Scenes/Teacher/SelectStudentPerformance.unity
     guid: 996fd78ed5570584da4796f8a694d9a4
-  - enabled: 1
-    path: Assets/Scenes/Start.unity
-    guid: f1b83a665f56a524b81ec4cdb11b89e7
-  - enabled: 1
-    path: Assets/Scenes/Statistics/Statistics.unity
-    guid: 87c9b21081345dd4faaa17f45f186553
   - enabled: 1
     path: Assets/Scenes/Teacher/TeacherAssignTasks.unity
     guid: da4c3e6a1eaadad4fb36d2774e696e46
@@ -30,20 +51,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Teacher/TeacherMenu.unity
     guid: 69cfc92ae52cd8b45ac42acd764b5cd3
   - enabled: 1
-    path: Assets/Scenes/Teacher/ViewAssignedTasks.unity
-    guid: e757b254c93d62e4c88c56144f3811fc
-  - enabled: 1
-    path: Assets/Scenes/Matching Cards/World1_Minigame2.unity
-    guid: dfdcd71a29f73fe46a4647b49ae6ff50
-  - enabled: 1
     path: Assets/Scenes/Teacher/TeacherSelectTask.unity
     guid: d00d415ac82f5d94b930e9f19e9af9cf
   - enabled: 1
-    path: Assets/Scenes/Statistics/Statistics.unity
-    guid: 28f865913c1c316408b600c9435f48c7
-  - enabled: 1
-    path: Assets/Scenes/StudentManageTasks.unity
-    guid: 9bf2e7af124f7694c8ba8bbee22a69ac
+    path: Assets/Scenes/Teacher/ViewAssignedTasks.unity
+    guid: e757b254c93d62e4c88c56144f3811fc
   - enabled: 1
     path: Assets/Scenes/Stranded/World1_Minigame1_Level1.unity
     guid: 6744bfa6d977a3140967319bcca3f1de
@@ -66,18 +78,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Stranded/World2_Minigame1_Level2.unity
     guid: 56bcb8c7cb1031f458215b41c88dc7f4
   - enabled: 1
-    path: Assets/Scenes/World/SelectDifficulty.unity
-    guid: 9a2ca22e23446484b8112c807662c743
-  - enabled: 1
-    path: Assets/Scenes/World/SelectLevel.unity
-    guid: aa42c79bb9bc24b4c952a627a685075e
-  - enabled: 1
-    path: Assets/Scenes/World/World1.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
-    path: Assets/Scenes/World/World2.unity
-    guid: 312b77a1a2a8f59429fbbfcffb85b866
-  - enabled: 1
     path: Assets/Scenes/Stranded/World2_Minigame1_Level3.unity
     guid: 853f8bf4526603e47bc048111f366127
   - enabled: 1
@@ -87,26 +87,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Stranded/World2_Minigame1_Level5.unity
     guid: 0afdfd3acfe994a4fb83db499c062df3
   - enabled: 1
-    path: Assets/Scenes/Multiplayer/MultiplayerLobby.unity
-    guid: dfdc1e2521e0cec40a258b7fec56fba7
+    path: Assets/Scenes/Matching Cards/World1_Minigame2.unity
+    guid: dfdcd71a29f73fe46a4647b49ae6ff50
   - enabled: 1
-    path: Assets/Scenes/Multiplayer/MultiplayerRoom.unity
-    guid: 0b04ce54633b4da459af6dd2d184e15b
-  - enabled: 1
-    path: Assets/Scenes/Multiplayer/World1StrandedMultiplayer.unity
-    guid: bbbd7c99909fa3b45ba365858ae36478
-  - enabled: 1
-    path: Assets/Scenes/World1 Sample.unity
-    guid: ae16472a58ddc9c44b11edb10973af7d
-  - enabled: 1
-    path: Assets/Scenes/CustomizeChar/CustomizeCharacter.unity
-    guid: 9832bfe033fe6044b8c6f38defae1bc0
-  - enabled: 1
-    path: Assets/Scenes/WorldSelection.unity
-    guid: 1ceaa2bfb934270439271d1172bcb4bd
-  - enabled: 1
-    path: Assets/Scenes/Leaderboard.unity
-    guid: 7b983534fcd6adb4d8ec50e55837c14a
+    path: Assets/Scenes/Statistics/Statistics.unity
+    guid: 87c9b21081345dd4faaa17f45f186553
   - enabled: 1
     path: Assets/Scenes/Matching Cards/World2_Minigame2.unity
     guid: a636679e5831b2c408fbe0667892561e

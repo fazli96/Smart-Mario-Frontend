@@ -21,7 +21,7 @@ public class StudentButton : MonoBehaviour
     public void ButtonClick()
     {
         StatisticsManager statisticsManager = StatisticsManager.GetStatisticsManager();
-        statisticsManager.SetStudentAttributes(name, studentId);
+        statisticsManager.SetStudentAttributes(name, studentId, true);
         ScrollView.ButtonClicked();
     }
 }

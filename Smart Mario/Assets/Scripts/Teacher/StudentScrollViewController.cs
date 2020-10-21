@@ -92,7 +92,7 @@ public class StudentScrollViewController : MonoBehaviour
 
     public void ButtonClicked()
     {
-        scene.ToStudentPerformance();
+        scene.ToStatistics();
     }
 
 }

@@ -161,14 +161,6 @@ public class SceneController : MonoBehaviour
     }
 
     /// <summary>
-    /// This is to load the student's individual performance screen
-    /// </summary>
-    public void ToStudentPerformance()
-    {
-        SceneManager.LoadScene("StudentPerformance");
-    }
-
-    /// <summary>
     /// This is to load the page for the Teacher to assign task(s) to the students
     /// </summary>
     public void ToAssignTasksScreen()

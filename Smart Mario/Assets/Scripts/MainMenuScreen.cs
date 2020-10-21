@@ -45,8 +45,8 @@ public class MainMenuScreen : MonoBehaviour
     public void StatisticsScreen()
     {
         StatisticsManager statisticsManager = StatisticsManager.GetStatisticsManager();
-        statisticsManager.SetStudentAttributes(name, studentId);
-        scene.ToStudentPerformance();
+        statisticsManager.SetStudentAttributes(name, studentId, false);
+        scene.ToStatistics();
     }
 
     /// <summary>
