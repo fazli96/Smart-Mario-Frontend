@@ -9,7 +9,7 @@ public class SelectTaskManager : MonoBehaviour
     private static SelectTaskManager instance = null;
     
     private SceneController scene;
-    private TeacherMenu teacherMenu;
+    private TeacherMenuManager teacherMenuManager;
 
     public Dropdown minigameDropdown;
     public Dropdown difficultyDropdown;
@@ -39,8 +39,8 @@ public class SelectTaskManager : MonoBehaviour
     void Start()
     {
         scene = SceneController.GetSceneController();
-        teacherMenu = TeacherMenu.GetTeacherMenu();
-        teacherId = teacherMenu.GetTeacherId();
+        teacherMenuManager = TeacherMenuManager.GetTeacherMenuManager();
+        teacherId = PlayerPrefs.GetString("teacherId");
         SetDefaultValues();
 
         DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();

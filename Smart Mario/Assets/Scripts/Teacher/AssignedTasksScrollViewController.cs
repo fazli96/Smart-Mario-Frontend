@@ -5,11 +5,8 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public class AssignedTasksScrollView : MonoBehaviour
+public class AssignedTasksScrollViewController : MonoBehaviour
 {
-    //Singleton
-    private static AssignedTasksScrollView instance = null;
- 
     private SceneController scene;
 
     public GameObject Button_Template;
@@ -17,18 +14,8 @@ public class AssignedTasksScrollView : MonoBehaviour
 
     public AssignedTasksManager assignedTasksManager = AssignedTasksManager.GetAssignedTasksManager();
 
-
     private static List<StudentTaskCell> studentList = new List<StudentTaskCell>();
     public Text msg;
-    
-    public static AssignedTasksScrollView GetAssignedTasksScrollView()
-    {
-        if (instance == null)
-        {
-            instance = new AssignedTasksScrollView();
-        }
-        return instance;
-    }
 
 
     // Start is called before the first frame update

@@ -20,8 +20,8 @@ public class StudentButton : MonoBehaviour
 
     public void ButtonClick()
     {
-        StudentPerformanceManager studentPerformanceManager = StudentPerformanceManager.GetStudentPerformanceManager();
-        studentPerformanceManager.SetStudentAttributes(name, studentId);
+        StatisticsManager statisticsManager = StatisticsManager.GetStatisticsManager();
+        statisticsManager.SetStudentAttributes(name, studentId);
         ScrollView.ButtonClicked();
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CheckAssignedTasks : MonoBehaviour
+public class CheckAssignedTasksManager : MonoBehaviour
 {
     private SceneController scene;
     public Button backButton;

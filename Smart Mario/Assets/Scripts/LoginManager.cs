@@ -61,12 +61,10 @@ public class LoginManager : MonoBehaviour
 
         if (teacherToggle.isOn)
         {
-            UnityEngine.Debug.Log("Teacher");
             ValidateTeacherLogin(username, password, msg);
         }
         else
         {
-            UnityEngine.Debug.Log("Student");
             ValidateStudentLogin(username, password, msg);
         }
     }

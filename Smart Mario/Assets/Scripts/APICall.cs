@@ -87,9 +87,7 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         LoginManager logManager = LoginManager.GetLoginManager();
-        UnityEngine.Debug.Log(request.downloadHandler.text);
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        UnityEngine.Debug.Log(convertedStr);
 
         if (convertedStr.Contains("Error"))
         {
@@ -103,8 +101,8 @@ public class APICall
         {
             var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
             PlayerPrefs.SetString("username", data["data"]["username"].ToString());
+            PlayerPrefs.SetString("teacherId", data["data"]["id"].ToString());
             logManager.TeacherLoginSuccess();
-            UnityEngine.Debug.Log(PlayerPrefs.GetString("username"));
         }
     }
 
@@ -118,10 +116,7 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         LoginManager logManager = LoginManager.GetLoginManager();
-        UnityEngine.Debug.Log("here");
-        UnityEngine.Debug.Log(request.downloadHandler.text);
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        UnityEngine.Debug.Log(convertedStr);
 
         if (convertedStr.Contains("Error"))
         {
@@ -134,7 +129,6 @@ public class APICall
         else
         {
             var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
-            UnityEngine.Debug.Log(data);
             PlayerPrefs.SetString("username", data["data"]["username"].ToString());
             PlayerPrefs.SetString("id", data["data"]["id"].ToString());
             PlayerPrefs.SetString("customChar", data["data"]["custom"].ToString());
@@ -187,10 +181,10 @@ public class APICall
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
         var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
-        AssignTask assignTask = AssignTask.GetAssignTask();
-        assignTask.setRefresh();
+        AssignTaskManager assignTaskManager = AssignTaskManager.GetAssignTaskManager();
+        assignTaskManager.setRefresh();
         string boolstring = data["success"].ToString();
-        assignTask.setSuccessStatus(boolstring == "True");
+        assignTaskManager.setSuccessStatus(boolstring == "True");
         SceneController scene = SceneController.GetSceneController();
         scene.ToAssignTasksScreen();
     }
@@ -230,7 +224,7 @@ public class APICall
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
         UnityEngine.Debug.Log(convertedStr);
-        StudentPerformanceManager.instance.GetComponent<StudentPerformanceManager>().ResultsRetrieved(convertedStr);
+        StatisticsManager.instance.GetComponent<StatisticsManager>().ResultsRetrieved(convertedStr);
     }
     /// <summary>
     /// Creates an IEnumerator for coroutines that is used for retrieving game questions for Student via a Get request

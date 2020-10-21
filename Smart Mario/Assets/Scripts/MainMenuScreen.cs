@@ -11,6 +11,7 @@ public class MainMenuScreen : MonoBehaviour
     private SceneController scene;
     public Text msg;
     public Text customError;
+    public static string name;
     public static string studentId;
 
     /// <summary>
@@ -33,7 +34,9 @@ public class MainMenuScreen : MonoBehaviour
     void Start()
     {
         scene = SceneController.GetSceneController();
-        msg.text = "Welcome " + PlayerPrefs.GetString("username") + "!";
+        name = PlayerPrefs.GetString("username");
+        studentId = PlayerPrefs.GetString("id");
+        msg.text = "Welcome " + name + "!";
     }
 
     /// <summary>
@@ -41,7 +44,9 @@ public class MainMenuScreen : MonoBehaviour
     /// </summary>
     public void StatisticsScreen()
     {
-        scene.ToStatistics();
+        StatisticsManager statisticsManager = StatisticsManager.GetStatisticsManager();
+        statisticsManager.SetStudentAttributes(name, studentId);
+        scene.ToStudentPerformance();
     }
 
     /// <summary>
@@ -79,8 +84,7 @@ public class MainMenuScreen : MonoBehaviour
     public void ManageTasksScreen()
     {
         APICall api = APICall.getAPICall();
-        // StartCoroutine(api.StudentResultGetRequest(studentId));
-        StartCoroutine(api.StudentResultGetRequest("2"));
+        StartCoroutine(api.StudentResultGetRequest(studentId));
     }
     /// <summary>
     /// Changes scene to Login Screen

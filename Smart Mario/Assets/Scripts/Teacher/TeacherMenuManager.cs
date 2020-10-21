@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TeacherMenu : MonoBehaviour
+public class TeacherMenuManager : MonoBehaviour
 {
     //Singleton
-    private static TeacherMenu instance = null;
+    private static TeacherMenuManager instance = null;
 
     private SceneController scene;
 
@@ -18,11 +18,11 @@ public class TeacherMenu : MonoBehaviour
     private static string teacherID;
     private APICall apiCall;
 
-    public static TeacherMenu GetTeacherMenu()
+    public static TeacherMenuManager GetTeacherMenuManager()
     {
         if (instance == null)
         {
-            instance = new TeacherMenu();
+            instance = new TeacherMenuManager();
         }
         return instance;
     }
@@ -33,8 +33,7 @@ public class TeacherMenu : MonoBehaviour
     {
         apiCall = APICall.getAPICall();
         scene = SceneController.GetSceneController();
-        // teacherID = .GetTeacherId();
-        teacherID = "1";
+        teacherID = PlayerPrefs.GetString("teacherId");
     }
 
     // Update is called once per frame
@@ -61,10 +60,5 @@ public class TeacherMenu : MonoBehaviour
     public void LogOut()
     {
         scene.ToLogin();
-    }
-
-    public string GetTeacherId()
-    {
-        return teacherID;
     }
 }

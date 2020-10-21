@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AssignTask : MonoBehaviour
+public class AssignTaskManager : MonoBehaviour
 {
     //Singleton
-    private static AssignTask instance = null;
+    private static AssignTaskManager instance = null;
 
     private SceneController scene;
 
@@ -27,12 +27,12 @@ public class AssignTask : MonoBehaviour
     private static bool refresh;
     private static bool success;
 
-    public static AssignTask GetAssignTask()
+    public static AssignTaskManager GetAssignTaskManager()
     {
         if (instance == null)
         {
             GameObject go = new GameObject();
-            instance = go.AddComponent<AssignTask>();
+            instance = go.AddComponent<AssignTaskManager>();
         }
         return instance;
     }
@@ -42,8 +42,8 @@ public class AssignTask : MonoBehaviour
     {
         waitMessage.text = "";
         scene = SceneController.GetSceneController();
-        TeacherMenu teacherMenu = TeacherMenu.GetTeacherMenu();
-        teacherId  = teacherMenu.GetTeacherId();
+        TeacherMenuManager teacherMenuManager = TeacherMenuManager.GetTeacherMenuManager();
+        teacherId = PlayerPrefs.GetString("teacherId");
         SetDefaultValues();
 
         if (refresh)

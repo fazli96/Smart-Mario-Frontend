@@ -7,19 +7,41 @@ using UnityEngine.UI;
 
 public class StatisticsManager : MonoBehaviour
 {
-    public static StatisticsManager instance;
-    private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/results";
+    //Singleton
+    public static StatisticsManager instance = null;
+
+    private SceneController scene;
+    private APICall apiCall;
 
     public Dropdown minigameDropdown;
     public Dropdown difficultyDropdown;
     public Dropdown levelDropdown;
 
+    public Text studentNameText;
     public Text highScoreText;
     public Text QnsCorrectText;
     public Text QnsAttemptedText;
     public Text QnsAccuracyText;
 
-    private static string studentId = "1"; 
+    public Button backButton;
+
+    private static List<DisplayResults> displayResultsList;
+
+    private static string studentName;
+    private static string studentId;
+    private static string minigameId;
+    private static string difficulty;
+    private static string level;
+
+    public static StatisticsManager GetStatisticsManager()
+    {
+        if (instance == null)
+        {
+            instance = new StatisticsManager();
+        }
+        return instance;
+    }
+
 
     void Awake()
     {
@@ -32,62 +54,38 @@ public class StatisticsManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     // Start is called before the first frame update
     void Start()
     {
-        LoadingResults();
-        //LoadDummyData();
+        scene = SceneController.GetSceneController();        
+        apiCall = APICall.getAPICall();
         
-        string customUrl = url + "/"+studentId+"&1&easy&1";
-        Debug.Log(customUrl);
-        APICall apiCall = APICall.getAPICall();
-        // StartCoroutine(apiCall.BestResultsGetRequest(customUrl));
-        
-    }
+        DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();
+        displayResultsList = displayListManager.GetDisplayResultsList();
+        SetDefaultValues();
 
-    public void LoadDummyData()
-    {
-        StartCoroutine(LoadToDatabase());
-    }
-    IEnumerator LoadToDatabase()
-    {
-        List<Results> dummyResults = new List<Results>();
-        Results result = new Results("1", 1, "Easy", 1, 50, 1, 1);
-        Results result1 = new Results("1", 1, "Hard", 1, 100, 2, 1);
-        Results result2 = new Results("1", 1, "Medium", 1, 50, 3, 1);
-        Results result3 = new Results("1", 2, "Easy", 3, 50, 4, 1);
-        Results result4 = new Results("1", 2, "Medium", 4, 50, 5, 1);
-        Results result5 = new Results("1", 3, "Easy", 1, 50, 2, 2);
-        Results result6 = new Results("1", 3, "Hard", 1, 500, 4, 3);
-        Results result7 = new Results("1", 4, "Easy", 2, 5000, 5, 2);
-        Results result8 = new Results("1", 4, "Medium", 3, 500, 6, 1);
-        Results result9 = new Results("1", 4, "Hard", 4, 50, 7, 1);
+        studentNameText.text = studentName;
 
-        dummyResults.Add(result);
-        dummyResults.Add(result1);
-        dummyResults.Add(result2);
-        dummyResults.Add(result3);
-        dummyResults.Add(result4);
-        dummyResults.Add(result5);
-        dummyResults.Add(result6);
-        dummyResults.Add(result7);
-        dummyResults.Add(result8);
-        dummyResults.Add(result9);
-
-        for (int i = 0; i < dummyResults.Count; i++)
-        {
-            APICall apiCall = APICall.getAPICall();
-            string bodyJsonString = apiCall.saveToJSONString(dummyResults[i]);
-            // StartCoroutine(apiCall.ResultsPutRequest(url, bodyJsonString));
-            yield return new WaitForSeconds(1f);
-        }
+        StartCoroutine(apiCall.BestResultsGetRequest(studentId, minigameId, difficulty, level));
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SetStudentAttributes(string newStudentName, string newStudentId)
+    {
+        studentId = newStudentId;
+        studentName = newStudentName;
+    }
+    
+    private void SetDefaultValues()
+    {
+        minigameId = "1";
+        difficulty = "easy";
+        level = "1"; 
     }
 
     public void LoadingResults()
@@ -106,8 +104,10 @@ public class StatisticsManager : MonoBehaviour
         QnsAccuracyText.text = "";
     }
 
-    public void ResultsRetrieved(string bodyJSONString)
+    public void ResultsRetrieved(string responseString)
     {
+        var jo = JObject.Parse(responseString);
+        var bodyJSONString = jo["data"].ToString();
         if (bodyJSONString.Equals("[]"))
         {
             ResultsAbsent();
@@ -132,9 +132,8 @@ public class StatisticsManager : MonoBehaviour
     {
         LoadingResults();
 
-        int minigameId = minigameDropdown.value + 1;
-        int level = levelDropdown.value + 1;
-        string difficulty;
+        minigameId = (minigameDropdown.value + 1).ToString();
+        level = (levelDropdown.value + 1).ToString();
         switch (difficultyDropdown.value)
         {
             case 0:
@@ -150,9 +149,11 @@ public class StatisticsManager : MonoBehaviour
                 difficulty = "easy";
                 break;
         }
-        string customUrl = url + "/" + studentId + "&" + minigameId + "&" + difficulty+ "&" + level;
-        Debug.Log(customUrl);
-        APICall apiCall = APICall.getAPICall();
-        // StartCoroutine(apiCall.BestResultsGetRequest(customUrl));
+        StartCoroutine(apiCall.BestResultsGetRequest(studentId, minigameId, difficulty, level));
+    }
+
+    public void backToSelectStudent()
+    {
+        scene.ToSelectStudentPerformance();
     }
 }
