@@ -65,7 +65,7 @@ public class LoginManager : MonoBehaviour
         }
         else
         {
-            ValidateStudentLogin(username, password, msg);
+           ValidateStudentLogin(username, password, msg);
         }
     }
     /// <summary>

@@ -58,13 +58,7 @@ public class SelectStudentManager : MonoBehaviour
         #endif
     }
 
-
-    public void CSVGetRequest(string result)
-    {
-        CSVRawData = result;
-    }
-
-    public void ExportCSV()
+    public void ExportCSV(string CSVRawData)
     {
         successMessage.text = "";
         CSVErrorMessage.text = "";
@@ -90,17 +84,24 @@ public class SelectStudentManager : MonoBehaviour
             }
             StreamWriter writer = new StreamWriter(filePath);
 
-            JArray data = (JArray)JsonConvert.DeserializeObject(CSVRawData);
+            UnityEngine.Debug.Log(CSVRawData);
+            JObject data = (JObject)JsonConvert.DeserializeObject(CSVRawData);
             writer.WriteLine("Student Name, " + "Game, " + "Difficulty, " + "Level" + ", " + "Score");
-            foreach (JObject one_result in data)
+            UnityEngine.Debug.Log(data);
+            foreach (JObject student in data["data"])
             {
-                string studentName = one_result["student"]["name"].ToString();
-                string minigameName = one_result["minigame"]["name"].ToString();
-                string difficulty = one_result["difficulty"].ToString();
-                string level = one_result["level"].ToString();
-                // string score = one_result["score"].ToString();
-                string score = "100";
-                writer.WriteLine(studentName + ", " + minigameName + ", " + difficulty + ", " + level + "," + score);
+                UnityEngine.Debug.Log(student);
+                string studentName = student["name"].ToString();
+                foreach (JObject result in student["results"])
+                {
+                    UnityEngine.Debug.Log(result);
+                    UnityEngine.Debug.Log("here");
+                    string minigameName = result["minigame"]["name"].ToString();
+                    string difficulty = result["difficulty"].ToString();
+                    string level = result["level"].ToString();
+                    string score = result["score"].ToString();
+                    writer.WriteLine(studentName + ", " + minigameName + ", " + difficulty + ", " + level + "," + score);
+                }    
             }
 
             writer.Flush();

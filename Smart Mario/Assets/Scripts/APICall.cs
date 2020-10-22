@@ -262,8 +262,6 @@ public class APICall
         }
     }
 
-
-
     public IEnumerator StudentResultGetRequest(string studentID)
     {
         string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/student/" + studentID;
@@ -281,20 +279,20 @@ public class APICall
 
     public IEnumerator AllStudentResultGetRequest(string teacherID, int sceneNumber)
     {
-        string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/teacher/" + teacherID;
+        string url = "https://smart-mario-backend-1.herokuapp.com/api/results/teacher/" + teacherID;
         var request = new UnityWebRequest(url, "GET");
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();
-        displayListManager.RetrieveData(convertedStr);
+        //DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();
+       // displayListManager.RetrieveData(convertedStr);
         SceneController scene = SceneController.GetSceneController();
         switch (sceneNumber)
         {
             case 0:
                 SelectStudentManager selectStudentManager = SelectStudentManager.GetSelectStudentManager();
-                selectStudentManager.CSVGetRequest(convertedStr);
+                selectStudentManager.ExportCSV(convertedStr);
                 scene.ToSelectStudentPerformance();
                 break;
             case 1:
