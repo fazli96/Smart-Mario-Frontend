@@ -16,11 +16,15 @@ public class SelectStudentManager : MonoBehaviour
 
     private SceneController scene;
     private static List<DisplayResults> displayResultsList;
-    private static string CSVRawData;
     public Button exportCSVButton;
     public Button backToTeacherMenuButton;
     public Text CSVErrorMessage;
     public Text successMessage;
+    public Text processingCSVMessage;
+
+    private static string teacherId;
+    private static bool refreshAndExportCSV;
+    private static string CSVRawData;
 
     public static SelectStudentManager GetSelectStudentManager()
     {
@@ -36,6 +40,16 @@ public class SelectStudentManager : MonoBehaviour
     void Start()
     {
         scene = SceneController.GetSceneController();
+        teacherId = PlayerPrefs.GetString("teacherId");
+
+        successMessage.text = "";
+        CSVErrorMessage.text = "";
+        processingCSVMessage.text = "";
+        if (refreshAndExportCSV)
+        {
+            ProcessCSVResponse();
+        }
+        refreshAndExportCSV = false;
     }
 
     // Update is called once per frame
@@ -58,11 +72,23 @@ public class SelectStudentManager : MonoBehaviour
         #endif
     }
 
-    public void ExportCSV(string CSVRawData)
+    public void SetRefreshAndExportCSV(string responseString)
+    {
+        refreshAndExportCSV = true;
+        CSVRawData = responseString;
+    }
+
+    public void ExportCSV()
     {
         successMessage.text = "";
         CSVErrorMessage.text = "";
+        processingCSVMessage.text = "Processing CSV, please hold on...";
+        APICall apiCall = APICall.getAPICall();
+        StartCoroutine(apiCall.CSVExportGetRequest(teacherId));
+    }
 
+    public void ProcessCSVResponse()
+    {
         try
         {
             string filePath = getPath();

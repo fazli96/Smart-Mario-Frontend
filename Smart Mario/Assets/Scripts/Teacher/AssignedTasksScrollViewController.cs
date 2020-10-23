@@ -24,9 +24,18 @@ public class AssignedTasksScrollViewController : MonoBehaviour
         scene = SceneController.GetSceneController();
 
         studentList = assignedTasksManager.GetStudentList();
-        GenerateStudentCells();
-
-        if (studentList.Count == 0)
+        if (studentList != null)
+        {
+            if (studentList.Count == 0)
+            {
+                DisplayMessage("There are no students to display.");
+            }
+            else
+            {
+                GenerateStudentCells();
+            }
+        }
+        else
         {
             DisplayMessage("There are no students to display.");
         }

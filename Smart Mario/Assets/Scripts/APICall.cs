@@ -277,28 +277,39 @@ public class APICall
         scene.ToStudentManageTasks();
     }
 
-    public IEnumerator AllStudentResultGetRequest(string teacherID, int sceneNumber)
+    public IEnumerator AllStudentResultGetRequest(string teacherID, bool sceneSelectStudent)
     {
-        string url = "https://smart-mario-backend-1.herokuapp.com/api/results/teacher/" + teacherID;
+        string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/teacher/" + teacherID;
         var request = new UnityWebRequest(url, "GET");
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        //DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();
-       // displayListManager.RetrieveData(convertedStr);
+        DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();
+        displayListManager.RetrieveData(convertedStr);
         SceneController scene = SceneController.GetSceneController();
-        switch (sceneNumber)
+        if (sceneSelectStudent)
         {
-            case 0:
-                SelectStudentManager selectStudentManager = SelectStudentManager.GetSelectStudentManager();
-                selectStudentManager.ExportCSV(convertedStr);
-                scene.ToSelectStudentPerformance();
-                break;
-            case 1:
-                scene.ToTeacherSelectTaskScreen();
-                break;
+            scene.ToSelectStudentPerformance();
         }
+        else
+        {
+            scene.ToTeacherSelectTaskScreen();
+        }
+    }
+
+    public IEnumerator CSVExportGetRequest(string teacherId)
+    {
+        string url = "https://smart-mario-backend-1.herokuapp.com/api/results/teacher/" + teacherId;
+        var request = new UnityWebRequest(url, "GET");
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.chunkedTransfer = false;
+        yield return request.SendWebRequest();
+        string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        SelectStudentManager selectStudentManager = SelectStudentManager.GetSelectStudentManager();
+        selectStudentManager.SetRefreshAndExportCSV(convertedStr);
+        SceneController scene = SceneController.GetSceneController();
+        scene.ToSelectStudentPerformance();
     }
 
     public IEnumerator SpecificTaskResult(string teacherId, string minigameId, string difficulty, string level)

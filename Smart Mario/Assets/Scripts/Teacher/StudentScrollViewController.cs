@@ -37,16 +37,24 @@ public class StudentScrollViewController : MonoBehaviour
 
         DisplayListManager displayListManager = DisplayListManager.GetDisplayListManager();
         displayResultsList = displayListManager.GetDisplayResultsList();
-        nameList = ParseList(displayResultsList);
 
-        if (nameList.Count != 0)
+        if (displayResultsList != null)
         {
-            GenerateStudentButtons();
+            if (displayResultsList.Count != 0)
+            {
+                nameList = ParseList(displayResultsList);
+                GenerateStudentButtons();
+            }
+            else
+            {
+                DisplayMessage("There are no students to display.");
+            }
         }
         else
         {
             DisplayMessage("There are no students to display.");
         }
+
     }
 
     private List<(string, string)> ParseList(List<DisplayResults> ls)

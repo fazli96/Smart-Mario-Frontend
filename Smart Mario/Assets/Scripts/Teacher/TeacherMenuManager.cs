@@ -39,12 +39,12 @@ public class TeacherMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+         
     }
 
     public void SelectStudentPerformanceScreen()
     {
-        StartCoroutine(apiCall.AllStudentResultGetRequest(teacherID, 0));
+        StartCoroutine(apiCall.AllStudentResultGetRequest(teacherID, true));
     }
 
     public void AssignTasksScreen()
@@ -54,7 +54,7 @@ public class TeacherMenuManager : MonoBehaviour
 
     public void SelectTaskScreen()
     {
-        StartCoroutine(apiCall.AllStudentResultGetRequest(teacherID, 1));
+        StartCoroutine(apiCall.AllStudentResultGetRequest(teacherID, false));
     }
 
     public void LogOut()
