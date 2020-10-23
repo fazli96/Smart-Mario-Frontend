@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 
 /// <summary>
 /// This class is the main controller for the Minigame Stranded.
@@ -14,10 +15,12 @@ public class StrandedGameManager : MonoBehaviour {
     public static StrandedGameManager instance;
     private static GameObject player;
     private static List<GameObject> questionBarrels = new List<GameObject>();
+    private static List<int> mandatoryQuestionList = new List<int>();
     public List<GameObject> waypoints;
 
     public GameObject dice;
-    public GameObject completeLevelPanel, gameOverPanel;
+    public Text levelText;
+    public GameObject completeLevelPanel, gameOverPanel, surpriseQuestionPanel;
     public GameObject questionBarrelPrefab;
     public GameObject witchPrefab;
     public GameObject knightPrefab;
@@ -26,8 +29,9 @@ public class StrandedGameManager : MonoBehaviour {
     public static int diceSideThrown = 0;
     public static int playerStartWaypoint = 0;
     public static bool qnEncountered = false;
-
+    private static bool teleportationActive = false;
     public static bool levelComplete = false;
+
     /// <summary>
     /// This is for initialization
     /// </summary>
@@ -45,11 +49,14 @@ public class StrandedGameManager : MonoBehaviour {
         playerStartWaypoint = 0;
         levelComplete = false;
         questionBarrels.Clear();
+        mandatoryQuestionList = new List<int>() { 30, 60, 90, 999 };
 
         completeLevelPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
+        surpriseQuestionPanel.SetActive(false);
+        levelText.text = "Level " + PlayerPrefs.GetInt("MinigameLevel", 1);
 
-        player = SpawnPlayer(PlayerPrefs.GetString("Selected Player", "Witch"));
+        player = SpawnPlayer(PlayerPrefs.GetString("customChar", "1"));
         player.GetComponent<PlayerPathMovement>().moveAllowed = false;
         SpawnQuestionBarrels(PlayerPrefs.GetInt("MinigameLevel", 1));
 
@@ -62,26 +69,37 @@ public class StrandedGameManager : MonoBehaviour {
         if (player.GetComponent<PlayerPathMovement>().waypointIndex > 
             playerStartWaypoint + diceSideThrown)
         {
+            if ((playerStartWaypoint + diceSideThrown) >= mandatoryQuestionList[0] && !(playerStartWaypoint + diceSideThrown == 39 || playerStartWaypoint + diceSideThrown == 49))
+            {
+                mandatoryQuestionList.RemoveAt(0);
+                qnEncountered = true;
+                StartCoroutine(SurpriseQuestion());
+            }
+
             foreach (GameObject questionBarrel in questionBarrels)
             {
                 if (questionBarrel.transform.position == waypoints[playerStartWaypoint + diceSideThrown].transform.position)
                 {
-                    qnEncountered = true;
-                    StrandedQuestionManager.instance.AskQuestion();
+                    if (!qnEncountered)
+                    {
+                        qnEncountered = true;
+                        StrandedQuestionManager.instance.AskQuestion();
+                    }    
                     questionBarrels.Remove(questionBarrel);
                     questionBarrel.SetActive(false);
-                    Debug.Log("After ask question");
+                    break;
                 }
             }
             
-            //Debug.Log(playerStartWaypoint+diceSideThrown);
+            Debug.Log(playerStartWaypoint+diceSideThrown);
             //Teleport to another waypoint
-            /*if(playerStartWaypoint+diceSideThrown == 12){
-                player.GetComponent<PlayerPathMovement>().transform.position = player.GetComponent<PlayerPathMovement>().waypoints[45].transform.position;
-                player.GetComponent<PlayerPathMovement>().waypointIndex = 45;
-                player.GetComponent<PlayerPathMovement>().waypointIndex +=1;
-                MovePlayer();
-            }*/
+            if(playerStartWaypoint+diceSideThrown == 39 || playerStartWaypoint + diceSideThrown == 49)
+            {
+                Debug.Log("teleportationActive");
+                teleportationActive = true;
+                qnEncountered = true;
+                StrandedQuestionManager.instance.AskQuestion();
+            }
             
             player.GetComponent<PlayerPathMovement>().moveAllowed = false;            
             playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
@@ -98,6 +116,33 @@ public class StrandedGameManager : MonoBehaviour {
             else
                 gameOverPanel.gameObject.SetActive(true);
         }
+    }
+
+    IEnumerator SurpriseQuestion()
+    {
+        surpriseQuestionPanel.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        surpriseQuestionPanel.SetActive(false);
+        StrandedQuestionManager.instance.AskQuestion();
+    }
+
+    public void TeleportPlayer(bool correct)
+    {
+        if (correct && playerStartWaypoint == 39 && teleportationActive)
+        {
+            Debug.Log("teleported");
+            player.GetComponent<PlayerPathMovement>().transform.position = player.GetComponent<PlayerPathMovement>().waypoints[49].transform.position;
+            player.GetComponent<PlayerPathMovement>().waypointIndex = 50;
+            playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
+        }
+        else if (!correct && playerStartWaypoint == 49 && teleportationActive) 
+        {
+            Debug.Log("teleported");
+            player.GetComponent<PlayerPathMovement>().transform.position = player.GetComponent<PlayerPathMovement>().waypoints[39].transform.position;
+            player.GetComponent<PlayerPathMovement>().waypointIndex = 40;
+            playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
+        }
+        teleportationActive = false;
     }
 
     /// <summary>
@@ -151,12 +196,14 @@ public class StrandedGameManager : MonoBehaviour {
         {
 
             int rndInt = UnityEngine.Random.Range(i, i + spacesBetweenBarrels);
-            GameObject questionBarrelClone = Instantiate(questionBarrelPrefab,
-                waypoints[rndInt].transform.position,
-                Quaternion.Euler(0, 0, 0));
-            questionBarrels.Add(questionBarrelClone);
-            questionBarrelLocations.Add(rndInt);
-            //Debug.Log(rndInt);
+            if (!(rndInt == 39 || rndInt == 49))
+            {
+                GameObject questionBarrelClone = Instantiate(questionBarrelPrefab,
+                    waypoints[rndInt].transform.position,
+                    Quaternion.Euler(0, 0, 0));
+                questionBarrels.Add(questionBarrelClone);
+                questionBarrelLocations.Add(rndInt);
+            }
         }
     }
 
@@ -169,12 +216,12 @@ public class StrandedGameManager : MonoBehaviour {
     {
         switch (selectedPlayer)
         {
-            case "Witch":
+            case "1":
                 return Instantiate(witchPrefab,
                 spawnPoint.transform.position,
                 Quaternion.Euler(0, 0, 0)) as GameObject;
                 //break;
-            case "Knight":
+            case "2":
                 return Instantiate(knightPrefab,
                 spawnPoint.transform.position,
                 Quaternion.Euler(0, 0, 0)) as GameObject;

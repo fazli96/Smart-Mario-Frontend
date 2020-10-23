@@ -71,9 +71,15 @@ public class StrandedGameStatus : MonoBehaviour
         if (changeInScore > 0)
         {
             qnsAnsweredCorrectly += 1;
+            StrandedGameManager.instance.TeleportPlayer(true);
+        }
+        else
+        {
+            StrandedGameManager.instance.TeleportPlayer(false);
         }
         qnsAttempted += 1;
-        currentScore += changeInScore;
+        if (!(currentScore == 0 && changeInScore < 0))
+            currentScore += changeInScore;
         DisplayScore();
     }
 
@@ -127,7 +133,7 @@ public class StrandedGameStatus : MonoBehaviour
         string minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Stranded");
         string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
         int currentLevel = PlayerPrefs.GetInt("MinigameLevel", 1);
-        string studentId = "1";
+        string studentId = PlayerPrefs.GetString("id", "1");
         int minigameId;
 
         if (worldSelected == 1)

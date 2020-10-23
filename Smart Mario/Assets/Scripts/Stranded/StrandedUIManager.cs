@@ -30,7 +30,7 @@ public class StrandedUIManager : MonoBehaviour
     /// </summary>
     void Update()
     {  
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !StrandedGameManager.qnEncountered)
         {
             if (!isPaused)
             {
@@ -69,26 +69,7 @@ public class StrandedUIManager : MonoBehaviour
     /// </summary>
     public void RestartLevel()
     {
-        switch (PlayerPrefs.GetInt("MinigameLevel", 1))
-        {
-            case 1:
-                scene.ToWorld1Minigame1Level1();
-                break;
-            case 2:
-                scene.ToWorld1Minigame1Level2();
-                break;
-            case 3:
-                scene.ToWorld1Minigame1Level3();
-                break;
-            case 4:
-                scene.ToWorld1Minigame1Level4();
-                break;
-            case 5:
-                scene.ToWorld1Minigame1Level5();
-                break;
-            default:
-                break;
-        }
+        scene.ToWorld1Stranded();
     }
 
     /// <summary>
@@ -96,32 +77,36 @@ public class StrandedUIManager : MonoBehaviour
     /// </summary>
     public void NextLevel()
     {
-        switch (PlayerPrefs.GetInt("MinigameLevel", 1))
+        int world = PlayerPrefs.GetInt("World", 1);
+        int level = PlayerPrefs.GetInt("MinigameLevel", 1);
+
+        switch (level)
         {
-            
             case 1:
                 PlayerPrefs.SetInt("MinigameLevel", 2);
-                scene.ToWorld1Minigame1Level2();
                 break;
             case 2:
                 PlayerPrefs.SetInt("MinigameLevel", 3);
-                scene.ToWorld1Minigame1Level3();
                 break;
             case 3:
                 PlayerPrefs.SetInt("MinigameLevel", 4);
-                scene.ToWorld1Minigame1Level4();
                 break;
             case 4:
                 PlayerPrefs.SetInt("MinigameLevel", 5);
-                scene.ToWorld1Minigame1Level5();
                 break;
             case 5:
                 PlayerPrefs.SetInt("MinigameLevel", 1);
-                scene.ToLevelSelection();
                 break;
             default:
                 break;
         }
+
+        if (level == 5)
+            scene.ToLevelSelection();
+        else if (world == 1)
+            scene.ToWorld1Stranded();
+        else
+            scene.ToWorld2Stranded();
     }
 
 }

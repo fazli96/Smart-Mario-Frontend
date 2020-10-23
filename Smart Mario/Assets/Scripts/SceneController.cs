@@ -181,81 +181,19 @@ public class SceneController : MonoBehaviour
     #region Minigame 1 Levels
 
     /// <summary>
-    /// This is to load World 1 Stranded Level 1 game and display it on the screen
+    /// This is to load World 1 Stranded game and display it on the screen
     /// </summary>
-    public void ToWorld1Minigame1Level1()
+    public void ToWorld1Stranded()
     {
-        SceneManager.LoadScene("World1_Minigame1_Level1");
-    }
-    /// <summary>
-    /// This is to load World 1 Stranded Level 2 game and display it on the screen
-    /// </summary>
-    public void ToWorld1Minigame1Level2()
-    {
-        SceneManager.LoadScene("World1_Minigame1_Level1");
-    }
-    /// <summary>
-    /// This is to load World 1 Stranded Level 3 game and display it on the screen
-    /// </summary>
-    public void ToWorld1Minigame1Level3()
-    {
-        SceneManager.LoadScene("World1_Minigame1_Level1");
+        SceneManager.LoadScene("World1Stranded");
     }
 
     /// <summary>
-    /// This is to load World 1 Stranded Level 4 game and display it on the screen
+    /// This is to load World 2 Stranded game and display it on the screen
     /// </summary>
-    public void ToWorld1Minigame1Level4()
+    public void ToWorld2Stranded()
     {
-        SceneManager.LoadScene("World1_Minigame1_Level1");
-    }
-
-    /// <summary>
-    /// This is to load World 1 Stranded Level 5 game and display it on the screen
-    /// </summary>
-    public void ToWorld1Minigame1Level5()
-    {
-        SceneManager.LoadScene("World1_Minigame1_Level1");
-    }
-
-    /// <summary>
-    /// This is to load World 2 Stranded Level 1 game and display it on the screen
-    /// </summary>
-    public void ToWorld2Minigame1Level1()
-    {
-        SceneManager.LoadScene("World2_Minigame1_Level1");
-    }
-
-    /// <summary>
-    /// This is to load World 2 Stranded Level 2 game and display it on the screen
-    /// </summary>
-    public void ToWorld2Minigame1Level2()
-    {
-        SceneManager.LoadScene("World2_Minigame1_Level2");
-    }
-
-    /// <summary>
-    /// This is to load World 2 Stranded Level 3 game and display it on the screen
-    /// </summary>
-    public void ToWorld2Minigame1Level3()
-    {
-        SceneManager.LoadScene("World2_Minigame1_Level3");
-    }
-
-    /// <summary>
-    /// This is to load World 2 Stranded Level 4 game and display it on the screen
-    /// </summary>
-    public void ToWorld2Minigame1Level4()
-    {
-        SceneManager.LoadScene("World2_Minigame1_Level4");
-    }
-
-    /// <summary>
-    /// This is to load World 2 Stranded Level 5 game and display it on the screen
-    /// </summary>
-    public void ToWorld2Minigame1Level5()
-    {
-        SceneManager.LoadScene("World2_Minigame1_Level5");
+        SceneManager.LoadScene("World2Stranded");
     }
 
     #endregion
@@ -297,10 +235,20 @@ public class SceneController : MonoBehaviour
         SceneManager.LoadScene("MultiplayerRoom");
     }
 
+    /// <summary>
+    /// This is to load the multiplayer World 1 Stranded minigame and display it on the screen
+    /// </summary>
     public void ToWorld1StrandedMultiplayer()
     {
         SceneManager.LoadScene("World1StrandedMultiplayer");
     }
 
+    /// <summary>
+    /// This is to load the multiplayer World 2 Stranded minigame and display it on the screen
+    /// </summary>
+    public void ToWorld2StrandedMultiplayer()
+    {
+        SceneManager.LoadScene("World2StrandedMultiplayer");
+    }
     #endregion
 }

@@ -20,6 +20,12 @@ public class Question
     public string questionTitle { get; set; }
 
     /// <summary>
+    /// This is the get and set method for question Title
+    /// </summary>
+    [JsonProperty("Difficulty")]
+    public int difficulty { get; set; }
+
+    /// <summary>
     /// This is the get and set method for option 1
     /// </summary>
     [JsonProperty("1")]

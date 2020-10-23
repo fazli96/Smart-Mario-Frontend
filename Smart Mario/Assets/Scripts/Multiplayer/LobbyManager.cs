@@ -21,6 +21,7 @@ public class LobbyManager : MonoBehaviour
     public InputField playerNameInputCreate;
     public Dropdown minigameSelectedDropdown;
     public Dropdown difficultySelectedDropdown;
+    public Dropdown levelSelectedDropdown;
 
     public Text roomIDText;
     public Text roomNameText;
@@ -28,6 +29,7 @@ public class LobbyManager : MonoBehaviour
     public Text roomCapacityText;
     public Text minigameSelectedText;
     public Text difficultySelectedText;
+    public Text levelSelectedText;
     public InputField playerNameInputJoin;
     public Dropdown roomSelectedDropdown;
     public GameObject joinButton;
@@ -124,6 +126,26 @@ public class LobbyManager : MonoBehaviour
                 default:
                     break;
             }
+            switch (levelSelectedDropdown.value)
+            {
+                case 0:
+                    PlayerPrefs.SetInt("MinigameLevel", 1);
+                    break;
+                case 1:
+                    PlayerPrefs.SetInt("MinigameLevel", 2);
+                    break;
+                case 2:
+                    PlayerPrefs.SetInt("MinigameLevel", 3);
+                    break;
+                case 3:
+                    PlayerPrefs.SetInt("MinigameLevel", 4);
+                    break;
+                case 4:
+                    PlayerPrefs.SetInt("MinigameLevel", 5);
+                    break;
+                default:
+                    break;
+            }
             NetworkManager.instance.GetComponent<NetworkManager>().JoinRoom();
         }
         else
@@ -145,6 +167,7 @@ public class LobbyManager : MonoBehaviour
         PlayerPrefs.SetString("roomID", rooms[index].roomID);
         PlayerPrefs.SetString("Minigame Selected", rooms[index].minigameSelected);
         PlayerPrefs.SetString("Minigame Difficulty", rooms[index].difficultySelected);
+        PlayerPrefs.SetInt("MinigameLevel", rooms[index].levelSelected);
         NetworkManager.instance.GetComponent<NetworkManager>().JoinRoom();
     }
 
@@ -194,6 +217,7 @@ public class LobbyManager : MonoBehaviour
         roomCapacityText.text = "Room Capacity: " + rooms[index].noOfClients.ToString() + '/' + rooms[index].roomCapacity;
         minigameSelectedText.text = "Minigame Selected: " + rooms[index].minigameSelected;
         difficultySelectedText.text = "Difficulty Selected: " + rooms[index].difficultySelected;
+        levelSelectedText.text = "Level Selected: " + rooms[index].levelSelected;
     }
 
     /// <summary>
@@ -225,6 +249,7 @@ public class LobbyManager : MonoBehaviour
             roomCapacityText.text = "Room Capacity: " + rooms[0].noOfClients + '/' + rooms[0].roomCapacity;
             minigameSelectedText.text = "Minigame Selected: " + rooms[0].minigameSelected;
             difficultySelectedText.text = "Difficulty Selected: " + rooms[0].difficultySelected;
+            levelSelectedText.text = "Level Selected: " + rooms[0].levelSelected;
             joinButton.SetActive(true);
         }
         else
@@ -248,6 +273,7 @@ public class LobbyManager : MonoBehaviour
         public int roomCapacity;
         public string minigameSelected;
         public string difficultySelected;
+        public int levelSelected;
 
         /// <summary>
         /// This method is to instantiate a class based on a jsonString

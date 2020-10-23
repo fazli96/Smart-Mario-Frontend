@@ -20,14 +20,14 @@ public class WorldManager : MonoBehaviour
     void Start()
     {
         scene = SceneController.GetSceneController();
-        switch (PlayerPrefs.GetString("Selected Player", "Witch"))
+        switch (PlayerPrefs.GetString("customChar", "1"))
         {
-            case "Witch":
+            case "1":
                 witchClone = Instantiate(witchPrefab,
                 witchClone.transform.position,
                 Quaternion.Euler(0, 0, 0)) as GameObject;
                 break;
-            case "Knight":
+            case "2":
                 knightClone = Instantiate(knightPrefab,
                 knightClone.transform.position,
                 Quaternion.Euler(0, 0, 0)) as GameObject;

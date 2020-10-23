@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 
 /// <summary>
 /// This class is the main controller for the Minigame Stranded.
@@ -15,10 +16,11 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
     public static StrandedMultiplayerGameManager instance;
     private static GameObject player;
     private static List<GameObject> questionBarrels = new List<GameObject>();
+    private static List<int> mandatoryQuestionList = new List<int>();
     public List<GameObject> waypoints;
 
     public GameObject dice;
-    public GameObject resultsPanel;
+    public GameObject resultsPanel, surpriseQuestionPanel;
     public GameObject leaveGameButton;
     public GameObject questionBarrelPrefab;
     public GameObject witchPrefab;
@@ -28,7 +30,6 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
     public static int diceSideThrown = 0;
     public static int playerStartWaypoint = 0;
     public static bool qnEncountered = false;
-
     public static bool levelComplete = false;
 
     // these variables are for networking
@@ -51,8 +52,12 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
         playerStartWaypoint = 0;
         levelComplete = false;
         questionBarrels.Clear();
+        mandatoryQuestionList = new List<int>() { 30, 60, 90, 999 };
 
-        player = SpawnPlayer(PlayerPrefs.GetString("Selected Player", "Witch"));
+        resultsPanel.SetActive(false);
+        surpriseQuestionPanel.SetActive(false);
+
+        player = SpawnPlayer(PlayerPrefs.GetString("customChar", "1"));
         player.GetComponent<PlayerPathMovement>().moveAllowed = false;
         player.GetComponent<PlayerPathMovement>().isLocalPlayer = true;
         player.GetComponent<PlayerPathMovement>().multiplayer = true;
@@ -64,7 +69,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
         if (NetworkManager.isOwner)
         {
             player.GetComponent<PlayerPathMovement>().isOwner = true;
-            SpawnQuestionBarrels();
+            SpawnQuestionBarrels(PlayerPrefs.GetInt("MinigameLevel", 1));
             dice.SetActive(true);
         }
         else
@@ -80,16 +85,29 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
         if (player.GetComponent<PlayerPathMovement>().waypointIndex >
             playerStartWaypoint + diceSideThrown && !qnEncountered)
         {
+            if ((playerStartWaypoint + diceSideThrown) >= mandatoryQuestionList[0])
+            {
+                mandatoryQuestionList.RemoveAt(0);
+                qnEncountered = true;
+                leaveGameButton.SetActive(false);
+                player.GetComponent<PlayerPathMovement>().moveAllowed = false;
+                StartCoroutine(SurpriseQuestion());
+            }
+
             foreach (GameObject questionBarrel in questionBarrels)
             {
                 if (questionBarrel.transform.position == waypoints[playerStartWaypoint + diceSideThrown].transform.position)
                 {
-                    qnEncountered = true;
-                    leaveGameButton.SetActive(false);
-                    Debug.Log("qnEncountered");
                     questionBarrels.Remove(questionBarrel);
-                    player.GetComponent<PlayerPathMovement>().moveAllowed = false;
-                    StrandedQuestionManager.instance.AskQuestion();
+                    if (!qnEncountered)
+                    {
+                        qnEncountered = true;
+                        leaveGameButton.SetActive(false);
+                        player.GetComponent<PlayerPathMovement>().moveAllowed = false;
+                        Debug.Log("qnEncountered");
+                        StrandedQuestionManager.instance.AskQuestion();
+                    }
+                    break;
                 }
             }
 
@@ -129,6 +147,14 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
         }
     }
 
+    IEnumerator SurpriseQuestion()
+    {
+        surpriseQuestionPanel.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        surpriseQuestionPanel.SetActive(false);
+        StrandedQuestionManager.instance.AskQuestion();
+    }
+
     public void GameComplete()
     {
         levelComplete = true;
@@ -162,19 +188,43 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
     /// <summary>
     /// This is called to spawn the question barrels on the board
     /// </summary>
-    private void SpawnQuestionBarrels()
+    private void SpawnQuestionBarrels(int level)
     {
-        int spacesBetweenBarrels = 3;
+        int spacesBetweenBarrels;
+        switch (level)
+        {
+            case 1:
+                spacesBetweenBarrels = 6;
+                break;
+            case 2:
+                spacesBetweenBarrels = 5;
+                break;
+            case 3:
+                spacesBetweenBarrels = 4;
+                break;
+            case 4:
+                spacesBetweenBarrels = 3;
+                break;
+            case 5:
+                spacesBetweenBarrels = 2;
+                break;
+            default:
+                spacesBetweenBarrels = 4;
+                break;
+        }
         List<int> questionBarrelLocations = new List<int>();
         for (int i = 2; i < 94; i += spacesBetweenBarrels)
         {
 
             int rndInt = UnityEngine.Random.Range(i, i + spacesBetweenBarrels);
-            GameObject questionBarrelClone = Instantiate(questionBarrelPrefab,
-                waypoints[rndInt].transform.position,
-                Quaternion.Euler(0, 0, 0));
-            questionBarrels.Add(questionBarrelClone);
-            questionBarrelLocations.Add(rndInt);
+            if (!(rndInt == 39 || rndInt == 49))
+            {
+                GameObject questionBarrelClone = Instantiate(questionBarrelPrefab,
+                    waypoints[rndInt].transform.position,
+                    Quaternion.Euler(0, 0, 0));
+                questionBarrels.Add(questionBarrelClone);
+                questionBarrelLocations.Add(rndInt);
+            }
             //Debug.Log(rndInt);
         }
         NetworkManager.instance.GetComponent<NetworkManager>().CommandMinigameStart(questionBarrelLocations);
@@ -219,12 +269,12 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
     {
         switch (selectedPlayer)
         {
-            case "Witch":
+            case "1":
                 return Instantiate(witchPrefab,
                 spawnPoint.transform.position,
                 Quaternion.Euler(0, 0, 0)) as GameObject;
             //break;
-            case "Knight":
+            case "2":
                 return Instantiate(knightPrefab,
                 spawnPoint.transform.position,
                 Quaternion.Euler(0, 0, 0)) as GameObject;

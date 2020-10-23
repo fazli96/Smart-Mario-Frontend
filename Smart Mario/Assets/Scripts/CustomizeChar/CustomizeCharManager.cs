@@ -13,13 +13,13 @@ public class CustomizeCharManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (PlayerPrefs.GetString("Selected Player", "Witch").Equals("Witch"))
+        if (PlayerPrefs.GetString("customChar", "1").Equals("1"))
         {
             witch.SetActive(true);
             knight.SetActive(false);
             charInt = 1;
         }
-        else if (PlayerPrefs.GetString("Selected Player", "Witch").Equals("Knight"))
+        else if (PlayerPrefs.GetString("customChar", "1").Equals("2"))
         {
             witch.SetActive(false);
             knight.SetActive(true);

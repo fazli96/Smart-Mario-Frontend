@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class NetworkManager : MonoBehaviour
@@ -15,15 +16,17 @@ public class NetworkManager : MonoBehaviour
     public static NetworkManager instance;
     private SceneController scene;
     public SocketIOComponent socket;
-    public GameObject player;
-    public GameObject playerMinigame;
+    public GameObject[] players = new GameObject[2];
+    public GameObject[] playersMinigame = new GameObject[2];
 
     private static string roomName;
     private static int roomCapacity;
     public static string playerName;
+    public static int customChar;
     private static string roomID;
     private static string minigameSelected;
     private static string difficultySelected;
+    private static int levelSelected;
     public static bool isOwner;
     public static UserJSON storedUserJSON;
 
@@ -38,9 +41,19 @@ public class NetworkManager : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
-        if (socket )
+        if (socket)
         DontDestroyOnLoad(socket);
-        DontDestroyOnLoad(player);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainMenu")
+        {
+            Destroy(gameObject);
+            Destroy(GameObject.Find("SocketIO"));
+            Debug.Log("I am inside the if statement");
+        }
     }
 
     // Start is called before the first frame update
@@ -82,7 +95,23 @@ public class NetworkManager : MonoBehaviour
 
     public void StartChallenge()
     {
-        scene.ToWorld1StrandedMultiplayer();
+        switch (PlayerPrefs.GetString("Minigame Selected", "World 1 Stranded"))
+        {
+            case "World 1 Stranded":
+                scene.ToWorld1StrandedMultiplayer();
+                break;
+            case "World 1 Matching Cards":
+                //
+                break;
+            case "World 2 Stranded":
+                scene.ToWorld2StrandedMultiplayer();
+                break;
+            case "World 2 Matching Cards":
+                //
+                break;
+            default:
+                break;
+        }
     }
 
     #region Commands
@@ -93,9 +122,14 @@ public class NetworkManager : MonoBehaviour
         roomName = PlayerPrefs.GetString("roomName", "room1");
         roomCapacity = PlayerPrefs.GetInt("roomCapacity", 4);
         playerName = PlayerPrefs.GetString("username", "fazli");
+        if (PlayerPrefs.GetString("customChar", "1").Equals("1"))
+            customChar = 0;
+        else
+            customChar = 1;
         roomID = PlayerPrefs.GetString("roomID", "create");
         minigameSelected = PlayerPrefs.GetString("Minigame Selected", "World 2 Stranded");
         difficultySelected = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
+        levelSelected = PlayerPrefs.GetInt("MinigameLevel", 1);
 
         if (roomID.Equals("create"))
         {
@@ -112,8 +146,9 @@ public class NetworkManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         List<SpawnPoint> playerSpawnPoints = GameObject.Find("RoomManager").GetComponent<PlayerSpawner>().playerSpawnPoints;
-        storedUserJSON = new UserJSON(playerName, roomID, isOwner);
-        PlayerJSON playerJSON = new PlayerJSON(playerName, roomID, isOwner, roomName, roomCapacity, minigameSelected, difficultySelected, playerSpawnPoints);
+        storedUserJSON = new UserJSON(playerName, customChar, roomID, isOwner);
+        PlayerJSON playerJSON = new PlayerJSON(playerName, customChar, roomID, isOwner, roomName, roomCapacity, 
+            minigameSelected, difficultySelected, levelSelected, playerSpawnPoints);
         string data = JsonUtility.ToJson(playerJSON);
         Debug.Log(data);
         socket.Emit("player connect", new JSONObject(data));
@@ -237,7 +272,7 @@ public class NetworkManager : MonoBehaviour
         {
             return;
         }
-        GameObject p = Instantiate(player, position, Quaternion.identity);
+        GameObject p = Instantiate(players[customChar], position, Quaternion.identity);
         PlayerMovement pm = p.GetComponent<PlayerMovement>();
         Transform t = p.transform.Find("Player Name Canvas");
         Transform t1 = t.transform.Find("Player Name");
@@ -260,7 +295,7 @@ public class NetworkManager : MonoBehaviour
         {
             return;
         }
-        GameObject p = Instantiate(playerMinigame, StrandedMultiplayerGameManager.instance.GetStartWayPoint().transform.position, Quaternion.identity) as GameObject;
+        GameObject p = Instantiate(playersMinigame[customChar], StrandedMultiplayerGameManager.instance.GetStartWayPoint().transform.position, Quaternion.identity) as GameObject;
         PlayerPathMovement pm = p.GetComponent<PlayerPathMovement>();
         Transform t = p.transform.Find("Player Name Canvas");
         Transform t1 = t.transform.Find("Player Name");
@@ -332,7 +367,7 @@ public class NetworkManager : MonoBehaviour
         string data = socketIOEvent.data.ToString();
         UserJSON currentUserJSON = UserJSON.CreateFromJSON(data);
         Vector3 position = new Vector3(currentUserJSON.position[0], currentUserJSON.position[1], currentUserJSON.position[2]);
-        GameObject p = Instantiate(player, position, Quaternion.identity) as GameObject;
+        GameObject p = Instantiate(players[customChar], position, Quaternion.identity) as GameObject;
         PlayerMovement pm = p.GetComponent<PlayerMovement>();
         Transform t = p.transform.Find("Player Name Canvas");
         Transform t1 = t.transform.Find("Player Name");
@@ -444,25 +479,30 @@ public class NetworkManager : MonoBehaviour
     public class PlayerJSON
     {
         public string name;
+        public int customChar;
         public string roomID;
         public bool isOwner;
         public string roomName;
         public int capacity;
         public string minigameSelected;
         public string difficultySelected;
+        public int levelSelected;
         public List<PointJSON> playerSpawnPoints;
 
-        public PlayerJSON(string _name, string _roomID, bool _isOwner, string _roomName, 
-            int _capacity, string _minigameSelected, string _difficultySelected, List<SpawnPoint> _playerSpawnPoints)
+        public PlayerJSON(string _name, int _customChar, string _roomID, bool _isOwner, string _roomName, 
+            int _capacity, string _minigameSelected, string _difficultySelected, int _levelSelected, List<SpawnPoint> _playerSpawnPoints)
         {
             playerSpawnPoints = new List<PointJSON>();
             name = _name;
+            customChar = _customChar;
             roomID = _roomID;
             isOwner = _isOwner;
             roomName = _roomName;
             capacity = _capacity;
             minigameSelected = _minigameSelected;
             difficultySelected = _difficultySelected;
+            levelSelected = _levelSelected;
+
 
             foreach (SpawnPoint playerSpawnPoint in _playerSpawnPoints) 
             {
@@ -484,6 +524,7 @@ public class NetworkManager : MonoBehaviour
         public int roomCapacity;
         public string minigameSelected;
         public string difficultySelected;
+        public int levelSelected;
 
         public static RoomJSON CreateFromJSON(string data)
         {
@@ -521,13 +562,15 @@ public class NetworkManager : MonoBehaviour
     public class UserJSON // notify that another player joins the game 
     {
         public string name;
+        public int customChar;
         public string roomID;
         public bool isOwner;
         public float[] position;
 
-        public UserJSON(string _name, string _roomID, bool _isOwner)
+        public UserJSON(string _name, int _customChar, string _roomID, bool _isOwner)
         {
             name = _name;
+            customChar = _customChar;
             roomID = _roomID;
             isOwner = _isOwner;
             position = new float[] { 0, 0, 0 };

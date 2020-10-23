@@ -95,7 +95,8 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
                             qnsAnsweredCorrectly2 += 1;
                         }
                         qnsAttempted2 += 1;
-                        currentScore2 += changeInScore;
+                        if (!(currentScore2 == 0 && changeInScore < 0))
+                            currentScore2 += changeInScore;
                         DisplayOtherPlayerScore(username);
                         break;
                     case 1:
@@ -104,7 +105,8 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
                             qnsAnsweredCorrectly3 += 1;
                         }
                         qnsAttempted3 += 1;
-                        currentScore3 += changeInScore;
+                        if (!(currentScore3 == 0 && changeInScore < 0))
+                            currentScore3 += changeInScore;
                         DisplayOtherPlayerScore(username);
                         break;
                     case 2:
@@ -113,7 +115,8 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
                             qnsAnsweredCorrectly4 += 1;
                         }
                         qnsAttempted4 += 1;
-                        currentScore4 += changeInScore;
+                        if (!(currentScore4 == 0 && changeInScore < 0))
+                            currentScore4 += changeInScore;
                         DisplayOtherPlayerScore(username);
                         break;
                 }
@@ -128,7 +131,8 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
             qnsAnsweredCorrectly1 += 1;
         }
         qnsAttempted1 += 1;
-        currentScore1 += changeInScore;
+        if (!(currentScore1 == 0 && changeInScore < 0))
+            currentScore1 += changeInScore;
         DisplayScore();
         NetworkManager.instance.CommandQnResult(changeInScore);
     }
@@ -204,7 +208,7 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
             QnsAttemptedText4.text = players[0] + "'s Qns Attempted: " + qnsAttempted4;
             QnsCorrectText4.text = players[0] + "'s Qns Answered Correctly: " + qnsAnsweredCorrectly4;
         }
-        //SaveResults();
+        SaveResults();
         return true;
     }
 
@@ -242,29 +246,31 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
     /// <summary>
     /// This is to save the results into the database
     /// </summary>
-    /*private void SaveResults()
+    private void SaveResults()
     {
-        int worldSelected = PlayerPrefs.GetInt("World", 1);
-        string minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Stranded");
+        int minigameId;
+        switch (PlayerPrefs.GetString("Minigame Selected", "World 1 Stranded"))
+        {
+            case "World 1 Stranded":
+                minigameId = 1;
+                break;
+            case "World 1 Matching Cards":
+                minigameId = 2;
+                break;
+            case "World 2 Stranded":
+                minigameId = 3;
+                break;
+            case "World 2 Matching Cards":
+                minigameId = 4;
+                break;
+            default:
+                minigameId = 0;
+                break;
+        }
+
         string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
         int currentLevel = PlayerPrefs.GetInt("MinigameLevel", 1);
-        string studentId = "1";
-        int minigameId;
-
-        if (worldSelected == 1)
-        {
-            if (minigameSelected.Equals("Stranded"))
-                minigameId = 1;
-            else
-                minigameId = 2;
-        }
-        else
-        {
-            if (minigameSelected.Equals("Stranded"))
-                minigameId = 3;
-            else
-                minigameId = 4;
-        }
+        string studentId = PlayerPrefs.GetString("id", "1");
 
         APICall apiCall = APICall.getAPICall();
         Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + currentScore1 + ", " + qnsAttempted1 + ", " + qnsAnsweredCorrectly1);
@@ -272,6 +278,6 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
         //Results result = new Results("1", 1, "Easy", 1, 50, 1, 1);
         string bodyJsonString = apiCall.saveToJSONString(result);
         StartCoroutine(apiCall.ResultsPutRequest(url, bodyJsonString));
-    }*/
+    }
 }
 

@@ -121,19 +121,19 @@ public class CanvasControl : MonoBehaviour
 
             case 1:
                 PlayerPrefs.SetInt("World1Minigame2Level", 2);
-                scene.ToWorld1Minigame1Level2();
+                //scene.ToWorld1Minigame1Level2();
                 break;
             case 2:
                 PlayerPrefs.SetInt("World1Minigame2Level", 3);
-                scene.ToWorld1Minigame1Level3();
+                //scene.ToWorld1Minigame1Level3();
                 break;
             case 3:
                 PlayerPrefs.SetInt("World1Minigame2Level", 4);
-                scene.ToWorld1Minigame1Level4();
+                //scene.ToWorld1Minigame1Level4();
                 break;
             case 4:
                 PlayerPrefs.SetInt("World1Minigame2Level", 5);
-                scene.ToWorld1Minigame1Level5();
+                //scene.ToWorld1Minigame1Level5();
                 break;
             case 5:
                 PlayerPrefs.SetInt("World1Minigame2Level", 1);

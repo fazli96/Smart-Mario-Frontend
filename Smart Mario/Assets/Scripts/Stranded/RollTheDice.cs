@@ -47,7 +47,9 @@ public class RollTheDice : MonoBehaviour
         }
         yield return new WaitForSeconds(0.1f);
 
-        StrandedGameManager.diceSideThrown = randomDiceSide + 1;
+        //StrandedGameManager.diceSideThrown = randomDiceSide + 1;
+        // for testing
+        StrandedGameManager.diceSideThrown = 30;
         //randomDiceSide = 5 for six;
 
         StrandedGameManager.MovePlayer();
