@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Boundary that connects to Unity Customize Character Scene UI objects and triggers function calls on events
+/// </summary>
 public class CustomizeCharManager : MonoBehaviour
 {
     public GameObject witch;
@@ -9,7 +11,9 @@ public class CustomizeCharManager : MonoBehaviour
 
     private int charInt = 1;
     private SceneController scene;
-
+    /// <summary>
+    /// Set charcter shown on screen based on currently selected character
+    /// </summary>
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +31,9 @@ public class CustomizeCharManager : MonoBehaviour
         }
         scene = SceneController.GetSceneController();
     }
-
+    /// <summary>
+    /// Changes to next character available in selection
+    /// </summary>
     // Update is called once per frame
     public void NextCharacter()
     {
@@ -49,6 +55,9 @@ public class CustomizeCharManager : MonoBehaviour
                 break;
         }
     }
+    /// <summary>
+    /// Changes to previous character available in selection
+    /// </summary>
     public void PrevCharacter()
     {
         switch (charInt)
@@ -69,7 +78,9 @@ public class CustomizeCharManager : MonoBehaviour
                 break;
         }
     }
-
+    /// <summary>
+    /// Sends chosen character data to database and checks for success response
+    /// </summary>
     public void SelectPlayer()
     {
         APICall api = APICall.getAPICall();

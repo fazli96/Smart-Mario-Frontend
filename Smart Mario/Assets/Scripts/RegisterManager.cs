@@ -79,13 +79,26 @@ public class RegisterManager : MonoBehaviour
 
         if (teacherToggle.isOn)
         {
-            UnityEngine.Debug.Log("Here");
-            RegisterTeacherDetails(username, name, password, key, msg);
+            if(password.Length>= 5 && password.Length<= 15)
+            {
+                RegisterTeacherDetails(username, name, password, key, msg);
+            }
+            else
+            {
+                DisplayMessage("Invalid, password must be between 5-15 characters!", msg);
+            }
         }
 
         else
         {
-            RegisterStudentDetails(username, name, password, key, msg);
+            if (password.Length >= 5 && password.Length <= 15)
+            {
+                RegisterStudentDetails(username, name, password, key, msg);
+            }
+            else
+            {
+                DisplayMessage("Invalid, password must be between 5-15 characters!", msg);
+            }
         }
     }
     /// <summary>
@@ -98,6 +111,14 @@ public class RegisterManager : MonoBehaviour
         this.msg = message;
         msg.text = str;
     }
+    /// <summary>
+    ///  Sends entered registration details of Teacher for validation and pontential subsequent registratio
+    /// </summary>
+    /// <param name="username"></param>
+    /// <param name="name"></param>
+    /// <param name="password"></param>
+    /// <param name="school_key"></param>
+    /// <param name="msg"></param>
     private void RegisterTeacherDetails(string username, string name, string password, string school_key, Text msg)
     {
         APICall apiCall = APICall.getAPICall();

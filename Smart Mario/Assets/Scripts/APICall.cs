@@ -71,7 +71,7 @@ public class APICall
         }
     }
     /// <summary>
-    /// Creates an IEnumerator for coroutines that is used for login of Teachers and Students via a POST request
+    /// Creates an IEnumerator for coroutines that is used for login of Teachers via a POST request
     /// </summary>
     /// <param name="url"></param>
     /// <param name="bodyJsonString"></param>
@@ -105,7 +105,13 @@ public class APICall
             logManager.TeacherLoginSuccess();
         }
     }
-
+    /// <summary>
+    ///  Creates an IEnumerator for coroutines that is used for login of Teachers via a POST request
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="bodyJsonString"></param>
+    /// <param name="msg"></param>
+    /// <returns></returns>
     public IEnumerator StudentLoginPostRequest(string url, string bodyJsonString, Text msg)
     {
         var request = new UnityWebRequest(url, "POST");
@@ -137,7 +143,12 @@ public class APICall
             //UnityEngine.Debug.Log(PlayerPrefs.GetString("customChar"));
         }       
     }
-
+    /// <summary>
+    ///  Creates an IEnumerator for coroutines that is used for updating custsomisation of characters via a PUT request
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="custom"></param>
+    /// <returns></returns>
     public IEnumerator CustomCharacterPutRequest(string id, string custom)
     {
 
@@ -168,7 +179,14 @@ public class APICall
         }
         scene.ToMainMenu();
     }
-
+    /// <summary>
+    ///  Creates an IEnumerator for coroutines that is used for task assginment for a teachId, minigameId, difficulty and level via a PUT request
+    /// </summary>
+    /// <param name="teacherId"></param>
+    /// <param name="minigameId"></param>
+    /// <param name="difficulty"></param>
+    /// <param name="level"></param>
+    /// <returns></returns>
     public IEnumerator AssignTaskPutRequest(string teacherId, string minigameId, string difficulty, string level)
     {
         string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/" + teacherId + "&" + minigameId + "&" + difficulty + "&" + level;
@@ -297,7 +315,11 @@ public class APICall
             scene.ToTeacherSelectTaskScreen();
         }
     }
-
+    /// <summary>
+    ///  Creates an IEnumerator for coroutines that is used for exporting of CSV results for all students tagged to a teacher via a GET request
+    /// </summary>
+    /// <param name="teacherId"></param>
+    /// <returns></returns>
     public IEnumerator CSVExportGetRequest(string teacherId)
     {
         string url = "https://smart-mario-backend-1.herokuapp.com/api/results/teacher/" + teacherId;
@@ -311,7 +333,14 @@ public class APICall
         SceneController scene = SceneController.GetSceneController();
         scene.ToSelectStudentPerformance();
     }
-
+    /// <summary>
+    ///  Creates an IEnumerator for coroutines that is used for getting task result for a specific task tagged to a teacher, minigamedID, difficulty and level via a GET request
+    /// </summary>
+    /// <param name="teacherId"></param>
+    /// <param name="minigameId"></param>
+    /// <param name="difficulty"></param>
+    /// <param name="level"></param>
+    /// <returns></returns>
     public IEnumerator SpecificTaskResult(string teacherId, string minigameId, string difficulty, string level)
     {
         string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/teacher/" + teacherId + "&" + minigameId + "&" + difficulty + "&" + level;
@@ -325,7 +354,11 @@ public class APICall
         SceneController scene = SceneController.GetSceneController();
         scene.ToViewAssignedTasksScreen();
     }
-
+    /// <summary>
+    ///  Creates an IEnumerator for coroutines that is used for leaderboard standings via a GET request
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
     public IEnumerator LeaderboardGetRequest(string url)
     {
         UnityEngine.Debug.Log(url);

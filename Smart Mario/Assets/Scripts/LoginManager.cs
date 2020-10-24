@@ -86,7 +86,9 @@ public class LoginManager : MonoBehaviour
         scene = SceneController.GetSceneController();
         scene.ToMainMenu();
     }
-
+    /// <summary>
+    /// Changes scene to Teacher Menu
+    /// </summary>
     public void TeacherLoginSuccess()
     {
         scene = SceneController.GetSceneController();
@@ -107,6 +109,12 @@ public class LoginManager : MonoBehaviour
         StartCoroutine(apiCall.StudentLoginPostRequest(url + "students/authenticate", bodyJsonString, msg));
     }
 
+    /// <summary>
+    /// Check the Teacher login details are valid
+    /// </summary>
+    /// <param name="username"></param>
+    /// <param name="password"></param>
+    /// <param name="msg"></param>
     public void ValidateTeacherLogin(string username, string password, Text msg)
     {
         APICall apiCall = APICall.getAPICall();
