@@ -26,6 +26,7 @@ public class NetworkManager : MonoBehaviour
 
     private static string roomName;
     private static int roomCapacity;
+    private static string roomPassword;
     public static string playerName;
     public static int customChar;
     private static string roomID;
@@ -86,6 +87,7 @@ public class NetworkManager : MonoBehaviour
         socket.On("owner disconnected", OnOwnerDisconnected);
         socket.On("get rooms", OnGetRooms);
         socket.On("room is full", OnRoomIsFull);
+        socket.On("wrong room password", OnWrongRoomPassword);
         socket.On("minigame start", OnMinigameStart);
         socket.On("next player", OnNextPlayer);
         socket.On("update message", OnUpdateMessage);
@@ -140,6 +142,7 @@ public class NetworkManager : MonoBehaviour
 
         roomName = PlayerPrefs.GetString("roomName", "room1");
         roomCapacity = PlayerPrefs.GetInt("roomCapacity", 4);
+        roomPassword = PlayerPrefs.GetString("roomPassword", "");
         playerName = PlayerPrefs.GetString("username", "fazli");
         if (PlayerPrefs.GetString("customChar", "1").Equals("1"))
             customChar = 0;
@@ -168,7 +171,7 @@ public class NetworkManager : MonoBehaviour
         // initialize player data to send to the server
         List<SpawnPoint> playerSpawnPoints = GameObject.Find("RoomManager").GetComponent<PlayerSpawner>().playerSpawnPoints;
         storedUserJSON = new UserJSON(playerName, customChar, roomID, isOwner);
-        PlayerJSON playerJSON = new PlayerJSON(playerName, customChar, roomID, isOwner, roomName, roomCapacity, 
+        PlayerJSON playerJSON = new PlayerJSON(playerName, customChar, roomID, isOwner, roomName, roomCapacity, roomPassword,
             minigameSelected, difficultySelected, levelSelected, playerSpawnPoints);
         string data = JsonUtility.ToJson(playerJSON);
         Debug.Log(data);
@@ -523,6 +526,7 @@ public class NetworkManager : MonoBehaviour
         pm.isOwner = currentUserJSON.isOwner;
         pm.multiplayer = true;
         p.name = currentUserJSON.name;
+        RoomManager.instance.ShowRoomDetails(currentUserJSON.roomID);
     }
 
     /// <summary>
@@ -642,7 +646,18 @@ public class NetworkManager : MonoBehaviour
     void OnRoomIsFull(SocketIOEvent socketIOEvent)
     {
         print("room is full");
-        StartCoroutine(LoadMultiplayerLobby());
+        StartCoroutine(LoadMultiplayerLobby(0));
+    }
+
+    /// <summary>
+    /// This is a listener that listens for websocket event where the local player 
+    /// has entered the wrong password for the room he/she wants to join
+    /// </summary>
+    /// <param name="socketIOEvent"></param>
+    void OnWrongRoomPassword(SocketIOEvent socketIOEvent)
+    {
+        print("wrong room password");
+        StartCoroutine(LoadMultiplayerLobby(1));
     }
 
     /// <summary>
@@ -650,12 +665,15 @@ public class NetworkManager : MonoBehaviour
     /// only when the multiplayer lobby scene has fully loaded
     /// </summary>
     /// <returns></returns>
-    IEnumerator LoadMultiplayerLobby()
+    IEnumerator LoadMultiplayerLobby(int type)
     {
         scene.ToMultiplayerLobby();
         while (GameObject.Find("LobbyManager") == null)
             yield return new WaitForSeconds(0.1f);
-        LobbyManager.instance.GetComponent<LobbyManager>().RoomIsFull();
+        if (type == 0)
+            LobbyManager.instance.GetComponent<LobbyManager>().RoomIsFull();
+        else
+            LobbyManager.instance.GetComponent<LobbyManager>().WrongRoomPassword();
     }
 
     #endregion
@@ -673,6 +691,7 @@ public class NetworkManager : MonoBehaviour
         public bool isOwner;
         public string roomName;
         public int capacity;
+        public string roomPassword;
         public string minigameSelected;
         public string difficultySelected;
         public int levelSelected;
@@ -692,7 +711,7 @@ public class NetworkManager : MonoBehaviour
         /// <param name="_levelSelected"></param>
         /// <param name="_playerSpawnPoints locations where player may be spawned at"></param>
         public PlayerJSON(string _name, int _customChar, string _roomID, bool _isOwner, string _roomName, 
-            int _capacity, string _minigameSelected, string _difficultySelected, int _levelSelected, List<SpawnPoint> _playerSpawnPoints)
+            int _capacity, string _roomPassword, string _minigameSelected, string _difficultySelected, int _levelSelected, List<SpawnPoint> _playerSpawnPoints)
         {
             playerSpawnPoints = new List<PointJSON>();
             name = _name;
@@ -701,6 +720,7 @@ public class NetworkManager : MonoBehaviour
             isOwner = _isOwner;
             roomName = _roomName;
             capacity = _capacity;
+            roomPassword = _roomPassword;
             minigameSelected = _minigameSelected;
             difficultySelected = _difficultySelected;
             levelSelected = _levelSelected;

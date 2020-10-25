@@ -10,7 +10,7 @@ public class RoomManager : MonoBehaviour
 {
 
     public static RoomManager instance;
-    public Text roomNameText;
+    public Text roomIDText, roomPasswordText;
     public GameObject startChallengeButton;
 
     /// <summary>
@@ -27,7 +27,19 @@ public class RoomManager : MonoBehaviour
             Destroy(gameObject);
         }
         startChallengeButton.SetActive(false);
-        roomNameText.text = "Room: " + PlayerPrefs.GetString("roomName", "nil");
+    }
+
+    /// <summary>
+    /// This method is called to show the room details only when 
+    /// the player is connected to the multiplayer server and is in the challenge room
+    /// </summary>
+    /// <param name="roomID"></param>
+    public void ShowRoomDetails(string roomID)
+    {
+        roomIDText.text = "RoomID: " + roomID;
+        string roomPassword = PlayerPrefs.GetString("roomPassword", "");
+        if (!roomPassword.Equals(""))
+            roomPasswordText.text = "Password: " + roomPassword;
     }
 
     /// <summary>

@@ -18,6 +18,7 @@ public class LobbyManager : MonoBehaviour
 
     public InputField roomNameInput;
     public InputField roomCapacityInput;
+    public InputField passwordInputCreate;
     public InputField playerNameInputCreate;
     public Dropdown minigameSelectedDropdown;
     public Dropdown difficultySelectedDropdown;
@@ -27,9 +28,12 @@ public class LobbyManager : MonoBehaviour
     public Text roomNameText;
     public Text roomOwnerText;
     public Text roomCapacityText;
+    public Text roomPasswordText;
     public Text minigameSelectedText;
     public Text difficultySelectedText;
     public Text levelSelectedText;
+    public GameObject passwordInputJoinObject;
+    public InputField passwordInputJoin;
     public InputField playerNameInputJoin;
     public Dropdown roomSelectedDropdown;
     public GameObject joinButton;
@@ -79,6 +83,19 @@ public class LobbyManager : MonoBehaviour
         errorPanel.SetActive(true);
     }
 
+    /// <summary>
+    /// This method is called when the player enters the wrong password when joining a challenge room
+    /// </summary>
+    public void WrongRoomPassword()
+    {
+        errorText.text = "Room password entered is incorrect";
+        errorPanel.SetActive(true);
+    }
+
+    /// <summary>
+    /// This method is called when the challenge has not enough players
+    /// Happens only when the player is in the midst of playing the minigame selected in the challenge
+    /// </summary>
     public void NotEnoughPlayers()
     {
         errorText.text = "Not enough players";
@@ -90,11 +107,12 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void CreateRoom()
     {
-        string errorMsg = ValidateFields(roomNameInput.text, roomCapacityInput.text, playerNameInputCreate.text);
+        string errorMsg = ValidateFields(roomNameInput.text, roomCapacityInput.text, passwordInputCreate.text, playerNameInputCreate.text);
         if (errorMsg.Equals("success"))
         {
             PlayerPrefs.SetString("roomName", roomNameInput.text);
             PlayerPrefs.SetInt("roomCapacity", int.Parse(roomCapacityInput.text));
+            PlayerPrefs.SetString("roomPassword", passwordInputCreate.text);
             PlayerPrefs.SetString("username", playerNameInputCreate.text);
             PlayerPrefs.SetString("roomID", "create");
             switch (minigameSelectedDropdown.value)
@@ -165,6 +183,7 @@ public class LobbyManager : MonoBehaviour
         int index = roomSelectedDropdown.value;
         PlayerPrefs.SetString("roomName", rooms[index].roomName);
         PlayerPrefs.SetInt("roomCapacity", rooms[index].roomCapacity);
+        PlayerPrefs.SetString("roomPassword", passwordInputJoin.text);
         PlayerPrefs.SetString("username", playerNameInputJoin.text);
         PlayerPrefs.SetString("roomID", rooms[index].roomID);
         PlayerPrefs.SetString("Minigame Selected", rooms[index].minigameSelected);
@@ -180,7 +199,7 @@ public class LobbyManager : MonoBehaviour
     /// <param name="roomCapacity"></param>
     /// <param name="playerName"></param>
     /// <returns></returns>
-    private string ValidateFields(string roomName, string roomCapacity, string playerName)
+    private string ValidateFields(string roomName, string roomCapacity, string roomPassword, string playerName)
     {
         if (roomName.Equals("") || roomCapacity.Equals("") || playerName.Equals(""))
         {
@@ -189,6 +208,10 @@ public class LobbyManager : MonoBehaviour
         else if (roomName.Length < 5)
         {
             return "Room Name must be at least 5 characters long";
+        }
+        else if (!roomPassword.Equals("") && roomPassword.Length < 5)
+        {
+            return "Room Password must be at least 5 characters long";
         }
         bool isNumeric = int.TryParse(roomCapacity, out int roomCapacityInt);
         if (!isNumeric)
@@ -221,9 +244,20 @@ public class LobbyManager : MonoBehaviour
         roomNameText.text = "Room Name: " + rooms[index].roomName;
         roomOwnerText.text = "Room Owner: " + rooms[index].roomOwner;
         roomCapacityText.text = "Room Capacity: " + rooms[index].noOfClients.ToString() + '/' + rooms[index].roomCapacity;
+        if (rooms[index].roomPassword.Equals(""))
+        {
+            roomPasswordText.text = "Room Type: Public";
+            passwordInputJoinObject.SetActive(false);
+        }
+        else
+        {
+            roomPasswordText.text = "Room Type: Private";
+            passwordInputJoinObject.SetActive(true);
+        }
         minigameSelectedText.text = "Minigame Selected: " + rooms[index].minigameSelected;
         difficultySelectedText.text = "Difficulty Selected: " + rooms[index].difficultySelected;
         levelSelectedText.text = "Level Selected: " + rooms[index].levelSelected;
+        passwordInputJoin.text = "";
     }
 
     /// <summary>
@@ -253,10 +287,21 @@ public class LobbyManager : MonoBehaviour
             roomNameText.text = "Room Name: " + rooms[0].roomName;
             roomOwnerText.text = "Room Owner: " + rooms[0].roomOwner;
             roomCapacityText.text = "Room Capacity: " + rooms[0].noOfClients + '/' + rooms[0].roomCapacity;
+            if (rooms[0].roomPassword.Equals(""))
+            {
+                roomPasswordText.text = "Room Type: Public";
+                passwordInputJoinObject.SetActive(false);
+            }
+            else
+            {
+                roomPasswordText.text = "Room Type: Private";
+                passwordInputJoinObject.SetActive(true);
+            }
             minigameSelectedText.text = "Minigame Selected: " + rooms[0].minigameSelected;
             difficultySelectedText.text = "Difficulty Selected: " + rooms[0].difficultySelected;
             levelSelectedText.text = "Level Selected: " + rooms[0].levelSelected;
             joinButton.SetActive(true);
+            passwordInputJoin.text = "";
         }
         else
         {
@@ -277,6 +322,7 @@ public class LobbyManager : MonoBehaviour
         public string roomOwner;
         public int noOfClients;
         public int roomCapacity;
+        public string roomPassword;
         public string minigameSelected;
         public string difficultySelected;
         public int levelSelected;
