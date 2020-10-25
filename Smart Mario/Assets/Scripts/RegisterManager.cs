@@ -40,12 +40,13 @@ public class RegisterManager : MonoBehaviour
         return instance;
     }
     /// <summary>
-    /// Get instances of SceneController once RegisterManager starts
+    /// Get instance of SceneController once RegisterManager starts and sets password input to maximum of 15
     /// </summary>
     // Start is called before the first frame update
     void Start()
     {
         scene = SceneController.GetSceneController();
+        passwordInputField.characterLimit = 15;
     }
 
     // Update is called once per frame
@@ -79,7 +80,7 @@ public class RegisterManager : MonoBehaviour
 
         if (teacherToggle.isOn)
         {
-            if(password.Length>= 5 && password.Length<= 15)
+            if(password.Length>= 5)
             {
                 RegisterTeacherDetails(username, name, password, key, msg);
             }
@@ -91,7 +92,7 @@ public class RegisterManager : MonoBehaviour
 
         else
         {
-            if (password.Length >= 5 && password.Length <= 15)
+            if (password.Length >= 5)
             {
                 RegisterStudentDetails(username, name, password, key, msg);
             }
