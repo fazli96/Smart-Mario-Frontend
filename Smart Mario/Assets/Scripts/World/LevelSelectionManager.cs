@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// This class contains all methods that manages the UI elements in the level selection screen
 /// </summary>
-public class LevelSelectionScreen : MonoBehaviour
+public class LevelSelectionManager : MonoBehaviour
 {
     public Text minigameNameText;
     public Button level2button;
@@ -18,10 +18,11 @@ public class LevelSelectionScreen : MonoBehaviour
     private string minigameSelected;
     private string difficulty;
 
-    private SceneController scene; 
+    private SceneController scene;
+
     /// <summary>
-    /// This method is called before the first frame update
-    /// This method is used for initialization
+    /// This method is used for initialization to initialize the title of the page to the minigame selected
+    /// and get instance of SceneController
     /// </summary>
     void Start()
     {

@@ -1,6 +1,4 @@
-﻿
-
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +6,9 @@ using CodeMonkey.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+/// <summary>
+/// Control for Leaderboard providing scene transitions and setting the ranking of the top 10 players based on their total scores
+/// </summary>
 public class LeaderboardManager : MonoBehaviour {
 
     private Transform entryContainer;
@@ -18,6 +19,10 @@ public class LeaderboardManager : MonoBehaviour {
     public static LeaderboardManager instance;
     private static readonly string url = "http://smart-mario-backend-1.herokuapp.com/api/results/leaderboard";
 
+    /// <summary>
+    /// Get instances of SceneController and leaderboard template objects once Leaderboard screen starts
+    /// Initialize leaderboard to top 10 ranking players based on their total scores from the database
+    /// </summary>
     private void Awake() {
         if (instance == null)
         {
@@ -43,6 +48,10 @@ public class LeaderboardManager : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// This method is called only when leaderboard entries are successfully retrieved from the database
+    /// </summary>
+    /// <param name="result"></param>
     public void LeaderboardRetrieved(string result)
     {
         var data = (JObject)JsonConvert.DeserializeObject(result);
@@ -52,10 +61,17 @@ public class LeaderboardManager : MonoBehaviour {
         {
             LeaderboardEntry leaderboardEntry = leaderboardEntryObject.ToObject<LeaderboardEntry>();
             leaderboard.Add(leaderboardEntry);
+            // append the leaderboard entry to the leaderboard template
             CreateHighscoreEntryTransform(leaderboardEntry, entryContainer, highscoreEntryTransformList);
         }
     }
 
+    /// <summary>
+    /// This method is to instantiate and initialize a new row to the leaderboard table for every leaderboard entry retrieved from database
+    /// </summary>
+    /// <param name="leaderboardEntry"></param>
+    /// <param name="container"></param>
+    /// <param name="transformList"></param>
     private void CreateHighscoreEntryTransform(LeaderboardEntry leaderboardEntry, Transform container, List<Transform> transformList) {
         float templateHeight = 31f;
         Transform entryTransform = Instantiate(entryTemplate, container);
@@ -63,6 +79,7 @@ public class LeaderboardManager : MonoBehaviour {
         entryRectTransform.anchoredPosition = new Vector2(0, -templateHeight * transformList.Count);
         entryTransform.gameObject.SetActive(true);
 
+        // assign correct abreviations to the ranking position
         int rank = transformList.Count + 1;
         string rankString;
         switch (rank) {
@@ -74,26 +91,24 @@ public class LeaderboardManager : MonoBehaviour {
         case 3: rankString = "3RD"; break;
         }
 
+        // initialize the text found in a row to the values assigned to the leaderboard entry
         entryTransform.Find("posText").GetComponent<Text>().text = rankString;
-
         string score = leaderboardEntry.score;
-
         entryTransform.Find("scoreText").GetComponent<Text>().text = score;
-
         string name = leaderboardEntry.name;
         entryTransform.Find("nameText").GetComponent<Text>().text = name;
 
         // Set background visible odds and evens, easier to read
         entryTransform.Find("Background").gameObject.SetActive(rank % 2 == 1);
         
-        // Highlight First
+        // Highlight First row, top ranking player
         if (rank == 1) {
             entryTransform.Find("posText").GetComponent<Text>().color = Color.green;
             entryTransform.Find("scoreText").GetComponent<Text>().color = Color.green;
             entryTransform.Find("nameText").GetComponent<Text>().color = Color.green;
         }
 
-        // Set tropy
+        // Set trophy to top 3 players
         switch (rank) {
         default:
             entryTransform.Find("trophy").gameObject.SetActive(false);
@@ -113,6 +128,9 @@ public class LeaderboardManager : MonoBehaviour {
         transformList.Add(entryTransform);
     }
 
+    /// <summary>
+    /// Changes scene to main menu
+    /// </summary>
     public void ToMainMenu()
     {
         scene.ToMainMenu();

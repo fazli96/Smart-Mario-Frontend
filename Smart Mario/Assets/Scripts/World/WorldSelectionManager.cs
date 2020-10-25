@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 ///  Boundary that connects to Unity World Selection Scene UI objects and triggers function calls on events
 /// </summary>
-public class WorldSelection : MonoBehaviour
+public class WorldSelectionManager : MonoBehaviour
 {
     private SceneController scene;
     // Start is called before the first frame update

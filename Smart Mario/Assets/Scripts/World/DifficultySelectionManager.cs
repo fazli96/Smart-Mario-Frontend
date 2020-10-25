@@ -4,20 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// This class contains all methods that manages the UI elements in the difficulty sleection page
+/// This class contains all methods that manages the UI elements in the difficulty selection page
 /// </summary>
-public class DifficultySelectionScreen : MonoBehaviour
+public class DifficultySelectionManager : MonoBehaviour
 {
     public Text minigameNameText;
     private SceneController scene;
+
     /// <summary>
-    ///  This method is called before the first frame update
+    /// This method is used for initialization to initialize the title of the page to the minigame selected
+    /// and get instance of SceneController
     /// </summary>
     void Start()
     {
         scene = SceneController.GetSceneController();
         minigameNameText.text = "Welcome to " + PlayerPrefs.GetString("Minigame Selected");
-
     }
 
     /// <summary>

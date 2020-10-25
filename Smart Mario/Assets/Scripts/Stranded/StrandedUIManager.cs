@@ -16,7 +16,7 @@ public class StrandedUIManager : MonoBehaviour
     private SceneController scene;
 
     /// <summary>
-    /// This is called before the first frame update
+    /// This is called before the first frame update to get the instance of scene Controller and to hide the pause menu on start
     /// </summary>
     void Start()
     {
@@ -26,7 +26,7 @@ public class StrandedUIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Update is called once per frame
+    /// For every frame, if player is not encountering a question and the Escape key is pressed, show the pause menu
     /// </summary>
     void Update()
     {  
@@ -100,9 +100,10 @@ public class StrandedUIManager : MonoBehaviour
             default:
                 break;
         }
-
+        // if level 5 is completed, next level will direct player to level selection screen
         if (level == 5)
             scene.ToLevelSelection();
+        // go to next level based on world selected
         else if (world == 1)
             scene.ToWorld1Stranded();
         else

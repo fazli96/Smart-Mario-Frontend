@@ -7,7 +7,7 @@ using System;
 using System.Collections;
 
 /// <summary>
-/// This class is the main controller for the Minigame Stranded.
+/// This class is the main controller for the Minigame Stranded in Single Player.
 /// It implement the rules for the Minigame Stranded
 /// </summary>
 public class StrandedGameManager : MonoBehaviour {
@@ -31,9 +31,13 @@ public class StrandedGameManager : MonoBehaviour {
     public static bool qnEncountered = false;
     private static bool teleportationActive = false;
     public static bool levelComplete = false;
+    private static string username;
 
     /// <summary>
-    /// This is for initialization
+    /// This method is for initialization of waypoints, which is the route of player on the map, the question Barrels found on the map,
+    /// the questions to be tested to the student
+    /// This method is also for spawning the player and question Barrels on the map.
+    /// Player username will be attached to the player Object
     /// </summary>
     void Start () {
         if (instance == null)
@@ -48,7 +52,12 @@ public class StrandedGameManager : MonoBehaviour {
         diceSideThrown = 0;
         playerStartWaypoint = 0;
         levelComplete = false;
+        username = PlayerPrefs.GetString("username", "1");
+
+        // clear questionBarrels, useful for restart level
         questionBarrels.Clear();
+
+        // the last number 999 is to ensure that the mandatory question list is never null
         mandatoryQuestionList = new List<int>() { 30, 60, 90, 999 };
 
         completeLevelPanel.gameObject.SetActive(false);
@@ -56,19 +65,30 @@ public class StrandedGameManager : MonoBehaviour {
         surpriseQuestionPanel.SetActive(false);
         levelText.text = "Level " + PlayerPrefs.GetInt("MinigameLevel", 1);
 
+        // spawn player and attached player name to gameObject
         player = SpawnPlayer(PlayerPrefs.GetString("customChar", "1"));
         player.GetComponent<PlayerPathMovement>().moveAllowed = false;
+        Transform playerTransform = player.transform.Find("Player Name Canvas");
+        Transform playerTransform1 = playerTransform.transform.Find("Player Name");
+        Text playerName = playerTransform1.GetComponent<Text>();
+        playerName.text = username;
+
         SpawnQuestionBarrels(PlayerPrefs.GetInt("MinigameLevel", 1));
 
     }
     /// <summary>
-    /// Update is called once per frame
+    /// This method is called for every frame. Once the player has reached the destination based on dice number rolled,
+    /// check whether the tile the player lands on has a question Barrel or is a teleportation tile or ending tile
+    /// If questionBarrel or teleportation tile, a question will pop out. If ending tile, the results and completion panel will be displayed
     /// </summary>
     void LateUpdate()
     {
+        // when player has reached the destination based on dice number rolled
         if (player.GetComponent<PlayerPathMovement>().waypointIndex > 
             playerStartWaypoint + diceSideThrown)
         {
+            // if player lands on a tile greater than the tile listed in the mandatoryQuestionList and not a teleportation tile, 
+            // alert player of a surprise question and show question to player
             if ((playerStartWaypoint + diceSideThrown) >= mandatoryQuestionList[0] && !(playerStartWaypoint + diceSideThrown == 39 || playerStartWaypoint + diceSideThrown == 49))
             {
                 mandatoryQuestionList.RemoveAt(0);
@@ -80,19 +100,22 @@ public class StrandedGameManager : MonoBehaviour {
             {
                 if (questionBarrel.transform.position == waypoints[playerStartWaypoint + diceSideThrown].transform.position)
                 {
+                    // if mandatory/surprise question is displayed to player, do not ask question to player
+                    // happens if player lands on a barrel and lands on a tile greater than the tile listed in the mandatoryQuestionList
                     if (!qnEncountered)
                     {
                         qnEncountered = true;
                         StrandedQuestionManager.instance.AskQuestion();
                     }    
                     questionBarrels.Remove(questionBarrel);
+                    // hide question barrel on the map
                     questionBarrel.SetActive(false);
                     break;
                 }
             }
             
             Debug.Log(playerStartWaypoint+diceSideThrown);
-            //Teleport to another waypoint
+            // Teleport to another waypoint, player lands on a teleportation tile
             if(playerStartWaypoint+diceSideThrown == 39 || playerStartWaypoint + diceSideThrown == 49)
             {
                 Debug.Log("teleportationActive");
@@ -105,8 +128,7 @@ public class StrandedGameManager : MonoBehaviour {
             playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
         }
         
-
-
+        // player has completed the level
         if (player.GetComponent<PlayerPathMovement>().waypointIndex == waypoints.Count && !levelComplete)
         {
             levelComplete = true;
@@ -118,6 +140,10 @@ public class StrandedGameManager : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Creates an IEnumerator for coroutines that is used to alert player of surprise question for 1 second before displaying the question
+    /// </summary>
+    /// <returns></returns>
     IEnumerator SurpriseQuestion()
     {
         surpriseQuestionPanel.SetActive(true);
@@ -126,6 +152,11 @@ public class StrandedGameManager : MonoBehaviour {
         StrandedQuestionManager.instance.AskQuestion();
     }
 
+    /// <summary>
+    /// Teleport the player to another teleportation located ahead of the player if the player answers the question correctly
+    /// Teleport the player to another teleportation located before the player if the player answers the question wrongly
+    /// </summary>
+    /// <param name="correct"></param>
     public void TeleportPlayer(bool correct)
     {
         if (correct && playerStartWaypoint == 39 && teleportationActive)
@@ -164,7 +195,7 @@ public class StrandedGameManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// This is called to spawn the question barrels on the board based on the difficulty
+    /// This is called to spawn the question barrels on the board based on the level
     /// </summary>
     /// <param name="difficulty"></param>
     private void SpawnQuestionBarrels(int level)
@@ -196,6 +227,7 @@ public class StrandedGameManager : MonoBehaviour {
         {
 
             int rndInt = UnityEngine.Random.Range(i, i + spacesBetweenBarrels);
+            // exclude question barrel that is located at the teleportation tile
             if (!(rndInt == 39 || rndInt == 49))
             {
                 GameObject questionBarrelClone = Instantiate(questionBarrelPrefab,

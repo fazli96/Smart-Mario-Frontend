@@ -77,7 +77,7 @@ public class APICall
     /// <param name="bodyJsonString"></param>
     /// <param name="msg"></param>
     /// <returns></returns>
-    public IEnumerator TeacherLoginPostRequest(string url, string bodyJsonString, Text msg)
+    public IEnumerator TeacherLoginPostRequest(string url, string bodyJsonString)
     {
         var request = new UnityWebRequest(url, "POST");
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
@@ -86,7 +86,6 @@ public class APICall
         request.SetRequestHeader("Content-Type", "application/json");
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
-        LoginManager logManager = LoginManager.GetLoginManager();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
 
         if (convertedStr.Contains("Error"))
@@ -94,7 +93,7 @@ public class APICall
             string errorMsg = convertedStr.Substring(convertedStr.IndexOf(":") + 1);
             errorMsg = errorMsg.Substring(0, errorMsg.Length - 1);
             errorMsg = errorMsg.Substring(0, errorMsg.IndexOf(","));
-            logManager.DisplayMessage(errorMsg, msg);
+            LoginManager.instance.DisplayMessage(errorMsg);
         }
 
         else
@@ -102,7 +101,7 @@ public class APICall
             var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
             PlayerPrefs.SetString("username", data["data"]["username"].ToString());
             PlayerPrefs.SetString("teacherId", data["data"]["id"].ToString());
-            logManager.TeacherLoginSuccess();
+            LoginManager.instance.TeacherLoginSuccess();
         }
     }
     /// <summary>
@@ -112,7 +111,7 @@ public class APICall
     /// <param name="bodyJsonString"></param>
     /// <param name="msg"></param>
     /// <returns></returns>
-    public IEnumerator StudentLoginPostRequest(string url, string bodyJsonString, Text msg)
+    public IEnumerator StudentLoginPostRequest(string url, string bodyJsonString)
     {
         var request = new UnityWebRequest(url, "POST");
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
@@ -121,7 +120,6 @@ public class APICall
         request.SetRequestHeader("Content-Type", "application/json");
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
-        LoginManager logManager = LoginManager.GetLoginManager();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
 
         if (convertedStr.Contains("Error"))
@@ -129,7 +127,7 @@ public class APICall
             string errorMsg = convertedStr.Substring(convertedStr.IndexOf(":") + 1);
             errorMsg = errorMsg.Substring(0, errorMsg.Length - 1);
             errorMsg = errorMsg.Substring(0, errorMsg.IndexOf(","));
-            logManager.DisplayMessage(errorMsg, msg);
+            LoginManager.instance.DisplayMessage(errorMsg);
         }
 
         else
@@ -138,7 +136,8 @@ public class APICall
             PlayerPrefs.SetString("username", data["data"]["username"].ToString());
             PlayerPrefs.SetString("id", data["data"]["id"].ToString());
             PlayerPrefs.SetString("customChar", data["data"]["custom"].ToString());
-            logManager.StudentLoginSuccess();
+            //loginManager.StudentLoginSuccess();
+            LoginManager.instance.GetQuestions();
             //UnityEngine.Debug.Log(PlayerPrefs.GetString("username"));
             //UnityEngine.Debug.Log(PlayerPrefs.GetString("customChar"));
         }       
@@ -271,7 +270,7 @@ public class APICall
         }
         else if (GameObject.Find("StrandedQuestionManager") != null)
         {
-            StrandedQuestionManager.instance.QuestionsRetrieved(convertedStr);
+            //StrandedQuestionManager.instance.QuestionsRetrieved(convertedStr);
             UnityEngine.Debug.Log("Success in finding StrandedQuestionManager!");
         }
         else
@@ -280,6 +279,55 @@ public class APICall
         }
     }
 
+    /// <summary>
+    /// Creates an IEnumerator for coroutines that is used for retrieving game questions for Student via a Get request
+    /// </summary>
+    /// <param name="urlExtension"></param>
+    /// <returns></returns>
+    public IEnumerator QuestionsListGetRequest(string urlExtension)
+    {
+        string url = "https://smart-mario-backend-1.herokuapp.com/api/questions/" + urlExtension;
+        UnityEngine.Debug.Log(url);
+        var request = new UnityWebRequest(url, "GET");
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.chunkedTransfer = false;
+        UnityEngine.Debug.Log("Before!");
+        yield return request.SendWebRequest();
+        string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        UnityEngine.Debug.Log(convertedStr);
+        UnityEngine.Debug.Log("After!");
+
+        if (convertedStr == null || convertedStr.Equals("[]"))
+        {
+            string errorMsg = "Unable to load data from server";
+            LoginManager.instance.DisplayMessage(errorMsg);
+        }
+        else {
+            switch (urlExtension)
+            {
+                case "mcqtheory":
+                    LoginManager.instance.McqTheoryQuestionsRetrieved(convertedStr);
+                    break;
+                case "mcqcode":
+                    LoginManager.instance.McqCodeQuestionsRetrieved(convertedStr);
+                    break;
+                case "shorttheory":
+                    LoginManager.instance.ShortTheoryQuestionsRetrieved(convertedStr);
+                    break;
+                case "shortcode":
+                    LoginManager.instance.ShortCodeQuestionsRetrieved(convertedStr);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Creates an IEnumerator for coroutines that is used for retrieving all statistics for a student via a Get request
+    /// </summary>
+    /// <param name="urlExtension"></param>
+    /// <returns></returns>
     public IEnumerator StudentResultGetRequest(string studentID)
     {
         string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/student/" + studentID;
@@ -295,6 +343,11 @@ public class APICall
         scene.ToStudentManageTasks();
     }
 
+    /// <summary>
+    /// Creates an IEnumerator for coroutines that is used for retrieving results for all students under a teacher via a Get request
+    /// </summary>
+    /// <param name="urlExtension"></param>
+    /// <returns></returns>
     public IEnumerator AllStudentResultGetRequest(string teacherID, bool sceneSelectStudent)
     {
         string url = "https://smart-mario-backend-1.herokuapp.com/api/tasks/teacher/" + teacherID;

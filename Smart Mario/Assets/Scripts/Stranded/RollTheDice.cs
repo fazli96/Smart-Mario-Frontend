@@ -12,7 +12,7 @@ public class RollTheDice : MonoBehaviour
     private bool coroutineAllowed = true;
 
     /// <summary>
-    /// This is for initialization
+    /// This is for retrieving the sprites for each dice side on start
     /// </summary>
     private void Awake()
     {
@@ -25,6 +25,8 @@ public class RollTheDice : MonoBehaviour
     /// </summary>
     private void OnMouseDown()
     {
+        // allow click on dice only when the game is not complete, player is no longer moving from tile to tile,
+        // and player is not encountering a question
         if (!StrandedGameManager.levelComplete && coroutineAllowed 
             && !StrandedGameManager.GetMoveAllowed() && !StrandedGameManager.qnEncountered)
             StartCoroutine("RollDice");
@@ -38,6 +40,8 @@ public class RollTheDice : MonoBehaviour
     private IEnumerator RollDice()
     {
         coroutineAllowed = false;
+
+        // imitates the animation of dice rolling
         int randomDiceSide = 0;
         for (int i = 0; i <= 20; i++)
         {
@@ -47,11 +51,12 @@ public class RollTheDice : MonoBehaviour
         }
         yield return new WaitForSeconds(0.1f);
 
-        //StrandedGameManager.diceSideThrown = randomDiceSide + 1;
+        // set dice number rolled in game manager
+        StrandedGameManager.diceSideThrown = randomDiceSide + 1;
         // for testing
-        StrandedGameManager.diceSideThrown = 30;
-        //randomDiceSide = 5 for six;
+        //StrandedGameManager.diceSideThrown = 30;
 
+        // once dice is rolled, allow player to move from tile to tile based on dice number rolled
         StrandedGameManager.MovePlayer();
 
         coroutineAllowed = true;

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class is for managing the message log of player interactions during the multiplayer challenge
+/// </summary>
 public class ChallengeManager : MonoBehaviour
 {
     public static ChallengeManager instance;
@@ -14,7 +17,9 @@ public class ChallengeManager : MonoBehaviour
     public int maxMessages = 15;
     public List<Message> messageList = new List<Message>();
     
-    // Start is called before the first frame update
+    /// <summary>
+    /// This method is called before the first frame update to initialize the message log to empty
+    /// </summary>
     void Start()
     {
         if (instance == null)
@@ -28,12 +33,11 @@ public class ChallengeManager : MonoBehaviour
         messageList.Clear();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// This method is called to append new messages of player interactions to the message log
+    /// Message Log can only store up to a certain number of messages where the least recent messages are disposed of when limit exceeded
+    /// </summary>
+    /// <param name="text"></param>
     public void SendToMessageLog(string text)
     {
         if (messageList.Count >= maxMessages)
@@ -55,6 +59,9 @@ public class ChallengeManager : MonoBehaviour
 
 }
 
+/// <summary>
+/// This class is for storing the message received from the server to be displayed on the message log
+/// </summary>
 [Serializable]
 public class Message
 {

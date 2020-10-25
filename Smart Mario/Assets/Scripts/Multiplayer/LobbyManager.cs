@@ -39,7 +39,7 @@ public class LobbyManager : MonoBehaviour
     private static List<RoomJSON> rooms;
 
     /// <summary>
-    /// This method is called for initialization
+    /// This method is called for initialization to get instance of Scene Controller and initialize the inputfields to appropriate restrictions
     /// </summary>
     void Awake()
     {
@@ -56,6 +56,8 @@ public class LobbyManager : MonoBehaviour
         roomSelectedDropdown.options.Clear();
         rooms = new List<RoomJSON>();
         joinButton.SetActive(false);
+        roomNameInput.characterLimit = 15;
+        roomCapacityInput.characterLimit = 1;
     }
 
 
@@ -184,6 +186,10 @@ public class LobbyManager : MonoBehaviour
         {
             return "Room Name/Room Capacity/Player Name cannot be empty";
         }
+        else if (roomName.Length < 5)
+        {
+            return "Room Name must be at least 5 characters long";
+        }
         bool isNumeric = int.TryParse(roomCapacity, out int roomCapacityInt);
         if (!isNumeric)
         {
@@ -261,7 +267,7 @@ public class LobbyManager : MonoBehaviour
     }
 
     /// <summary>
-    /// This class is to store the room retrieved from the server
+    /// This class is to store the challenge room retrieved from the server
     /// </summary>
     [Serializable]
     public class RoomJSON

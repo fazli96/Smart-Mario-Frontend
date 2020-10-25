@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class is used for monitoring and managing the player's score, questions attempted and questions answered correctly
+/// and updating these results in the database in Multiplayer game session
+/// </summary>
 public class StrandedMultiplayerGameStatus : MonoBehaviour
 {
     public Text scoreText1;
@@ -49,7 +53,10 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
     public static StrandedMultiplayerGameStatus instance;
     private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/results";
 
-
+    /// <summary>
+    /// This method is called before the first frame update to initialize the players initial score based on the level selected
+    /// This method is also for resetting the number of questions attempted and questions answered correctly
+    /// </summary>
     void Start()
     {
         if (instance == null)
@@ -62,10 +69,43 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
         }
         players = new List<string>();
 
-        currentScore1 = 3000;
-        currentScore2 = 3000;
-        currentScore3 = 3000;
-        currentScore4 = 3000;
+        int level = PlayerPrefs.GetInt("MinigameLevel", 1);
+        switch (level)
+        {
+            case 1:
+                currentScore1 = 1000;
+                currentScore2 = 1000;
+                currentScore3 = 1000;
+                currentScore4 = 1000;
+                break;
+            case 2:
+                currentScore1 = 1500;
+                currentScore2 = 1500;
+                currentScore3 = 1500;
+                currentScore4 = 1500;
+                break;
+            case 3:
+                currentScore1 = 2000;
+                currentScore2 = 2000;
+                currentScore3 = 2000;
+                currentScore4 = 2000;
+                break;
+            case 4:
+                currentScore1 = 2500;
+                currentScore2 = 2500;
+                currentScore3 = 2500;
+                currentScore4 = 2500;
+                break;
+            case 5:
+                currentScore1 = 3000;
+                currentScore2 = 3000;
+                currentScore3 = 3000;
+                currentScore4 = 3000;
+                break;
+            default:
+                break;
+        }
+
         qnsAttempted1 = 0;
         qnsAttempted2 = 0;
         qnsAttempted3 = 0;
@@ -78,7 +118,7 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
     }
 
     /// <summary>
-    /// This is to change the current score of the player
+    /// This is to change the current score of other players
     /// </summary>
     /// <param name="changeInScore"></param>
     public void OtherPlayerScoreChange(string username, int changeInScore)
@@ -124,6 +164,10 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This is to change the current score of the player
+    /// </summary>
+    /// <param name="changeInScore"></param>
     public void ScoreChange(int changeInScore)
     {
         if (changeInScore > 0)
@@ -138,13 +182,16 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
     }
 
     /// <summary>
-    /// This is to display the score on the screen
+    /// This is to display the score of the player on the screen
     /// </summary>
     public void DisplayScore()
     {
         scoreText1.text = "Your Score: " + currentScore1;
     }
 
+    /// <summary>
+    /// This is to display the score of other players on the screen
+    /// </summary>
     public void DisplayOtherPlayerScore(string username)
     {
         Debug.Log("Player Count: " + players.Count);
@@ -169,6 +216,10 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This is to add the username of other players to form a list of other players
+    /// The list is used for reference to other players score on screen
+    /// </summary>
     public void AddPlayer(string username)
     {
         Debug.Log("Add Player " + username);
@@ -188,21 +239,24 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
         QnsAttemptedText1.text = "Your Qns Attempted: " + qnsAttempted1;
         QnsCorrectText1.text = "Your Qns Answered Correctly: " + qnsAnsweredCorrectly1;
 
-        if (ResultsScoreText2 != null && players.Count > 0)
+        // if player2 has not disconnected midway through the game, show results of player2
+        if (ResultsScoreText2 != null)
         {
             ResultsScoreText2.text = players[0] + "'s Score: " + currentScore2;
             QnsAttemptedText2.text = players[0] + "'s Qns Attempted: " + qnsAttempted2;
             QnsCorrectText2.text = players[0] + "'s Qns Answered Correctly: " + qnsAnsweredCorrectly2;
         }
 
-        if (ResultsScoreText3 != null && players.Count > 1)
+        // if player3 has not disconnected midway through the game, show results of player3
+        if (ResultsScoreText3 != null)
         {
             ResultsScoreText3.text = players[0] + "'s Score: " + currentScore3;
             QnsAttemptedText3.text = players[0] + "'s Qns Attempted: " + qnsAttempted3;
             QnsCorrectText3.text = players[0] + "'s Qns Answered Correctly: " + qnsAnsweredCorrectly3;
         }
 
-        if (ResultsScoreText4 != null && players.Count > 2)
+        // if player4 has not disconnected midway through the game, show results of player4
+        if (ResultsScoreText4 != null)
         {
             ResultsScoreText4.text = players[0] + "'s Score: " + currentScore4;
             QnsAttemptedText4.text = players[0] + "'s Qns Attempted: " + qnsAttempted4;
@@ -212,6 +266,11 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// If other player is diconnected from the game, 
+    /// destroy all text related to player's score, questions attempted and questions answered correctly
+    /// </summary>
+    /// <param name="username"></param>
     public void PlayerLeft(string username)
     {
         for (int i = 0; i < players.Count; i++)

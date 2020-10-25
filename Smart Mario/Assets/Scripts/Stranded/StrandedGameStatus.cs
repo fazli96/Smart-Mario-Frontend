@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class is used for monitoring and managing the player's score, questions attempted and questions answered correctly
+/// and updating these results in the database in Single Player game session
+/// </summary>
 public class StrandedGameStatus : MonoBehaviour
 {
 
@@ -23,7 +27,10 @@ public class StrandedGameStatus : MonoBehaviour
     private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/results";
     public static StrandedGameStatus instance;
 
-
+    /// <summary>
+    /// This method is called before the first frame update to initialize the player initial and target score based on the level selected
+    /// This method is also for resetting the number of questions attempted and questions answered correctly
+    /// </summary>
     void Start()
     {
         if (instance == null)
@@ -58,7 +65,6 @@ public class StrandedGameStatus : MonoBehaviour
         qnsAttempted = 0;
         qnsAnsweredCorrectly = 0;
         DisplayScore();
-
     }
     
 
@@ -100,8 +106,7 @@ public class StrandedGameStatus : MonoBehaviour
     }
 
     /// <summary>
-    /// This is called when the player completes the level
-    /// The Minigame Results panel will be displayed
+    /// This is called when the player completes the level where the Minigame Results panel will be displayed
     /// </summary>
     /// <returns></returns>
     public bool WinLevel()
@@ -154,7 +159,6 @@ public class StrandedGameStatus : MonoBehaviour
         APICall apiCall = APICall.getAPICall();
         Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + currentScore + ", " + qnsAttempted + ", " + qnsAnsweredCorrectly);
         Results result = new Results(studentId, minigameId, difficulty, currentLevel, currentScore, qnsAttempted, qnsAnsweredCorrectly);
-        //Results result = new Results("1", 1, "Easy", 1, 50, 1, 1);
         string bodyJsonString = apiCall.saveToJSONString(result);
         StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));
     }

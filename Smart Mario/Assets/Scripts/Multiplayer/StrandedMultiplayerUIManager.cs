@@ -14,7 +14,7 @@ public class StrandedMultiplayerUIManager : MonoBehaviour
     private SceneController scene;
 
     /// <summary>
-    /// This is called before the first frame update
+    /// This is called before the first frame update to get the instance of scene Controller
     /// </summary>
     void Start()
     {
@@ -22,7 +22,7 @@ public class StrandedMultiplayerUIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// This method is called when the 'Leave Game'button is pressed
+    /// This method is called when the 'Leave Game' or 'Return To Lobby' button is pressed
     /// It navigates the player back to the multiplayer lobby
     /// </summary>
     public void ToMultiplayerLobby()

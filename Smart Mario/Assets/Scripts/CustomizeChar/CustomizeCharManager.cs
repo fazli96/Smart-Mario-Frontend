@@ -12,7 +12,7 @@ public class CustomizeCharManager : MonoBehaviour
     private int charInt = 1;
     private SceneController scene;
     /// <summary>
-    /// Set charcter shown on screen based on currently selected character
+    /// Set character shown on screen based on currently selected character
     /// </summary>
     // Start is called before the first frame update
     void Start()

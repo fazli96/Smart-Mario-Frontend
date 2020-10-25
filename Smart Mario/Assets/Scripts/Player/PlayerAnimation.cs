@@ -14,15 +14,17 @@ public class PlayerAnimation : MonoBehaviour
     public string[] runDirections = { "Run N", "Run NW", "Run W", "Run SW", "Run S", "Run SE", "Run E", "Run NE" };
     public bool isMoving;
 
+    // ensure the player is facing south immediately after spawning
     int lastDirection = 4;
 
     /// <summary>
-    /// This is called for initialization
+    /// This is called to initialize the player animation to the correct character animation
     /// </summary>
     private void Awake()
     {
         anim = GetComponent<Animator>();
 
+        // below is for debug purposes to check the alignment of the vectors of player movement is isometric
         float result1 = Vector2.SignedAngle(Vector2.up, Vector2.right);
         Debug.Log("R1 " + result1);
 
