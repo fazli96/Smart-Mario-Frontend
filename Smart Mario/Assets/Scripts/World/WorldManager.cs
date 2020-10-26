@@ -10,10 +10,8 @@ public class WorldManager : MonoBehaviour
 {
     private SceneController scene;
 
-    public GameObject witchPrefab;
-    public GameObject knightPrefab;
-    public GameObject witchClone;
-    public GameObject knightClone;
+    public List<GameObject> characterPrefabs = new List<GameObject>();
+    public List<GameObject> characterClones = new List<GameObject>();
     /// <summary>
     /// Get instance of SceneController once World Manager starts and sets the Player object according to player preference's selected player
     /// Attached the username of Student to the player Object
@@ -23,31 +21,16 @@ public class WorldManager : MonoBehaviour
     {
         scene = SceneController.GetSceneController();
         string username = PlayerPrefs.GetString("username", "1");
-        switch (PlayerPrefs.GetString("customChar", "1"))
-        {
-            case "1":
-                witchClone = Instantiate(witchPrefab,
-                witchClone.transform.position,
-                Quaternion.Euler(0, 0, 0)) as GameObject;
-                Transform witchCloneTransform = witchClone.transform.Find("Player Name Canvas");
-                Transform witchCloneTransform1 = witchCloneTransform.transform.Find("Player Name");
-                Text witchPlayerName = witchCloneTransform1.GetComponent<Text>();
-                witchPlayerName.text = username;
-                witchClone.name = username;
-                break;
-            case "2":
-                knightClone = Instantiate(knightPrefab,
-                knightClone.transform.position,
-                Quaternion.Euler(0, 0, 0)) as GameObject;
-                Transform knightCloneTransform = knightClone.transform.Find("Player Name Canvas");
-                Transform knightCloneTransform1 = knightCloneTransform.transform.Find("Player Name");
-                Text knightPlayerName = knightCloneTransform1.GetComponent<Text>();
-                knightPlayerName.text = username;
-                knightClone.name = username;
-                break;
-            default:
-                break;
-        }
+        int customChar = int.Parse(PlayerPrefs.GetString("customChar", "0"));
+        
+        characterClones[customChar] = Instantiate(characterPrefabs[customChar],
+        characterClones[customChar].transform.position,
+        Quaternion.Euler(0, 0, 0)) as GameObject;
+        Transform CloneTransform = characterClones[customChar].transform.Find("Player Name Canvas");
+        Transform CloneTransform1 = CloneTransform.transform.Find("Player Name");
+        Text playerName = CloneTransform1.GetComponent<Text>();
+        playerName.text = username;
+        characterClones[customChar].name = username;
         
     }
 

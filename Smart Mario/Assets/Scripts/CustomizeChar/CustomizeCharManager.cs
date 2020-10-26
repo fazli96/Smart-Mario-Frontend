@@ -9,7 +9,7 @@ public class CustomizeCharManager : MonoBehaviour
     public GameObject witch;
     public GameObject knight;
 
-    private int charInt = 1;
+    private int charInt = 0;
     private SceneController scene;
     /// <summary>
     /// Set character shown on screen based on currently selected character
@@ -17,17 +17,17 @@ public class CustomizeCharManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (PlayerPrefs.GetString("customChar", "1").Equals("1"))
+        if (PlayerPrefs.GetString("customChar", "0").Equals("0"))
         {
             witch.SetActive(true);
             knight.SetActive(false);
-            charInt = 1;
+            charInt = 0;
         }
-        else if (PlayerPrefs.GetString("customChar", "1").Equals("2"))
+        else if (PlayerPrefs.GetString("customChar", "0").Equals("1"))
         {
             witch.SetActive(false);
             knight.SetActive(true);
-            charInt = 2;
+            charInt = 1;
         }
         scene = SceneController.GetSceneController();
     }
@@ -39,17 +39,17 @@ public class CustomizeCharManager : MonoBehaviour
     {
         switch(charInt)
         {
-            case 1:
+            case 0:
                 //PlayerPrefs.SetString("Selected Player", "Knight");
                 knight.SetActive(true);
                 witch.SetActive(false);
-                charInt = 2;
+                charInt = 1;
                 break;
-            case 2:
+            case 1:
                 //PlayerPrefs.SetString("Selected Player", "Witch");
                 witch.SetActive(true);
                 knight.SetActive(false);
-                charInt = 1;
+                charInt = 0;
                 break;
             default:
                 break;
@@ -62,17 +62,17 @@ public class CustomizeCharManager : MonoBehaviour
     {
         switch (charInt)
         {
-            case 1:
+            case 0:
                 //PlayerPrefs.SetString("Selected Player", "Knight");
                 knight.SetActive(true);
                 witch.SetActive(false);
-                charInt = 2;
+                charInt = 1;
                 break;
-            case 2:
+            case 1:
                 //PlayerPrefs.SetString("Selected Player", "Witch");
                 witch.SetActive(true);
                 knight.SetActive(false);
-                charInt = 1;
+                charInt = 0;
                 break;
             default:
                 break;

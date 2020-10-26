@@ -173,6 +173,11 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
         if (changeInScore > 0)
         {
             qnsAnsweredCorrectly1 += 1;
+            StrandedMultiplayerGameManager.instance.TeleportPlayer(true);
+        }
+        else
+        {
+            StrandedMultiplayerGameManager.instance.TeleportPlayer(false);
         }
         qnsAttempted1 += 1;
         if (!(currentScore1 == 0 && changeInScore < 0))

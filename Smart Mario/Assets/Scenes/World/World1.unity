@@ -9416,10 +9416,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f560331a8f6f1047afa3028de1fcf9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  witchPrefab: {fileID: 8569327536537702658, guid: 603f8a0c1826d434b91d93d44efd0681, type: 3}
-  knightPrefab: {fileID: 6336000713802587825, guid: 21dcbc33b3ededd4db54a1f7e05afb64, type: 3}
-  witchClone: {fileID: 8569327536537702658, guid: 603f8a0c1826d434b91d93d44efd0681, type: 3}
-  knightClone: {fileID: 6336000713802587825, guid: 21dcbc33b3ededd4db54a1f7e05afb64, type: 3}
+  characterPrefabs:
+  - {fileID: 8569327536537702658, guid: 603f8a0c1826d434b91d93d44efd0681, type: 3}
+  - {fileID: 6336000713802587825, guid: 21dcbc33b3ededd4db54a1f7e05afb64, type: 3}
+  characterClones:
+  - {fileID: 8569327536537702658, guid: 603f8a0c1826d434b91d93d44efd0681, type: 3}
+  - {fileID: 6336000713802587825, guid: 21dcbc33b3ededd4db54a1f7e05afb64, type: 3}
 --- !u!4 &1320876454
 Transform:
   m_ObjectHideFlags: 0

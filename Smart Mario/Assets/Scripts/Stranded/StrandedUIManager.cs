@@ -30,7 +30,8 @@ public class StrandedUIManager : MonoBehaviour
     /// </summary>
     void Update()
     {  
-        if (Input.GetKeyDown(KeyCode.Escape) && !StrandedGameManager.qnEncountered)
+        if (Input.GetKeyDown(KeyCode.Escape) && !StrandedGameManager.qnEncountered
+            && !StrandedGameManager.levelComplete)
         {
             if (!isPaused)
             {

@@ -11937,10 +11937,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f560331a8f6f1047afa3028de1fcf9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  witchPrefab: {fileID: 8569327536537702658, guid: 603f8a0c1826d434b91d93d44efd0681, type: 3}
-  knightPrefab: {fileID: 6336000713802587825, guid: 21dcbc33b3ededd4db54a1f7e05afb64, type: 3}
-  witchClone: {fileID: 8569327536537702658, guid: 603f8a0c1826d434b91d93d44efd0681, type: 3}
-  knightClone: {fileID: 6336000713802587825, guid: 21dcbc33b3ededd4db54a1f7e05afb64, type: 3}
+  characterPrefabs:
+  - {fileID: 8569327536537702658, guid: 603f8a0c1826d434b91d93d44efd0681, type: 3}
+  - {fileID: 6336000713802587825, guid: 21dcbc33b3ededd4db54a1f7e05afb64, type: 3}
+  characterClones:
+  - {fileID: 8569327536537702658, guid: 603f8a0c1826d434b91d93d44efd0681, type: 3}
+  - {fileID: 6336000713802587825, guid: 21dcbc33b3ededd4db54a1f7e05afb64, type: 3}
 --- !u!4 &1466579267
 Transform:
   m_ObjectHideFlags: 0
@@ -11953,7 +11955,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1474725342
 GameObject:
@@ -12171,7 +12173,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1684688000
 GameObject:
@@ -12652,7 +12654,7 @@ RectTransform:
   - {fileID: 379685206}
   - {fileID: 1109626956}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

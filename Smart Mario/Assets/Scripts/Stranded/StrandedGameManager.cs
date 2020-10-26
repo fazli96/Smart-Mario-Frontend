@@ -22,8 +22,7 @@ public class StrandedGameManager : MonoBehaviour {
     public Text levelText;
     public GameObject completeLevelPanel, gameOverPanel, surpriseQuestionPanel;
     public GameObject questionBarrelPrefab;
-    public GameObject witchPrefab;
-    public GameObject knightPrefab;
+    public List<GameObject> characterMinigamePrefabs = new List<GameObject>();
     public GameObject spawnPoint;
 
     public static int diceSideThrown = 0;
@@ -49,8 +48,11 @@ public class StrandedGameManager : MonoBehaviour {
             Destroy(gameObject);
         }
 
+        // initialize static variables
         diceSideThrown = 0;
         playerStartWaypoint = 0;
+        qnEncountered = false;
+        teleportationActive = false;
         levelComplete = false;
         username = PlayerPrefs.GetString("username", "1");
 
@@ -66,7 +68,7 @@ public class StrandedGameManager : MonoBehaviour {
         levelText.text = "Level " + PlayerPrefs.GetInt("MinigameLevel", 1);
 
         // spawn player and attached player name to gameObject
-        player = SpawnPlayer(PlayerPrefs.GetString("customChar", "1"));
+        player = SpawnPlayer(int.Parse(PlayerPrefs.GetString("customChar", "0")));
         player.GetComponent<PlayerPathMovement>().moveAllowed = false;
         Transform playerTransform = player.transform.Find("Player Name Canvas");
         Transform playerTransform1 = playerTransform.transform.Find("Player Name");
@@ -89,7 +91,8 @@ public class StrandedGameManager : MonoBehaviour {
         {
             // if player lands on a tile greater than the tile listed in the mandatoryQuestionList and not a teleportation tile, 
             // alert player of a surprise question and show question to player
-            if ((playerStartWaypoint + diceSideThrown) >= mandatoryQuestionList[0] && !(playerStartWaypoint + diceSideThrown == 39 || playerStartWaypoint + diceSideThrown == 49))
+            if ((playerStartWaypoint + diceSideThrown) >= mandatoryQuestionList[0] 
+                && !(playerStartWaypoint + diceSideThrown == 39 || playerStartWaypoint + diceSideThrown == 49))
             {
                 mandatoryQuestionList.RemoveAt(0);
                 qnEncountered = true;
@@ -115,6 +118,7 @@ public class StrandedGameManager : MonoBehaviour {
             }
             
             Debug.Log(playerStartWaypoint+diceSideThrown);
+            
             // Teleport to another waypoint, player lands on a teleportation tile
             if(playerStartWaypoint+diceSideThrown == 39 || playerStartWaypoint + diceSideThrown == 49)
             {
@@ -244,24 +248,11 @@ public class StrandedGameManager : MonoBehaviour {
     /// </summary>
     /// <param name="selectedPlayer"></param>
     /// <returns></returns>
-    private GameObject SpawnPlayer(string selectedPlayer)
+    private GameObject SpawnPlayer(int customChar)
     {
-        switch (selectedPlayer)
-        {
-            case "1":
-                return Instantiate(witchPrefab,
-                spawnPoint.transform.position,
-                Quaternion.Euler(0, 0, 0)) as GameObject;
-                //break;
-            case "2":
-                return Instantiate(knightPrefab,
-                spawnPoint.transform.position,
-                Quaternion.Euler(0, 0, 0)) as GameObject;
-                //break;
-            default:
-                return null;
-                //break;
-        }
+        return Instantiate(characterMinigamePrefabs[customChar],
+        spawnPoint.transform.position,
+        Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     /// <summary>

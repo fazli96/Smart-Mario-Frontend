@@ -151,7 +151,7 @@ public class LoginManager : MonoBehaviour
         QuestionList.ClearMcqTheoryQuestionListHard();
 
         var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
-        JArray data2 = data["allQuestions"].Value<JArray>();
+        JArray data2 = data["Question"].Value<JArray>();
         //int counter = 0;
         foreach (JObject questionObject in data2)
         {

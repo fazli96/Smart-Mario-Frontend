@@ -3035,7 +3035,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 0
-      m_TileSpriteIndex: 9
+      m_TileSpriteIndex: 18
       m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -3548,7 +3548,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 0
-      m_TileSpriteIndex: 5
+      m_TileSpriteIndex: 9
       m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -24752,7 +24752,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 1
-      m_TileSpriteIndex: 3
+      m_TileSpriteIndex: 5
       m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -25283,7 +25283,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 0
-      m_TileSpriteIndex: 2
+      m_TileSpriteIndex: 3
       m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -35921,7 +35921,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 0
-      m_TileSpriteIndex: 1
+      m_TileSpriteIndex: 2
       m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -37954,16 +37954,16 @@ Tilemap:
   m_TileSpriteArray:
   - m_RefCount: 0
     m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: 3997bbb2174dc6342bee8b8803a2ffe2, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: 60919206ec62ae74e92382a275b3e531, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: 3bb817e6aa9d2e746ab2031d8871da73, type: 3}
-  - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: ff182ddc523cdc949978ddbb764a0fa3, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: 9d239763008adf64a957bc99534d948d, type: 3}
+    m_Data: {fileID: 21300000, guid: 3bb817e6aa9d2e746ab2031d8871da73, type: 3}
   - m_RefCount: 67
     m_Data: {fileID: 21300000, guid: 40c74bdb314e60147be4706b27817189, type: 3}
   - m_RefCount: 83
@@ -37971,7 +37971,7 @@ Tilemap:
   - m_RefCount: 83
     m_Data: {fileID: 21300000, guid: fb021a0855ad898469c732016f6e3b9e, type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: 1fa9a4a9631823f44b33f6ac73e6e1d3, type: 3}
+    m_Data: {fileID: 21300000, guid: 9d239763008adf64a957bc99534d948d, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: fabb83d01aa016848a2741f371a1ccbd, type: 3}
   - m_RefCount: 1
@@ -37988,8 +37988,8 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: 6d0fd860ada47344987a5874de1cc9ec, type: 3}
   - m_RefCount: 3224
     m_Data: {fileID: 21300000, guid: 4495010f0f608e84498564b6ae27cfff, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300000, guid: 1fa9a4a9631823f44b33f6ac73e6e1d3, type: 3}
   - m_RefCount: 49
     m_Data: {fileID: 21300000, guid: c1d93a0f56a30f448b16bcd2a4f35903, type: 3}
   - m_RefCount: 1
@@ -40127,8 +40127,9 @@ MonoBehaviour:
   gameOverPanel: {fileID: 1341437728}
   surpriseQuestionPanel: {fileID: 2370541494052877568}
   questionBarrelPrefab: {fileID: 5183404774013658388, guid: 244a064954902894b9b8b1a315f4c77b, type: 3}
-  witchPrefab: {fileID: 7972777223144208055, guid: 1775b9ae5f8be084396d091f30b486c0, type: 3}
-  knightPrefab: {fileID: 4304709940781758529, guid: 3a98fe36f7506aa40b3ebb2a4d11a593, type: 3}
+  characterMinigamePrefabs:
+  - {fileID: 7972777223144208055, guid: 1775b9ae5f8be084396d091f30b486c0, type: 3}
+  - {fileID: 4304709940781758529, guid: 3a98fe36f7506aa40b3ebb2a4d11a593, type: 3}
   spawnPoint: {fileID: 1472969756}
 --- !u!4 &952154873
 Transform:

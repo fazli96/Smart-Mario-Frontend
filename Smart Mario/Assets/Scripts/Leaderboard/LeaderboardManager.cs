@@ -11,6 +11,10 @@ using Newtonsoft.Json.Linq;
 /// </summary>
 public class LeaderboardManager : MonoBehaviour {
 
+    public GameObject leaderboardTable;
+    public Text errorMsgText;
+    public Text studentRankText;
+
     private Transform entryContainer;
     private Transform entryTemplate;
     private List<Transform> highscoreEntryTransformList;
@@ -33,6 +37,9 @@ public class LeaderboardManager : MonoBehaviour {
             Destroy(gameObject);
         }
 
+        errorMsgText.text = "";
+        studentRankText.text = "";
+
         entryContainer = transform.Find("leaderboardEntryContainer");
         entryTemplate = entryContainer.Find("leaderboardEntryTemplate");
 
@@ -54,9 +61,21 @@ public class LeaderboardManager : MonoBehaviour {
     /// <param name="result"></param>
     public void LeaderboardRetrieved(string result)
     {
+        if (result == null)
+        {
+            leaderboardTable.SetActive(false);
+            errorMsgText.text = "Error loading data from database";
+            return;
+        }
         var data = (JObject)JsonConvert.DeserializeObject(result);
         JArray leaderboardEntryArray = data["data"].Value<JArray>();
         //int counter = 0;
+        if (leaderboardEntryArray.Count == 0)
+        {
+            leaderboardTable.SetActive(false);
+            errorMsgText.text = "No games played by any students";
+            return;
+        }
         foreach (JObject leaderboardEntryObject in leaderboardEntryArray)
         {
             LeaderboardEntry leaderboardEntry = leaderboardEntryObject.ToObject<LeaderboardEntry>();
@@ -64,6 +83,39 @@ public class LeaderboardManager : MonoBehaviour {
             // append the leaderboard entry to the leaderboard template
             CreateHighscoreEntryTransform(leaderboardEntry, entryContainer, highscoreEntryTransformList);
         }
+        APICall apiCall = APICall.getAPICall();
+        StartCoroutine(apiCall.StudentLeaderboardRankGetRequest(url + "/" + PlayerPrefs.GetString("id", "1")));
+    }
+
+    public void StudentLeaderboardRankRetrieved(string result)
+    {
+        if (result == null)
+        {
+            leaderboardTable.SetActive(false);
+            errorMsgText.text = "Error loading data from database";
+            return;
+        }
+
+        var data = (JObject)JsonConvert.DeserializeObject(result);
+        if (data["message"] != null)
+        {
+            studentRankText.text = "";
+            return;
+        }
+        int studentRank = int.Parse(data["rank"].ToString());
+        string studentRankString;
+        //int counter = 0;
+        switch (studentRank)
+        {
+            default:
+                studentRankString = studentRank + "TH"; break;
+
+            case 1: studentRankString = "1ST"; break;
+            case 2: studentRankString = "2ND"; break;
+            case 3: studentRankString = "3RD"; break;
+        }
+
+        studentRankText.text = "You ranked " + studentRankString;
     }
 
     /// <summary>

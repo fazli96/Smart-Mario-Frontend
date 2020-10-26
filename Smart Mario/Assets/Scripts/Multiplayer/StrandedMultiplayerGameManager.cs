@@ -23,14 +23,14 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
     public GameObject resultsPanel, surpriseQuestionPanel;
     public GameObject leaveGameButton;
     public GameObject questionBarrelPrefab;
-    public GameObject witchPrefab;
-    public GameObject knightPrefab;
+    public List<GameObject> characterMinigamePrefabs = new List<GameObject>();
     public GameObject spawnPoint;
 
     public static int diceSideThrown = 0;
     public static int playerStartWaypoint = 0;
     public static bool qnEncountered = false;
     public static bool levelComplete = false;
+    private static bool teleportationActive = false;
 
     // these variables are for networking
     public static bool currentTurn = true;
@@ -52,9 +52,14 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        // initialize static variables
         diceSideThrown = 0;
         playerStartWaypoint = 0;
+        qnEncountered = false;
+        teleportationActive = false;
         levelComplete = false;
+        currentTurn = true;
+        
         // clear questionBarrels, useful for restart level
         questionBarrels.Clear();
 
@@ -66,7 +71,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
 
         // spawn player and attached player name to gameObject
         // initialize networking variables in player gameObject
-        player = SpawnPlayer(PlayerPrefs.GetString("customChar", "1"));
+        player = SpawnPlayer(int.Parse(PlayerPrefs.GetString("customChar", "0")));
         player.GetComponent<PlayerPathMovement>().moveAllowed = false;
         player.GetComponent<PlayerPathMovement>().isLocalPlayer = true;
         player.GetComponent<PlayerPathMovement>().multiplayer = true;
@@ -102,7 +107,8 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
         {
             // if player lands on a tile greater than the tile listed in the mandatoryQuestionList, 
             // alert player of a surprise question and show question to player
-            if ((playerStartWaypoint + diceSideThrown) >= mandatoryQuestionList[0])
+            if ((playerStartWaypoint + diceSideThrown) >= mandatoryQuestionList[0]
+                && !(playerStartWaypoint + diceSideThrown == 39 || playerStartWaypoint + diceSideThrown == 49))
             {
                 mandatoryQuestionList.RemoveAt(0);
                 qnEncountered = true;
@@ -115,7 +121,6 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
             {
                 if (questionBarrel.transform.position == waypoints[playerStartWaypoint + diceSideThrown].transform.position)
                 {
-                    questionBarrels.Remove(questionBarrel);
                     // if mandatory/surprise question is displayed to player, do not ask question to player
                     // happens if player lands on a barrel and lands on a tile greater than the tile listed in the mandatoryQuestionList
                     if (!qnEncountered)
@@ -130,16 +135,18 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
                 }
             }
 
-            player.GetComponent<PlayerPathMovement>().moveAllowed = false;
+            // Teleport to another waypoint, player lands on a teleportation tile
+            if (playerStartWaypoint + diceSideThrown == 39 || playerStartWaypoint + diceSideThrown == 49)
+            {
+                Debug.Log("teleportationActive");
+                teleportationActive = true;
+                qnEncountered = true;
+                leaveGameButton.SetActive(false);
+                player.GetComponent<PlayerPathMovement>().moveAllowed = false;
+                StrandedQuestionManager.instance.AskQuestion();
+            }
 
-            //Debug.Log(playerStartWaypoint+diceSideThrown);
-            //Teleport to another waypoint
-            /*if(playerStartWaypoint+diceSideThrown == 12){
-                player.GetComponent<PlayerPathMovement>().transform.position = player.GetComponent<PlayerPathMovement>().waypoints[45].transform.position;
-                player.GetComponent<PlayerPathMovement>().waypointIndex = 45;
-                player.GetComponent<PlayerPathMovement>().waypointIndex +=1;
-                MovePlayer();
-            }*/
+            player.GetComponent<PlayerPathMovement>().moveAllowed = false;
 
             // if player is not answering a question, alert network manager that the player has ended his/her turn
             if (!qnEncountered)
@@ -148,7 +155,8 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
                 leaveGameButton.SetActive(true);
                 currentTurn = false;
                 dice.SetActive(false);
-                playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
+                if (!teleportationActive)
+                    playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
                 NetworkManager.instance.GetComponent<NetworkManager>().CommandEndTurn();
             }
         }
@@ -172,6 +180,30 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         surpriseQuestionPanel.SetActive(false);
         StrandedQuestionManager.instance.AskQuestion();
+    }
+
+    /// <summary>
+    /// Teleport the player to another teleportation located ahead of the player if the player answers the question correctly
+    /// Teleport the player to another teleportation located before the player if the player answers the question wrongly
+    /// </summary>
+    /// <param name="correct"></param>
+    public void TeleportPlayer(bool correct)
+    {
+        if (correct && playerStartWaypoint == 39 && teleportationActive)
+        {
+            Debug.Log("teleported");
+            player.GetComponent<PlayerPathMovement>().transform.position = player.GetComponent<PlayerPathMovement>().waypoints[49].transform.position;
+            player.GetComponent<PlayerPathMovement>().waypointIndex = 50;
+            playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
+        }
+        else if (!correct && playerStartWaypoint == 49 && teleportationActive)
+        {
+            Debug.Log("teleported");
+            player.GetComponent<PlayerPathMovement>().transform.position = player.GetComponent<PlayerPathMovement>().waypoints[39].transform.position;
+            player.GetComponent<PlayerPathMovement>().waypointIndex = 40;
+            playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
+        }
+        teleportationActive = false;
     }
 
     /// <summary>
@@ -240,15 +272,14 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
 
             int rndInt = UnityEngine.Random.Range(i, i + spacesBetweenBarrels);
             // exclude question barrel that is located at the teleportation tile
-            //if (!(rndInt == 39 || rndInt == 49))
-            //{
+            if (!(rndInt == 39 || rndInt == 49))
+            {
                 GameObject questionBarrelClone = Instantiate(questionBarrelPrefab,
                     waypoints[rndInt].transform.position,
                     Quaternion.Euler(0, 0, 0));
                 questionBarrels.Add(questionBarrelClone);
                 questionBarrelLocations.Add(rndInt);
-            //}
-            //Debug.Log(rndInt);
+            }
         }
         // alert network manager to broadcast to other players that the minigame has started
         NetworkManager.instance.GetComponent<NetworkManager>().CommandMinigameStart(questionBarrelLocations);
@@ -292,24 +323,11 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
     /// </summary>
     /// <param name="selectedPlayer"></param>
     /// <returns></returns>
-    private GameObject SpawnPlayer(string selectedPlayer)
+    private GameObject SpawnPlayer(int customChar)
     {
-        switch (selectedPlayer)
-        {
-            case "1":
-                return Instantiate(witchPrefab,
-                spawnPoint.transform.position,
-                Quaternion.Euler(0, 0, 0)) as GameObject;
-            //break;
-            case "2":
-                return Instantiate(knightPrefab,
-                spawnPoint.transform.position,
-                Quaternion.Euler(0, 0, 0)) as GameObject;
-            //break;
-            default:
-                return null;
-                //break;
-        }
+        return Instantiate(characterMinigamePrefabs[customChar],
+        spawnPoint.transform.position,
+        Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     /// <summary>

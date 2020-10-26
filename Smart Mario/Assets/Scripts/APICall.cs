@@ -427,6 +427,26 @@ public class APICall
         LeaderboardManager.instance.GetComponent<LeaderboardManager>().LeaderboardRetrieved(convertedStr);
     }
 
+    /// <summary>
+    ///  Creates an IEnumerator for coroutines that is used for retrieving student's ranking in a leaderboard via a GET request
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    public IEnumerator StudentLeaderboardRankGetRequest(string url)
+    {
+        UnityEngine.Debug.Log(url);
+        var request = new UnityWebRequest(url, "GET");
+        //byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
+        //request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        //request.SetRequestHeader("Content-Type", "application/json");
+        request.chunkedTransfer = false;
+        yield return request.SendWebRequest();
+        string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        UnityEngine.Debug.Log(convertedStr);
+        LeaderboardManager.instance.GetComponent<LeaderboardManager>().StudentLeaderboardRankRetrieved(convertedStr);
+    }
+
 }
 
 

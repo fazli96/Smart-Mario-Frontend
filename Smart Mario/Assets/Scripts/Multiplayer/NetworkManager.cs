@@ -144,10 +144,7 @@ public class NetworkManager : MonoBehaviour
         roomCapacity = PlayerPrefs.GetInt("roomCapacity", 4);
         roomPassword = PlayerPrefs.GetString("roomPassword", "");
         playerName = PlayerPrefs.GetString("username", "fazli");
-        if (PlayerPrefs.GetString("customChar", "1").Equals("1"))
-            customChar = 0;
-        else
-            customChar = 1;
+        customChar = int.Parse(PlayerPrefs.GetString("customChar", "0"));
         roomID = PlayerPrefs.GetString("roomID", "create");
         minigameSelected = PlayerPrefs.GetString("Minigame Selected", "World 2 Stranded");
         difficultySelected = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
