@@ -24,7 +24,6 @@ public class LobbyManager : MonoBehaviour
     public Dropdown difficultySelectedDropdown;
     public Dropdown levelSelectedDropdown;
 
-    public Text roomIDText;
     public Text roomNameText;
     public Text roomOwnerText;
     public Text roomCapacityText;
@@ -34,6 +33,7 @@ public class LobbyManager : MonoBehaviour
     public Text levelSelectedText;
     public GameObject passwordInputJoinObject;
     public InputField passwordInputJoin;
+    public GameObject playerNameInputJoinObject;
     public InputField playerNameInputJoin;
     public Dropdown roomSelectedDropdown;
     public GameObject joinButton;
@@ -231,6 +231,7 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void GetRooms()
     {
+        rooms.Clear();
         NetworkManager.instance.GetComponent<NetworkManager>().CommandGetRooms();
     }
 
@@ -240,7 +241,6 @@ public class LobbyManager : MonoBehaviour
     public void OnRoomSelectedValueChange()
     {
         int index = roomSelectedDropdown.value;
-        roomIDText.text = "Room ID: " + rooms[index].roomID;
         roomNameText.text = "Room Name: " + rooms[index].roomName;
         roomOwnerText.text = "Room Owner: " + rooms[index].roomOwner;
         roomCapacityText.text = "Room Capacity: " + rooms[index].noOfClients.ToString() + '/' + rooms[index].roomCapacity;
@@ -271,19 +271,17 @@ public class LobbyManager : MonoBehaviour
         {
             foreach (JObject roomObject in roomJArray)
             {
-                Debug.Log("room: " + roomObject);
                 RoomJSON room = RoomJSON.CreateFromJSON(roomObject.ToString());
-                Debug.Log(room.roomName);
+                Debug.Log(room.roomID);
                 if (room.noOfClients < room.roomCapacity)
                 {
                     rooms.Add(room);
-                    roomSelectedDropdown.options.Add(new Dropdown.OptionData() { text = room.roomName });
+                    roomSelectedDropdown.options.Add(new Dropdown.OptionData() { text = "RoomID: " + room.roomID });
                 }
                 
             };
             roomSelectedDropdown.value = 0;
             roomSelectedDropdown.RefreshShownValue();
-            roomIDText.text = "Room ID: " + rooms[0].roomID;
             roomNameText.text = "Room Name: " + rooms[0].roomName;
             roomOwnerText.text = "Room Owner: " + rooms[0].roomOwner;
             roomCapacityText.text = "Room Capacity: " + rooms[0].noOfClients + '/' + rooms[0].roomCapacity;
@@ -300,12 +298,23 @@ public class LobbyManager : MonoBehaviour
             minigameSelectedText.text = "Minigame Selected: " + rooms[0].minigameSelected;
             difficultySelectedText.text = "Difficulty Selected: " + rooms[0].difficultySelected;
             levelSelectedText.text = "Level Selected: " + rooms[0].levelSelected;
+            playerNameInputJoinObject.SetActive(true);
             joinButton.SetActive(true);
             passwordInputJoin.text = "";
         }
         else
         {
-            roomIDText.text = "No rooms available to join";
+            roomSelectedDropdown.options.Clear();
+            roomSelectedDropdown.RefreshShownValue();
+            roomNameText.text = "No rooms available to join";
+            roomOwnerText.text = "";
+            roomCapacityText.text = "";
+            roomPasswordText.text = "";
+            minigameSelectedText.text = "";
+            difficultySelectedText.text = "";
+            levelSelectedText.text = "";
+            playerNameInputJoinObject.SetActive(false);
+            passwordInputJoinObject.SetActive(false);
             joinButton.SetActive(false);
         }
         
