@@ -223,6 +223,7 @@ public class APICall
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
         UnityEngine.Debug.Log(convertedStr);
+        StrandedGameStatus.instance.ResultsSaved(convertedStr);
     }
     /// <summary>
     /// Creates an IEnumerator for coroutines that is used for retrieving best game results of Student via a Get request

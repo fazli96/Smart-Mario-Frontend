@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class WorldManager : MonoBehaviour
 {
     private SceneController scene;
+    public static WorldManager instance;
 
     public List<GameObject> characterPrefabs = new List<GameObject>();
     public List<GameObject> characterClones = new List<GameObject>();
@@ -19,6 +20,15 @@ public class WorldManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+
         scene = SceneController.GetSceneController();
         string username = PlayerPrefs.GetString("username", "1");
         int customChar = int.Parse(PlayerPrefs.GetString("customChar", "0"));
