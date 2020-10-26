@@ -5,6 +5,7 @@ using SocketIO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -95,6 +96,7 @@ public class NetworkManager : MonoBehaviour
         socket.On("one player left", OnOnePlayerLeft);
         socket.On("end game", OnEndGame);
         socket.On("player left minigame", OnPlayerLeftMinigame);
+        socket.On("minigame2 start", OnMinigame2Start);
     }
     
     /// <summary>
@@ -118,7 +120,7 @@ public class NetworkManager : MonoBehaviour
                 scene.ToWorld1StrandedMultiplayer();
                 break;
             case "World 1 Matching Cards":
-                //
+                scene.ToWorld1MatchingMultiplayer();
                 break;
             case "World 2 Stranded":
                 scene.ToWorld2StrandedMultiplayer();
@@ -211,6 +213,17 @@ public class NetworkManager : MonoBehaviour
         socket.Emit("disconnect");
     }
 
+
+    public void CommandMinigame2Start()
+    {
+        Debug.Log("Emit minigame2 connect");
+        string data = JsonUtility.ToJson(storedUserJSON);
+        print("emit minigame connect");
+        // send websocket event to server the locations of question barrels initialized by owner
+        socket.Emit("minigame connect", new JSONObject(data));
+        socket.Emit("minigame2 start");
+    }
+
     /// <summary>
     /// This method is called when the owner of the challenge room has finished initializing the minigame selected.
     /// Question barrels initialized are send to other players via the server so that the question barrels locations
@@ -223,6 +236,7 @@ public class NetworkManager : MonoBehaviour
     {
         print("minigame start command");
         StartCoroutine(MinigameStart(questionBarrelLocations));
+
     }
 
     /// <summary>
@@ -320,6 +334,15 @@ public class NetworkManager : MonoBehaviour
             StrandedMultiplayerGameManager.currentTurn = true;
             StrandedMultiplayerGameManager.instance.ShowDice();
         }
+    }
+    void OnMinigame2Start(SocketIOEvent socketIOEvent)
+    {
+        print("minigame2 start");
+        //string data = socketIOEvent.data.ToString();
+        //QuestionBarrelJSON questionBarrelJSON = QuestionBarrelJSON.CreateFromJSON(data);
+        //StartCoroutine(LoadMinigame(questionBarrelJSON.questionBarrelLocations));
+
+        scene.ToWorld1MatchingMultiplayer();
     }
 
     /// <summary>

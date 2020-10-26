@@ -262,21 +262,21 @@ public class APICall
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
         UnityEngine.Debug.Log(convertedStr);
         UnityEngine.Debug.Log("After!");
-        if (GameObject.Find("QuestionManager") != null)
-        {
-            questionManager questionManager = GameObject.Find("QuestionManager").GetComponent<questionManager>();
-            UnityEngine.Debug.Log("Success in finding QuestionManager!");
-            questionManager.QuestionsRetrieved(convertedStr);
-        }
-        else if (GameObject.Find("StrandedQuestionManager") != null)
-        {
-            //StrandedQuestionManager.instance.QuestionsRetrieved(convertedStr);
-            UnityEngine.Debug.Log("Success in finding StrandedQuestionManager!");
-        }
-        else
-        {
-            UnityEngine.Debug.Log("Unable to find questionManager");
-        }
+        //if (GameObject.Find("QuestionManager") != null)
+        //{
+        //    //questionManager questionManager = GameObject.Find("QuestionManager").GetComponent<questionManager>();
+        //    UnityEngine.Debug.Log("Success in finding QuestionManager!");
+        //    //questionManager.QuestionsRetrieved(convertedStr);
+        //}
+        //else if (GameObject.Find("StrandedQuestionManager") != null)
+        //{
+        //    //StrandedQuestionManager.instance.QuestionsRetrieved(convertedStr);
+        //    UnityEngine.Debug.Log("Success in finding StrandedQuestionManager!");
+        //}
+        //else
+        //{
+        //    UnityEngine.Debug.Log("Unable to find questionManager");
+        //}
     }
 
     /// <summary>

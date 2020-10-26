@@ -1223,7 +1223,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1323600327}
   m_HandleRect: {fileID: 1323600326}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4477,7 +4477,9 @@ MonoBehaviour:
   surpriseQuestionPanel: {fileID: 278695142}
   leaveGameButton: {fileID: 2010471725}
   questionBarrelPrefab: {fileID: 5183404774013658388, guid: 244a064954902894b9b8b1a315f4c77b, type: 3}
-  characterMinigamePrefabs: []
+  characterMinigamePrefabs:
+  - {fileID: 7972777223144208055, guid: 1775b9ae5f8be084396d091f30b486c0, type: 3}
+  - {fileID: 4304709940781758529, guid: 3a98fe36f7506aa40b3ebb2a4d11a593, type: 3}
   spawnPoint: {fileID: 1447847010}
 --- !u!4 &683767839
 Transform:

@@ -244,6 +244,14 @@ public class SceneController : MonoBehaviour
     }
 
     /// <summary>
+    /// This is to load the multiplayer World 1 Stranded minigame and display it on the screen
+    /// </summary>
+    public void ToWorld1MatchingMultiplayer()
+    {
+        SceneManager.LoadScene("World1MatchingMultiplayer");
+    }
+
+    /// <summary>
     /// This is to load the multiplayer World 2 Stranded minigame and display it on the screen
     /// </summary>
     public void ToWorld2StrandedMultiplayer()

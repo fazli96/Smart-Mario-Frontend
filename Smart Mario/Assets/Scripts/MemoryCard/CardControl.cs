@@ -23,28 +23,57 @@ public class CardControl : MonoBehaviour
     /// </summary>
     public void OnMouseDown()       //detecting mouseclick
     {
-        if (matched == false && !cardsManager.GetComponent<CardsManager>().faceindexes.Contains(faceIndex)  && !GameControl.GetComponent<Game2Control>().paused && !GameControl.GetComponent<Game2Control>().disable) //not matched and not flipped up
+        if (matched == false && !cardsManager.GetComponent<CardsManager>().faceindexes.Contains(faceIndex) ) //not matched and not flipped up
         {
-            if (spriteRenderer.sprite == back)    //check if its back of the card
+            if (GameObject.Find("MatchingMultiplayerGameManager") != null && !MatchingMultiplayerGameManager.instance.paused && !MatchingMultiplayerGameManager.instance.disable) 
             {
-                if (GameControl.GetComponent<Game2Control>().TwoCards() == false) //if less than two cards have been flipped up
-                {      
-                    spriteRenderer.sprite = open;               //reveal the inside sprite 
-                    GameControl.GetComponent<Game2Control>().AddVisibleFace(faceIndex,qOrA);   //add the index of the face of this card to arr
-                    matched = GameControl.GetComponent<Game2Control>().CheckMatch();     //check if got match 
-                    if (matched)
+                if (spriteRenderer.sprite == back)    //check if its back of the card
+                {
+                    if (MatchingMultiplayerGameManager.instance.TwoCards() == false) //if less than two cards have been flipped up
                     {
-                        GameControl.GetComponent<Game2Control>().ShowMatch(faceIndex);   //reveal inside treasure
+                        spriteRenderer.sprite = open;               //reveal the inside sprite 
+                        Debug.Log("Face index is " + faceIndex);
+                        MatchingMultiplayerGameManager.instance.AddVisibleFace(faceIndex, qOrA);   //add the index of the face of this card to arr
+                        MatchingMultiplayerGameManager.instance.CheckMatch();     //check if got match 
+                        if (matched)
+                        {
+                            MatchingMultiplayerGameManager.instance.ShowMatch(faceIndex);   //reveal inside treasure
+                        }
+
                     }
-                    
+                }
+                else
+                {
+                    spriteRenderer.sprite = back;   //flip back the card onto backside
+                    MatchingMultiplayerGameManager.instance.RemoveVisibleFace(faceIndex);  //remove the face
+
                 }
             }
-            else
+            else if (!GameControl.GetComponent<Game2Control>().paused && !GameControl.GetComponent<Game2Control>().disable) 
             {
-                spriteRenderer.sprite = back;   //flip back the card onto backside
-                GameControl.GetComponent<Game2Control>().RemoveVisibleFace(faceIndex);  //remove the face
+                if (spriteRenderer.sprite == back)    //check if its back of the card
+                {
+                    if (GameControl.GetComponent<Game2Control>().TwoCards() == false) //if less than two cards have been flipped up
+                    {
+                        spriteRenderer.sprite = open;               //reveal the inside sprite 
+                        Debug.Log("Face index is " + faceIndex);
+                        GameControl.GetComponent<Game2Control>().AddVisibleFace(faceIndex, qOrA);   //add the index of the face of this card to arr
+                        matched = GameControl.GetComponent<Game2Control>().CheckMatch();     //check if got match 
+                        if (matched)
+                        {
+                            GameControl.GetComponent<Game2Control>().ShowMatch(faceIndex);   //reveal inside treasure
+                        }
 
+                    }
+                }
+                else
+                {
+                    spriteRenderer.sprite = back;   //flip back the card onto backside
+                    GameControl.GetComponent<Game2Control>().RemoveVisibleFace(faceIndex);  //remove the face
+
+                }
             }
+                
         }
         
     }

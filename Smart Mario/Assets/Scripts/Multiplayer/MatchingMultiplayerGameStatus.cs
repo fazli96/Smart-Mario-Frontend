@@ -4,7 +4,7 @@ using System.Globalization;
 using UnityEngine;
 using System;
 
-public class MatchingGameStatus : MonoBehaviour
+public class MatchingMultiplayerGameStatus : MonoBehaviour
 {
     //public Text timeText;
     public GameObject timeText;
@@ -12,14 +12,14 @@ public class MatchingGameStatus : MonoBehaviour
     private static float time;
     private static int qnsAttempted;
     private static int qnsAnsweredCorrectly;
-    private bool paused;
+    private bool start;
 
 
     GameObject GameManager;
 
     private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/results";
 
-    public static MatchingGameStatus instance;
+    public static MatchingMultiplayerGameStatus instance;
 
     // Start is called before the first frame update
     void Awake()
@@ -33,26 +33,26 @@ public class MatchingGameStatus : MonoBehaviour
             Destroy(gameObject);
         }
         time = 0;
-        paused = true;
+        start = false;
     }
     void Update()
     {
-        if (!paused)
+        if (start)
         {
             time += Time.deltaTime;
         }
         timeText.GetComponent<UnityEngine.UI.Text>().text = "Time : " + time.ToString("F2");
     }
-    public void Pause(bool p)
+    public void StartGame()
     {
-        paused = p;
+        start = true;
     }
 
     public void Initialize()
     {
         qnsAttempted = 0;
         qnsAnsweredCorrectly = 0;
-        GameManager = GameObject.Find("GameManager");
+        //GameManager = GameObject.Find("GameManager");
         Debug.Log("found game manager");
     }
     public void ScoreIncrease()
@@ -68,7 +68,7 @@ public class MatchingGameStatus : MonoBehaviour
     }
     public void WinLevel()
     {
-        paused = true;
+        start = false;
         ComputeResults();
     }
     private void ComputeResults()
@@ -182,7 +182,7 @@ public class MatchingGameStatus : MonoBehaviour
                 }
                 break;
         }
-        if (acc < 0.25) 
+        if (acc < 0.25)
         {
             accScore = 1500;
         }
@@ -197,13 +197,14 @@ public class MatchingGameStatus : MonoBehaviour
         else accScore = 3000;
 
         Debug.Log("Time Score is " + timeScore + " and acc score is " + accScore);
-        GameManager.GetComponent<Game2Control>().Win(time, qnsAnsweredCorrectly, qnsAttempted, accScore, timeScore);
+        //GameManager.GetComponent<Game2Control>().Win(time, qnsAnsweredCorrectly, qnsAttempted, accScore, timeScore);
+        MatchingMultiplayerGameManager.instance.Win(time, qnsAnsweredCorrectly, qnsAttempted, accScore, timeScore);
         SaveResults(difficulty, currentLevel, (accScore + timeScore));
-        //UI manager instantiate stars, need to have foreach loop in UI manager 
+
     }
 
     //code to put results into DB...
-    private void SaveResults( string difficulty, int currentLevel, int score)
+    private void SaveResults(string difficulty, int currentLevel, int score)
     {
         int worldSelected = PlayerPrefs.GetInt("World", 1);
         string minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Matching Cards");
@@ -224,9 +225,9 @@ public class MatchingGameStatus : MonoBehaviour
             else
                 minigameId = 4; //minigame 1 is 4 for matching cards world 2
         }
-        time =(float) Math.Round(time, 3);
+        time = (float)Math.Round(time, 3);
         APICall apiCall = APICall.getAPICall();
-        Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + score + qnsAttempted + ", " + qnsAnsweredCorrectly + ", " +  time);
+        Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + score + qnsAttempted + ", " + qnsAnsweredCorrectly + ", " + time);
         Results result = new Results(studentId, minigameId, difficulty, currentLevel, score, qnsAttempted, qnsAnsweredCorrectly, time);
         string bodyJsonString = apiCall.saveToJSONString(result);
         StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));

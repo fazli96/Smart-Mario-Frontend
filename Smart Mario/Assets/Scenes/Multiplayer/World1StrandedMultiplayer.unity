@@ -47370,7 +47370,9 @@ MonoBehaviour:
   surpriseQuestionPanel: {fileID: 1631835352}
   leaveGameButton: {fileID: 1404234295}
   questionBarrelPrefab: {fileID: 5183404774013658388, guid: 244a064954902894b9b8b1a315f4c77b, type: 3}
-  characterMinigamePrefabs: []
+  characterMinigamePrefabs:
+  - {fileID: 7972777223144208055, guid: 1775b9ae5f8be084396d091f30b486c0, type: 3}
+  - {fileID: 4304709940781758529, guid: 3a98fe36f7506aa40b3ebb2a4d11a593, type: 3}
   spawnPoint: {fileID: 1661486462}
 --- !u!4 &1872164038
 Transform:
