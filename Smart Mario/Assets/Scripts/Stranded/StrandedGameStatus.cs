@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +20,9 @@ public class StrandedGameStatus : MonoBehaviour
     public Text gameOverQnsAnsweredCorrectlyText;
     public Text completeLvlQnsAttemptedText;
     public Text completeLvlQnsAnsweredCorrectlyText;
+    public GameObject saveResultsPanel, completeLvlPanel;
+    public GameObject retryButton, ignoreButton;
+    public Text saveStatusMsg;
 
     private static int targetScore;
     private static int currentScore;
@@ -132,8 +137,13 @@ public class StrandedGameStatus : MonoBehaviour
     /// <summary>
     /// This is to save the results into the database
     /// </summary>
-    private void SaveResults()
+    public void SaveResults()
     {
+        saveResultsPanel.SetActive(true);
+        saveStatusMsg.text = "Saving results...";
+        retryButton.SetActive(false);
+        ignoreButton.SetActive(false);
+
         int worldSelected = PlayerPrefs.GetInt("World", 1);
         string minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Stranded");
         string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
@@ -161,6 +171,37 @@ public class StrandedGameStatus : MonoBehaviour
         Results result = new Results(studentId, minigameId, difficulty, currentLevel, currentScore, qnsAttempted, qnsAnsweredCorrectly);
         string bodyJsonString = apiCall.saveToJSONString(result);
         StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));
+    }
+
+    public void ResultsSaved(string result)
+    {   
+        if (result == null)
+        {
+            ShowResultsNotSaved();
+        }
+        else
+        {
+            var data = (JObject)JsonConvert.DeserializeObject(result);
+            if (data["success"].ToString() == "True")
+            {
+                saveResultsPanel.SetActive(false);
+                completeLvlPanel.SetActive(true);
+            }
+
+            else
+            {
+                ShowResultsNotSaved();
+            }
+        }
+    }
+
+    private void ShowResultsNotSaved()
+    {
+        completeLvlPanel.SetActive(false);
+        saveResultsPanel.SetActive(true);
+        saveStatusMsg.text = "Unable to save results.\nClick 'retry' to try again\n\nNote: Clicking Ignore will not save your results";
+        retryButton.SetActive(true);
+        ignoreButton.SetActive(true);
     }
 }
 

@@ -48,7 +48,7 @@ public class PlayerPathMovement : MonoBehaviour {
     /// </summary>
     private void Update () {
         // if the player gameobject is the local player, then animate the player based on where the player moves
-        if (isLocalPlayer)
+        if (isLocalPlayer && waypointIndex < waypoints.Count)
         {
             moveH = waypoints[waypointIndex].transform.position.x - transform.position.x;
             moveV = waypoints[waypointIndex].transform.position.y - transform.position.y;

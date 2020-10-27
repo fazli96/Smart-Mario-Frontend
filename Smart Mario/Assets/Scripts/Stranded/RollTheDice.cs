@@ -54,7 +54,7 @@ public class RollTheDice : MonoBehaviour
         // set dice number rolled in game manager
         StrandedGameManager.diceSideThrown = randomDiceSide + 1;
         // for testing
-        //StrandedGameManager.diceSideThrown = 30;
+        //StrandedGameManager.diceSideThrown = 99;
 
         // once dice is rolled, allow player to move from tile to tile based on dice number rolled
         StrandedGameManager.MovePlayer();

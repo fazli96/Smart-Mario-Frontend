@@ -60,7 +60,7 @@ public class StrandedGameManager : MonoBehaviour {
         questionBarrels.Clear();
 
         // the last number 999 is to ensure that the mandatory question list is never null
-        mandatoryQuestionList = new List<int>() { 30, 60, 90, 999 };
+        mandatoryQuestionList = new List<int>() {30, 60, 90, 999};
 
         completeLevelPanel.gameObject.SetActive(false);
         gameOverPanel.gameObject.SetActive(false);
@@ -87,7 +87,7 @@ public class StrandedGameManager : MonoBehaviour {
     {
         // when player has reached the destination based on dice number rolled
         if (player.GetComponent<PlayerPathMovement>().waypointIndex > 
-            playerStartWaypoint + diceSideThrown)
+            playerStartWaypoint + diceSideThrown && !levelComplete)
         {
             // if player lands on a tile greater than the tile listed in the mandatoryQuestionList and not a teleportation tile, 
             // alert player of a surprise question and show question to player
@@ -137,8 +137,8 @@ public class StrandedGameManager : MonoBehaviour {
         {
             levelComplete = true;
             player.GetComponent<PlayerPathMovement>().moveAllowed = false;
-            if (StrandedGameStatus.instance.WinLevel())
-                completeLevelPanel.gameObject.SetActive(true);
+            if (StrandedGameStatus.instance.WinLevel()) { }
+                //completeLevelPanel.gameObject.SetActive(true);
             else
                 gameOverPanel.gameObject.SetActive(true);
         }
