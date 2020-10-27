@@ -34,7 +34,7 @@ public class CardControl : MonoBehaviour
                         spriteRenderer.sprite = open;               //reveal the inside sprite 
                         Debug.Log("Face index is " + faceIndex);
                         MatchingMultiplayerGameManager.instance.AddVisibleFace(faceIndex, qOrA);   //add the index of the face of this card to arr
-                        MatchingMultiplayerGameManager.instance.CheckMatch();     //check if got match 
+                        matched = MatchingMultiplayerGameManager.instance.CheckMatch();     //check if got match 
                         if (matched)
                         {
                             MatchingMultiplayerGameManager.instance.ShowMatch(faceIndex);   //reveal inside treasure

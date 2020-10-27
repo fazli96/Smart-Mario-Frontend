@@ -25,6 +25,9 @@ public class Game2Control : MonoBehaviour
     public GameObject accScore;
     public GameObject backButton;
     public GameObject rulesText;
+    public GameObject total;
+    public GameObject totalScore;
+    public GameObject finishPanel;
 
     public static Game2Control instance;
 
@@ -49,13 +52,14 @@ public class Game2Control : MonoBehaviour
     }
     void Start()
     {
-        finishText.SetActive(false);
-        overlay.SetActive(false);
-        qns.SetActive(false);
-        time.SetActive(false);
-        timeScore.SetActive(false);
-        accScore.SetActive(false);
-        backButton.SetActive(false);
+        finishPanel.SetActive(false);
+        //finishText.SetActive(false);
+        //overlay.SetActive(false);
+        //qns.SetActive(false);
+        //time.SetActive(false);
+        //timeScore.SetActive(false);
+        //accScore.SetActive(false);
+        //backButton.SetActive(false);
 
         scoreValue = cardManager.GetComponent<CardsManager>().pairs;
         paused = true;
@@ -198,17 +202,19 @@ public class Game2Control : MonoBehaviour
         time.GetComponent<UnityEngine.UI.Text>().text = "Time taken: " + t.ToString("F2")+ " sec";
         timeScore.GetComponent<UnityEngine.UI.Text>().text =  timeSc.ToString()+ " Points";
         accScore.GetComponent<UnityEngine.UI.Text>().text = accSc.ToString()+ " Points";
+        totalScore.GetComponent<UnityEngine.UI.Text>().text = (timeSc + accSc).ToString() + " Points";
 
 
-        finishText.SetActive(true);
-        overlay.SetActive(true);
-        time.SetActive(true);
-        qns.SetActive(true);
-        timeScore.SetActive(true);
-        accScore.SetActive(true);
-        backButton.SetActive(true);
+        finishPanel.SetActive(true);
+        //finishtext.setactive(true);
+        //overlay.setactive(true);
+        //time.setactive(true);
+        //qns.setactive(true);
+        //timescore.setactive(true);
+        //accscore.setactive(true);
+        //backbutton.setactive(true);
 
     }
-    
+
 
 }

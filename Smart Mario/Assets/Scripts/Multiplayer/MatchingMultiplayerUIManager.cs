@@ -11,7 +11,6 @@ public class MatchingMultiplayerUIManager : MonoBehaviour
 {
     public Text matchText;
     Canvas canvas;
-    public GameObject rulesPanel;
     private SceneController scene;
     GameObject GameManager;
 

@@ -52,27 +52,27 @@ public class questionManager : MonoBehaviour
        questionList = new List<Question>();
 
        string difficultyStr = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
-
+        bool world = (PlayerPrefs.GetString("Minigame Selected", "World 1 Matching Cards") == "World 1 Matching Cards");
         // initialize question list based on world and difficulty
         switch (difficultyStr)
         {
             case "Easy":
                 //difficulty = 1;
-                if (PlayerPrefs.GetInt("World", 1) == 1)
+                if (world)
                     questionList = QuestionList.GetShortTheoryQuestionListEasy();
                 else
-                    questionList = QuestionList.GetMcqCodeQuestionListEasy();
+                    questionList = QuestionList.GetShortCodeQuestionListEasy();
                 break;
             case "Medium":
                 //difficulty = 2;
-                if (PlayerPrefs.GetInt("World", 1) == 1)
+                if (world)
                     questionList = QuestionList.GetShortTheoryQuestionListMedium();
                 else
                     questionList = QuestionList.GetShortCodeQuestionListMedium();
                 break;
             case "Hard":
                 //difficulty = 3;
-                if (PlayerPrefs.GetInt("World", 1) == 1)
+                if (world)
                     questionList = QuestionList.GetShortTheoryQuestionListHard();
                 else
                     questionList = QuestionList.GetShortCodeQuestionListHard();

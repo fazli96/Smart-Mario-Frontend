@@ -176,7 +176,7 @@ public class MatchingGameStatus : MonoBehaviour
                 }
                 else if (difficulty == "Hard")
                 {
-                    if (time < 1120) { timeScore = 3500; }
+                    if (time < 110) { timeScore = 3500; }
                     else if (time < 135) { timeScore = 3000; }
                     else { timeScore = 2500; }
                 }

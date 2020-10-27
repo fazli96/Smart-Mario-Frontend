@@ -53,18 +53,18 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
         qnsAttempted = 0;
         qnsAnsweredCorrectly = 0;
         //GameManager = GameObject.Find("GameManager");
-        Debug.Log("found game manager");
+        Debug.LogError("found game manager");
     }
     public void ScoreIncrease()
     {
         qnsAnsweredCorrectly += 1;
         qnsAttempted += 1;
-        Debug.Log("state : " + qnsAttempted + " " + qnsAnsweredCorrectly);
+        Debug.LogError("state : " + qnsAttempted + " " + qnsAnsweredCorrectly);
     }
     public void QnsAttemptIncrease()
     {
         qnsAttempted += 1;
-        Debug.Log("state : " + qnsAttempted + " " + qnsAnsweredCorrectly);
+        Debug.LogError("state : " + qnsAttempted + " " + qnsAnsweredCorrectly);
     }
     public void WinLevel()
     {
@@ -75,11 +75,12 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
     {
         string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
         int currentLevel = PlayerPrefs.GetInt("MinigameLevel", 1);
-        int timeScore = 0;
+        //int timeScore = 0;
+        int qnsScore = 0;
         int accScore = 0;
-        float acc = (float)qnsAnsweredCorrectly / (float)qnsAttempted;
+        float acc = qnsAttempted == 0 ? 0 : (float)qnsAnsweredCorrectly / (float)qnsAttempted;
 
-        switch (currentLevel)
+        /*switch (currentLevel)
         {
             case 1:
                 if (difficulty == "Easy")
@@ -181,26 +182,31 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
                     else { timeScore = 2500; }
                 }
                 break;
+        }*/
+        if (acc == 0)
+        {
+            accScore = 0;
         }
-        if (acc < 0.25)
+        else if (acc <= 0.25)
+        {
+            accScore = 500;
+        }
+        else if (acc <= 0.5)
+        {
+            accScore = 1000;
+        }
+        else if (acc <= 0.75)
         {
             accScore = 1500;
         }
-        else if (acc < 0.5)
-        {
-            accScore = 2000;
-        }
-        else if (acc < 0.75)
-        {
-            accScore = 2500;
-        }
-        else accScore = 3000;
+        else accScore = 2000;
 
-        Debug.Log("Time Score is " + timeScore + " and acc score is " + accScore);
-        //GameManager.GetComponent<Game2Control>().Win(time, qnsAnsweredCorrectly, qnsAttempted, accScore, timeScore);
-        MatchingMultiplayerGameManager.instance.Win(time, qnsAnsweredCorrectly, qnsAttempted, accScore, timeScore);
-        SaveResults(difficulty, currentLevel, (accScore + timeScore));
+        qnsScore = 200 * qnsAnsweredCorrectly;
 
+        //Debug.Log("Time Score is " + timeScore + " and acc score is " + accScore);
+        Debug.LogError("Acc Score is " + accScore + " and qns score is " + qnsScore);
+        MatchingMultiplayerGameManager.instance.Win(time, qnsAnsweredCorrectly, qnsAttempted, accScore, qnsScore);
+        SaveResults(difficulty, currentLevel, (accScore + qnsScore));
     }
 
     //code to put results into DB...

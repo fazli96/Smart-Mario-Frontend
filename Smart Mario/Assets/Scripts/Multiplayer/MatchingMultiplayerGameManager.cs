@@ -21,11 +21,19 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
     public GameObject overlay;
     public GameObject time;
     public GameObject qns;
-    public GameObject timeScore;
+    public GameObject acc;
+    public GameObject qnsScore;
     public GameObject accScore;
     public GameObject backButton;
     public GameObject rulesText;
+    public GameObject rulesPanel;
     public GameObject score;
+    public GameObject okayButton;
+    public GameObject countdownTimer;
+    public GameObject leaveGameButton;
+    public GameObject totalScore;
+    public GameObject total;
+    public GameObject finishPanel;
 
     public static MatchingMultiplayerGameManager instance;
 
@@ -50,15 +58,18 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
     }
     void Start()
     {
-        finishText.SetActive(false);
-        overlay.SetActive(false);
-        qns.SetActive(false);
-        time.SetActive(false);
-        timeScore.SetActive(false);
-        accScore.SetActive(false);
-        backButton.SetActive(false);
+        finishPanel.SetActive(false);
+        //finishText.SetActive(false);
+        //overlay.SetActive(false);
+        //qns.SetActive(false);
+        //time.SetActive(false);
+        //qnsScore.SetActive(false);
+        //accScore.SetActive(false);
+        //backButton.SetActive(false);
+        countdownTimer.SetActive(false);
 
         scoreValue = cardManager.GetComponent<CardsManager>().pairs;
+        score.GetComponent<UnityEngine.UI.Text>().text = "Pairs left: " + scoreValue;
         paused = true;
         disable = false;
         visibleFaces[0] = -1;
@@ -75,17 +86,77 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         }
         if (NetworkManager.isOwner)
         {
+            Debug.LogError("Broadcasted that everyone entered minigame");
+            // alert network manager to broadcast to other players that the minigame has started
+            NetworkManager.instance.GetComponent<NetworkManager>().CommandMinigame2Enter();
+        }
+        else
+        {
+            okayButton.SetActive(false);
+        }
+
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && paused == false)
+        {
+            Debug.LogError("Esc pressed");
+            if (rulesPanel.activeInHierarchy)
+            {
+                rulesPanel.SetActive(false);
+                Debug.LogError("rules panel deactivated");
+            }
+            else
+            {
+                rulesPanel.SetActive(true);
+                Debug.LogError("rules panel activated");
+            }
+        }
+    }
+    public void ButtonClick()
+    {
+        if (NetworkManager.isOwner && paused == true)
+        {
+            changeStartState();
+            okayButton.SetActive(false);
+        }
+    }
+    
+    public void changeStartState()
+    {
+        if (NetworkManager.isOwner)
+        {
+            Debug.LogError("Broadcasted to everyone to start minigame");
+            NetworkManager.instance.GetComponent<NetworkManager>().CommandMinigame2Start();
+        }
+        countdownTimer.SetActive(true);
+        StartCoroutine(Countdown(5));
+        
+    }
+
+    IEnumerator Countdown(int time)
+    {
+        while (time > 0)
+        {
+            yield return new WaitForSeconds(1);
+            time--;
+            countdownTimer.GetComponent<UnityEngine.UI.Text>().text = time.ToString();
+        }
+        countdownTimer.SetActive(false);
+        rulesPanel.SetActive(false);
+        paused = false;
+        MatchingMultiplayerGameStatus.instance.StartGame();
+        Debug.Log("Paused? " + paused);
+    }
+
+    public void StartGame()
+    {
+        if (NetworkManager.isOwner)
+        {
             Debug.LogError("Broadcasted that minigame has started");
             // alert network manager to broadcast to other players that the minigame has started
             NetworkManager.instance.GetComponent<NetworkManager>().CommandMinigame2Start();
         }
-
-    }
-    public void changeStartState()
-    {
-        paused = false;
-        MatchingMultiplayerGameStatus.instance.StartGame();
-        Debug.Log("Paused? " + paused);
     }
     /// <summary>
     /// Checks the state of the game whether two cards have been flipped up
@@ -141,7 +212,8 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
     /// <param name="index"></param>
     public void ShowMatch(int index)
     {
-        canvas.GetComponent<CanvasControl>().ShowMatch();
+        canvas.GetComponent<MatchingMultiplayerUIManager>().ShowMatch();
+        Debug.LogError("Matched a card!");
         score.GetComponent<UnityEngine.UI.Text>().text = "Pairs left: " + scoreValue;
         StartCoroutine(RightCards(index));
     }
@@ -155,10 +227,12 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         cardManager.GetComponent<CardsManager>().Open(index);
         questionManager.GetComponent<questionManager>().hideQuestion(1, true);
         questionManager.GetComponent<questionManager>().hideQuestion(2, true);
+        NetworkManager.instance.GetComponent<NetworkManager>().CommandMatchedCard(scoreValue);
         disable = false;
         if (scoreValue == 0)
         {
-            MatchingGameStatus.instance.WinLevel();
+            NetworkManager.instance.GetComponent<NetworkManager>().CommandEndGame2();
+            MatchingMultiplayerGameStatus.instance.WinLevel();
         }
     }
     /// <summary>
@@ -172,8 +246,8 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
             visibleFaces[0] = -1;
             visibleFaces[1] = -2;
             scoreValue -= 1;
-            MatchingGameStatus.instance.ScoreIncrease();
-            Debug.Log("pairs " + scoreValue);
+            MatchingMultiplayerGameStatus.instance.ScoreIncrease();
+            Debug.LogError("pairs " + scoreValue);
             return true;
         }
         else
@@ -190,7 +264,7 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         Debug.Log(Time.time);
         if (TwoCards())
         {
-            MatchingGameStatus.instance.QnsAttemptIncrease();
+            MatchingMultiplayerGameStatus.instance.QnsAttemptIncrease();
             foreach (int index in visibleFaces)
             {
                 RemoveVisibleFace(index);
@@ -199,23 +273,21 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         }
     }
 
-    public void Win(float t, int correct, int attempt, int accSc, int timeSc)
+    public void Win(float t, int correct, int attempt, int accSc, int qnsSc)
     {
-        float accuracy = ((float)correct / (float)attempt) * 100;
+        paused = true;
+        float accuracy = accSc == 0 ? 0 : ((float)correct / (float)attempt) * 100;
         Debug.Log(t + " " + correct + " " + attempt + " " + accuracy);
-        qns.GetComponent<UnityEngine.UI.Text>().text = "Accuracy: " + accuracy.ToString("F2") + "%";
-        time.GetComponent<UnityEngine.UI.Text>().text = "Time taken: " + t.ToString("F2") + " sec";
-        timeScore.GetComponent<UnityEngine.UI.Text>().text = timeSc.ToString() + " Points";
+        acc.GetComponent<UnityEngine.UI.Text>().text = "Accuracy: " + accuracy.ToString("F2") + "%";
+        time.GetComponent<UnityEngine.UI.Text>().text = "Time Taken: " + t.ToString("F2") + " sec";
+        qns.GetComponent<UnityEngine.UI.Text>().text = "Matched Cards: " + correct.ToString();
+        qnsScore.GetComponent<UnityEngine.UI.Text>().text = qnsSc.ToString() + " Points";
         accScore.GetComponent<UnityEngine.UI.Text>().text = accSc.ToString() + " Points";
+        totalScore.GetComponent<UnityEngine.UI.Text>().text = (qnsSc + accSc).ToString() + " Points";
 
 
-        finishText.SetActive(true);
-        overlay.SetActive(true);
-        time.SetActive(true);
-        qns.SetActive(true);
-        timeScore.SetActive(true);
-        accScore.SetActive(true);
-        backButton.SetActive(true);
+        leaveGameButton.SetActive(false);
+        finishPanel.SetActive(true);
 
     }
 

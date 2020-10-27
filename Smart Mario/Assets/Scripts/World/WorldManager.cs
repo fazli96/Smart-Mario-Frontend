@@ -31,7 +31,9 @@ public class WorldManager : MonoBehaviour
         Text playerName = CloneTransform1.GetComponent<Text>();
         playerName.text = username;
         characterClones[customChar].name = username;
-        
+
+        Time.timeScale = 1;
+
     }
 
     /// <summary>
@@ -47,7 +49,13 @@ public class WorldManager : MonoBehaviour
     /// </summary>
     public void ToMinigame2DifficultySelection()
     {
-        PlayerPrefs.SetString("Minigame Selected", "Matching Cards");
+        //PlayerPrefs.SetString("Minigame Selected", "Matching Cards");
+        if (PlayerPrefs.GetInt("World", 1) == 1)
+        {
+            PlayerPrefs.SetString("Minigame Selected", "World 1 Matching Cards");
+        }
+        else
+            PlayerPrefs.SetString("Minigame Selected", "World 2 Matching Cards");
         scene.ToDifficultySelection();
     }
     /// <summary>

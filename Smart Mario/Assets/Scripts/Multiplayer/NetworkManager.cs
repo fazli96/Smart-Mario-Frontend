@@ -96,7 +96,9 @@ public class NetworkManager : MonoBehaviour
         socket.On("one player left", OnOnePlayerLeft);
         socket.On("end game", OnEndGame);
         socket.On("player left minigame", OnPlayerLeftMinigame);
+        socket.On("minigame2 enter", OnMinigame2Enter);
         socket.On("minigame2 start", OnMinigame2Start);
+        socket.On("end game2", OnEndGame2);
     }
     
     /// <summary>
@@ -126,7 +128,7 @@ public class NetworkManager : MonoBehaviour
                 scene.ToWorld2StrandedMultiplayer();
                 break;
             case "World 2 Matching Cards":
-                //
+                scene.ToWorld2MatchingMultiplayer();
                 break;
             default:
                 break;
@@ -214,13 +216,20 @@ public class NetworkManager : MonoBehaviour
     }
 
 
-    public void CommandMinigame2Start()
+    public void CommandMinigame2Enter()
     {
         Debug.Log("Emit minigame2 connect");
         string data = JsonUtility.ToJson(storedUserJSON);
         print("emit minigame connect");
         // send websocket event to server the locations of question barrels initialized by owner
         socket.Emit("minigame connect", new JSONObject(data));
+        socket.Emit("minigame2 enter");
+    }
+
+    public void CommandMinigame2Start()
+    {
+        Debug.Log("Emit minigame2 start");
+        //
         socket.Emit("minigame2 start");
     }
 
@@ -314,6 +323,19 @@ public class NetworkManager : MonoBehaviour
         // send websocket event to server to indicate that the player has reached the ending hence has completed the level
         socket.Emit("end game");
     }
+    public void CommandEndGame2()
+    {
+        print("end game");
+        // send websocket event to server to indicate that the player has reached the ending hence has completed the level
+        socket.Emit("end game2");
+    }
+
+    public void CommandMatchedCard(int pairsLeft)
+    {
+        print("Matched a card");
+        string data = JsonUtility.ToJson(new OneIntVariableJSON(pairsLeft));
+        socket.Emit("matched card", new JSONObject(data));
+    }
 
     #endregion
 
@@ -335,14 +357,20 @@ public class NetworkManager : MonoBehaviour
             StrandedMultiplayerGameManager.instance.ShowDice();
         }
     }
+    void OnMinigame2Enter(SocketIOEvent socketIOEvent)
+    {
+        print("minigame2 enter");
+        if (PlayerPrefs.GetString("Minigame Selected", "World 1 Matching Cards")=="World 1 Matching Cards")
+            scene.ToWorld1MatchingMultiplayer();
+        else
+            scene.ToWorld2MatchingMultiplayer();
+    }
     void OnMinigame2Start(SocketIOEvent socketIOEvent)
     {
-        print("minigame2 start");
-        //string data = socketIOEvent.data.ToString();
-        //QuestionBarrelJSON questionBarrelJSON = QuestionBarrelJSON.CreateFromJSON(data);
-        //StartCoroutine(LoadMinigame(questionBarrelJSON.questionBarrelLocations));
+        print("minigame2 started");
+        //scene.ToWorld1MatchingMultiplayer();
+        MatchingMultiplayerGameManager.instance.changeStartState();
 
-        scene.ToWorld1MatchingMultiplayer();
     }
 
     /// <summary>
@@ -365,7 +393,10 @@ public class NetworkManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator LoadMinigame(List<int> questionBarrelLocations)
     {
-        scene.ToWorld1StrandedMultiplayer();
+        if (PlayerPrefs.GetString("Minigame Selected", "World 1 Stranded")== "World 1 Stranded")
+            scene.ToWorld1StrandedMultiplayer();
+        else
+            scene.ToWorld2StrandedMultiplayer();
 
         while (GameObject.Find("StrandedMultiplayerGameManager") == null)
         {
@@ -473,8 +504,8 @@ public class NetworkManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator UpdateMessage(string message)
     {
-        ChallengeManager.instance.SendToMessageLog(message);
         yield return new WaitForSeconds(0.1f);
+        ChallengeManager.instance.SendToMessageLog(message);
     }
 
     /// <summary>
@@ -510,6 +541,12 @@ public class NetworkManager : MonoBehaviour
         print("end game");
         StrandedMultiplayerGameManager.instance.GameComplete();
 
+    }
+
+    void OnEndGame2(SocketIOEvent socketIOEvent)
+    {
+        print("end game");
+        MatchingMultiplayerGameStatus.instance.WinLevel();
     }
 
     /// <summary>
@@ -695,6 +732,7 @@ public class NetworkManager : MonoBehaviour
         else
             LobbyManager.instance.GetComponent<LobbyManager>().WrongRoomPassword();
     }
+    
 
     #endregion
 
