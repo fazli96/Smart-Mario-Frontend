@@ -167,12 +167,16 @@ public class StrandedGameStatus : MonoBehaviour
         }
 
         APICall apiCall = APICall.getAPICall();
-        Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + currentScore + ", " + qnsAttempted + ", " + qnsAnsweredCorrectly);
         Results result = new Results(studentId, minigameId, difficulty, currentLevel, currentScore, qnsAttempted, qnsAnsweredCorrectly);
         string bodyJsonString = apiCall.saveToJSONString(result);
+        Debug.Log(bodyJsonString);
         StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));
     }
 
+    /// <summary>
+    /// This is to check whether the results is saved to database
+    /// </summary>
+    /// <param name="result"></param>
     public void ResultsSaved(string result)
     {   
         if (result == null)
@@ -195,6 +199,9 @@ public class StrandedGameStatus : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Display warning message to retry or ignore if saving results failed
+    /// </summary>
     private void ShowResultsNotSaved()
     {
         completeLvlPanel.SetActive(false);

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +12,10 @@ using UnityEngine.UI;
 /// </summary>
 public class StrandedMultiplayerGameStatus : MonoBehaviour
 {
+    public GameObject saveResultsPanel, completeLvlPanel;
+    public GameObject retryButton, ignoreButton;
+    public Text saveStatusMsg;
+
     public Text scoreText1;
     public Text scoreText2;
     public Text scoreText3;
@@ -238,7 +244,7 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
     /// The Minigame Results panel will be displayed
     /// </summary>
     /// <returns></returns>
-    public bool GameComplete()
+    public void GameComplete()
     {
         ResultsScoreText1.text = "Your Score: " + currentScore1;
         QnsAttemptedText1.text = "Your Qns Attempted: " + qnsAttempted1;
@@ -268,7 +274,6 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
             QnsCorrectText4.text = players[0] + "'s Qns Answered Correctly: " + qnsAnsweredCorrectly4;
         }
         SaveResults();
-        return true;
     }
 
     /// <summary>
@@ -310,9 +315,14 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
     /// <summary>
     /// This is to save the results into the database
     /// </summary>
-    private void SaveResults()
+    public void SaveResults()
     {
-        int minigameId;
+        saveResultsPanel.SetActive(true);
+        saveStatusMsg.text = "Saving results...";
+        retryButton.SetActive(false);
+        ignoreButton.SetActive(false);
+
+        int minigameId = 0;
         switch (PlayerPrefs.GetString("Minigame Selected", "World 1 Stranded"))
         {
             case "World 1 Stranded":
@@ -328,7 +338,6 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
                 minigameId = 4;
                 break;
             default:
-                minigameId = 0;
                 break;
         }
 
@@ -342,6 +351,44 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
         //Results result = new Results("1", 1, "Easy", 1, 50, 1, 1);
         string bodyJsonString = apiCall.saveToJSONString(result);
         StartCoroutine(apiCall.ResultsPutRequest(url, bodyJsonString));
+    }
+
+    /// <summary>
+    /// This is to check whether the results is saved to database
+    /// </summary>
+    /// <param name="result"></param>
+    public void ResultsSaved(string result)
+    {
+        if (result == null)
+        {
+            ShowResultsNotSaved();
+        }
+        else
+        {
+            var data = (JObject)JsonConvert.DeserializeObject(result);
+            if (data["success"].ToString() == "True")
+            {
+                saveResultsPanel.SetActive(false);
+                completeLvlPanel.SetActive(true);
+            }
+
+            else
+            {
+                ShowResultsNotSaved();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Display warning message to retry or ignore if saving results failed
+    /// </summary>
+    private void ShowResultsNotSaved()
+    {
+        completeLvlPanel.SetActive(false);
+        saveResultsPanel.SetActive(true);
+        saveStatusMsg.text = "Unable to save results.\nClick 'retry' to try again\n\nNote: Clicking Ignore will not save your results";
+        retryButton.SetActive(true);
+        ignoreButton.SetActive(true);
     }
 }
 

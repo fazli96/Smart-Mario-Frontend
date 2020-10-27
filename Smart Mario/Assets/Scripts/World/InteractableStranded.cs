@@ -7,7 +7,7 @@ public class InteractableStranded : InteractableObject
 {
     /// <summary>
     /// This method is to set the display text on screen for Stranded minigame
-    /// It overrides the abstract method defined in the interface
+    /// It overrides the abstract method defined in the abstract class
     /// </summary>
     /// <returns></returns>
     public override string DisplayText()
@@ -16,8 +16,9 @@ public class InteractableStranded : InteractableObject
     }
 
     /// <summary>
-    /// This method is to allow player to navigate to difficulty selection screen for Stranded minigame 
-    /// It overrides the abstract method defined in the interface
+    /// This method is to allow player to navigate to 
+    /// difficulty selection screen for Stranded minigame 
+    /// It overrides the abstract method defined in the abstract class
     /// </summary>
     /// <returns></returns>
     public override void Action()

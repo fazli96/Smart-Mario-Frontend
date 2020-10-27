@@ -215,10 +215,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
         leaveGameButton.SetActive(false);
         HideDice();
         player.GetComponent<PlayerPathMovement>().moveAllowed = false;
-        if (StrandedMultiplayerGameStatus.instance.GameComplete())
-        {
-            resultsPanel.gameObject.SetActive(true);
-        }
+        StrandedMultiplayerGameStatus.instance.GameComplete();
     }
 
     /// <summary>

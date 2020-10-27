@@ -25,6 +25,7 @@ public class Results
     /// <param name="score"></param>
     /// <param name="questions_attempted"></param>
     /// <param name="questions_correct"></param>
+    /// <param name="time_taken"></param>
     public Results(string studentId, int minigameId, string difficulty, int level, int score, int questions_attempted, int questions_correct, float time_taken = 0)
     {
         this.studentId = studentId;

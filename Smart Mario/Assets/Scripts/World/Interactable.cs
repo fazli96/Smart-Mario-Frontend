@@ -28,6 +28,7 @@ public class Interactable : MonoBehaviour
 
     /// <summary>
     /// When player is near the interactable object on the map,
+    /// display interaction text and 
     /// allow player to do some action by pressing the E key 
     /// </summary>
     void Update()
