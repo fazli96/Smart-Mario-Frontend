@@ -30,7 +30,7 @@ public class LevelSelectionManager : MonoBehaviour
         worldSelected = PlayerPrefs.GetInt("World", 1);
         minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Stranded");
         difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
-        minigameNameText.text = "Welcome to " + minigameSelected + "!";
+        minigameNameText.text = "Welcome to World" + PlayerPrefs.GetInt("World") + PlayerPrefs.GetString("Minigame Selected") + "!";
 
         /*Debug.Log("World"+ worldSelected + minigameSelected + "HighestLevelCompleted" + difficulty);
         switch (PlayerPrefs.GetInt("World1"+minigameSelected+"HighestLevelCompleted"+difficulty, 2))

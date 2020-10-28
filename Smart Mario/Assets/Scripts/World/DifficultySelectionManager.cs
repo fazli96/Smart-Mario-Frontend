@@ -18,7 +18,7 @@ public class DifficultySelectionManager : MonoBehaviour
     void Start()
     {
         scene = SceneController.GetSceneController();
-        minigameNameText.text = "Welcome to " + PlayerPrefs.GetString("Minigame Selected");
+        minigameNameText.text = "Welcome to World"+ PlayerPrefs.GetInt("World") + PlayerPrefs.GetString("Minigame Selected");
     }
 
     /// <summary>
