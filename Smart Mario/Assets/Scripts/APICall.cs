@@ -44,7 +44,7 @@ public class APICall
     /// <param name="bodyJsonString"></param>
     /// <param name="msg"></param>
     /// <returns></returns>
-    public IEnumerator RegisterPostRequest(string url, string bodyJsonString, Text msg)
+    public IEnumerator RegisterPostRequest(string url, string bodyJsonString)
     {
         var request = new UnityWebRequest(url, "POST");
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
@@ -53,21 +53,18 @@ public class APICall
         request.SetRequestHeader("Content-Type", "application/json");
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
-        RegisterManager regManager = RegisterManager.GetRegisterManager();
         UnityEngine.Debug.Log(request.downloadHandler.text);
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        UnityEngine.Debug.Log(convertedStr);
+        var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
 
         if (convertedStr.Contains("Error"))
         {
-            string errorMsg = convertedStr.Substring(convertedStr.IndexOf(":")+1);
-            errorMsg = errorMsg.Substring(0, errorMsg.Length - 1);
-            regManager.DisplayMessage(errorMsg, msg);
+            RegisterManager.instance.DisplayMessage(data["message"].ToString());
         }
 
         else
         {
-            regManager.DisplayMessage("Successfully created! Please proceed to login. ", msg);
+            RegisterManager.instance.DisplayMessage("Successfully created! Please proceed to login. ");
         }
     }
     /// <summary>
@@ -87,18 +84,15 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
 
         if (convertedStr.Contains("Error"))
         {
-            string errorMsg = convertedStr.Substring(convertedStr.IndexOf(":") + 1);
-            errorMsg = errorMsg.Substring(0, errorMsg.Length - 1);
-            errorMsg = errorMsg.Substring(0, errorMsg.IndexOf(","));
-            LoginManager.instance.DisplayMessage(errorMsg);
+            LoginManager.instance.DisplayMessage(data["message"].ToString());
         }
 
         else
         {
-            var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
             PlayerPrefs.SetString("username", data["data"]["username"].ToString());
             PlayerPrefs.SetString("teacherId", data["data"]["id"].ToString());
             LoginManager.instance.TeacherLoginSuccess();
@@ -121,25 +115,19 @@ public class APICall
         request.chunkedTransfer = false;
         yield return request.SendWebRequest();
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
+        var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
 
         if (convertedStr.Contains("Error"))
         {
-            string errorMsg = convertedStr.Substring(convertedStr.IndexOf(":") + 1);
-            errorMsg = errorMsg.Substring(0, errorMsg.Length - 1);
-            errorMsg = errorMsg.Substring(0, errorMsg.IndexOf(","));
-            LoginManager.instance.DisplayMessage(errorMsg);
+            LoginManager.instance.DisplayMessage(data["message"].ToString());
         }
 
         else
         {
-            var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
             PlayerPrefs.SetString("username", data["data"]["username"].ToString());
             PlayerPrefs.SetString("id", data["data"]["id"].ToString());
             PlayerPrefs.SetString("customChar", data["data"]["custom"].ToString());
-            //loginManager.StudentLoginSuccess();
             LoginManager.instance.GetQuestions();
-            //UnityEngine.Debug.Log(PlayerPrefs.GetString("username"));
-            //UnityEngine.Debug.Log(PlayerPrefs.GetString("customChar"));
         }       
     }
     /// <summary>

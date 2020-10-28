@@ -14,7 +14,7 @@ using UnityEngine.UI;
 public class RegisterManager : MonoBehaviour
 {
     //Singleton
-    private static RegisterManager instance = null;
+    public static RegisterManager instance = null;
     private string url = "https://smart-mario-backend-1.herokuapp.com/api/";
     private SceneController scene;
     public Button loginButton;
@@ -27,24 +27,19 @@ public class RegisterManager : MonoBehaviour
     public Text msg;
 
     /// <summary>
-    /// Creates a singleton instance if none exist, returns the existing instance if one exists
-    /// </summary>
-    /// <returns></returns>
-    public static RegisterManager GetRegisterManager()
-    {
-        if (instance == null)
-        {
-            GameObject go = new GameObject();
-            instance = go.AddComponent<RegisterManager>();
-        }
-        return instance;
-    }
-    /// <summary>
     /// Get instance of SceneController once RegisterManager starts and sets password input to maximum of 15
     /// </summary>
     // Start is called before the first frame update
     void Start()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
         scene = SceneController.GetSceneController();
         passwordInputField.characterLimit = 15;
     }
@@ -82,11 +77,11 @@ public class RegisterManager : MonoBehaviour
         {
             if(password.Length>= 5)
             {
-                RegisterTeacherDetails(username, name, password, key, msg);
+                RegisterTeacherDetails(username, name, password, key);
             }
             else
             {
-                DisplayMessage("Invalid, password must be between 5-15 characters!", msg);
+                DisplayMessage("Invalid, password must be between 5-15 characters!");
             }
         }
 
@@ -94,11 +89,11 @@ public class RegisterManager : MonoBehaviour
         {
             if (password.Length >= 5)
             {
-                RegisterStudentDetails(username, name, password, key, msg);
+                RegisterStudentDetails(username, name, password, key);
             }
             else
             {
-                DisplayMessage("Invalid, password must be between 5-15 characters!", msg);
+                DisplayMessage("Invalid, password must be between 5-15 characters!");
             }
         }
     }
@@ -107,9 +102,8 @@ public class RegisterManager : MonoBehaviour
     /// </summary>
     /// <param name="str"></param>
     /// <param name="message"></param>
-    public void DisplayMessage(String str, Text message)
+    public void DisplayMessage(String str)
     {
-        this.msg = message;
         msg.text = str;
     }
     /// <summary>
@@ -120,13 +114,13 @@ public class RegisterManager : MonoBehaviour
     /// <param name="password"></param>
     /// <param name="school_key"></param>
     /// <param name="msg"></param>
-    private void RegisterTeacherDetails(string username, string name, string password, string school_key, Text msg)
+    private void RegisterTeacherDetails(string username, string name, string password, string school_key)
     {
         APICall apiCall = APICall.getAPICall();
         UnityEngine.Debug.Log(username + " " + name + " " + password + " " + school_key);
         Teacher teacher = new Teacher(username, name, password, school_key);
         string bodyJsonString = apiCall.saveToJSONString(teacher);
-        StartCoroutine(apiCall.RegisterPostRequest(url + "teachers", bodyJsonString, msg));
+        StartCoroutine(apiCall.RegisterPostRequest(url + "teachers", bodyJsonString));
     }
     /// <summary>
     /// Sends entered registration details of Student for validation and pontential subsequent registration 
@@ -136,12 +130,12 @@ public class RegisterManager : MonoBehaviour
     /// <param name="password"></param>
     /// <param name="teacher_key"></param>
     /// <param name="msg"></param>
-    private void RegisterStudentDetails(string username, string name, string password, string teacher_key, Text msg)
+    private void RegisterStudentDetails(string username, string name, string password, string teacher_key)
     {
         APICall apiCall = APICall.getAPICall();
         UnityEngine.Debug.Log(username + " " + name + " " + password + " " + teacher_key);
         Student student = new Student(username, name, password, teacher_key);
         string bodyJsonString = apiCall.saveToJSONString(student);
-        StartCoroutine(apiCall.RegisterPostRequest(url + "students", bodyJsonString, msg));
+        StartCoroutine(apiCall.RegisterPostRequest(url + "students", bodyJsonString));
     }
 }
