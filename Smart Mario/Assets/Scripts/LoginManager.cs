@@ -17,7 +17,7 @@ public class LoginManager : MonoBehaviour
     private SceneController scene;
     public GameObject loginButton;
     public GameObject cancelButton;
-    public GameObject loadingText;
+    public Text loadingText;
     public InputField usernameInputField;
     public InputField passwordInputField;
     public Toggle teacherToggle;
@@ -38,7 +38,7 @@ public class LoginManager : MonoBehaviour
         }
 
         scene = SceneController.GetSceneController();
-        loadingText.SetActive(false);
+        loadingText.text = "";
     }
 
     // Update is called once per frame
@@ -58,6 +58,10 @@ public class LoginManager : MonoBehaviour
     /// </summary>
     public void CheckInput()
     {
+        loginButton.SetActive(false);
+        cancelButton.SetActive(false);
+        loadingText.text = "Validating inputs...";
+
         string username = usernameInputField.text;
         string password = passwordInputField.text;
 
@@ -69,9 +73,6 @@ public class LoginManager : MonoBehaviour
         {
            ValidateStudentLogin(username, password, msg);
         }
-        loginButton.SetActive(false);
-        cancelButton.SetActive(false);
-        loadingText.SetActive(true);
     }
     /// <summary>
     /// Displays error message on screen for failed login attempts
@@ -83,7 +84,7 @@ public class LoginManager : MonoBehaviour
         msg.text = str;
         loginButton.SetActive(true);
         cancelButton.SetActive(true);
-        loadingText.SetActive(false);
+        loadingText.text = "";
     }
 
     /// <summary>
@@ -136,6 +137,7 @@ public class LoginManager : MonoBehaviour
     /// </summary>
     public void GetQuestions()
     {
+        loadingText.text = "Loading data 0%...";
         APICall apiCall = APICall.getAPICall();
         StartCoroutine(apiCall.QuestionsListGetRequest("mcqtheory"));
     }
@@ -146,6 +148,7 @@ public class LoginManager : MonoBehaviour
     /// <param name="convertedStr"></param>
     public void McqTheoryQuestionsRetrieved(string convertedStr)
     {
+        loadingText.text = "Loading data 25%...";
         QuestionList.ClearMcqTheoryQuestionListEasy();
         QuestionList.ClearMcqTheoryQuestionListMedium();
         QuestionList.ClearMcqTheoryQuestionListHard();
@@ -174,6 +177,7 @@ public class LoginManager : MonoBehaviour
     /// <param name="convertedStr"></param>
     public void McqCodeQuestionsRetrieved(string convertedStr)
     {
+        loadingText.text = "Loading data 50%...";
         QuestionList.ClearMcqCodeQuestionListEasy();
         QuestionList.ClearMcqCodeQuestionListMedium();
         QuestionList.ClearMcqCodeQuestionListHard();
@@ -202,6 +206,7 @@ public class LoginManager : MonoBehaviour
     /// <param name="convertedStr"></param>
     public void ShortTheoryQuestionsRetrieved(string convertedStr)
     {
+        loadingText.text = "Loading data 75%...";
         QuestionList.ClearShortTheoryQuestionListEasy();
         QuestionList.ClearShortTheoryQuestionListMedium();
         QuestionList.ClearShortTheoryQuestionListHard();
@@ -230,6 +235,7 @@ public class LoginManager : MonoBehaviour
     /// <param name="convertedStr"></param>
     public void ShortCodeQuestionsRetrieved(string convertedStr)
     {
+        loadingText.text = "Loading data 100%...";
         QuestionList.ClearShortCodeQuestionListEasy();
         QuestionList.ClearShortCodeQuestionListMedium();
         QuestionList.ClearShortCodeQuestionListHard();

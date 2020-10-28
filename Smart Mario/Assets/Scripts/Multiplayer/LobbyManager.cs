@@ -19,7 +19,6 @@ public class LobbyManager : MonoBehaviour
     public InputField roomNameInput;
     public InputField roomCapacityInput;
     public InputField passwordInputCreate;
-    public InputField playerNameInputCreate;
     public Dropdown minigameSelectedDropdown;
     public Dropdown difficultySelectedDropdown;
     public Dropdown levelSelectedDropdown;
@@ -33,8 +32,6 @@ public class LobbyManager : MonoBehaviour
     public Text levelSelectedText;
     public GameObject passwordInputJoinObject;
     public InputField passwordInputJoin;
-    public GameObject playerNameInputJoinObject;
-    public InputField playerNameInputJoin;
     public Dropdown roomSelectedDropdown;
     public GameObject joinButton;
 
@@ -107,13 +104,12 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void CreateRoom()
     {
-        string errorMsg = ValidateFields(roomNameInput.text, roomCapacityInput.text, passwordInputCreate.text, playerNameInputCreate.text);
+        string errorMsg = ValidateFields(roomNameInput.text, roomCapacityInput.text, passwordInputCreate.text);
         if (errorMsg.Equals("success"))
         {
             PlayerPrefs.SetString("roomName", roomNameInput.text);
             PlayerPrefs.SetInt("roomCapacity", int.Parse(roomCapacityInput.text));
             PlayerPrefs.SetString("roomPassword", passwordInputCreate.text);
-            PlayerPrefs.SetString("username", playerNameInputCreate.text);
             PlayerPrefs.SetString("roomID", "create");
             switch (minigameSelectedDropdown.value)
             {
@@ -184,7 +180,6 @@ public class LobbyManager : MonoBehaviour
         PlayerPrefs.SetString("roomName", rooms[index].roomName);
         PlayerPrefs.SetInt("roomCapacity", rooms[index].roomCapacity);
         PlayerPrefs.SetString("roomPassword", passwordInputJoin.text);
-        PlayerPrefs.SetString("username", playerNameInputJoin.text);
         PlayerPrefs.SetString("roomID", rooms[index].roomID);
         PlayerPrefs.SetString("Minigame Selected", rooms[index].minigameSelected);
         PlayerPrefs.SetString("Minigame Difficulty", rooms[index].difficultySelected);
@@ -199,9 +194,9 @@ public class LobbyManager : MonoBehaviour
     /// <param name="roomCapacity"></param>
     /// <param name="playerName"></param>
     /// <returns></returns>
-    private string ValidateFields(string roomName, string roomCapacity, string roomPassword, string playerName)
+    private string ValidateFields(string roomName, string roomCapacity, string roomPassword)
     {
-        if (roomName.Equals("") || roomCapacity.Equals("") || playerName.Equals(""))
+        if (roomName.Equals("") || roomCapacity.Equals(""))
         {
             return "Room Name/Room Capacity/Player Name cannot be empty";
         }
@@ -298,7 +293,6 @@ public class LobbyManager : MonoBehaviour
             minigameSelectedText.text = "Minigame Selected: " + rooms[0].minigameSelected;
             difficultySelectedText.text = "Difficulty Selected: " + rooms[0].difficultySelected;
             levelSelectedText.text = "Level Selected: " + rooms[0].levelSelected;
-            playerNameInputJoinObject.SetActive(true);
             joinButton.SetActive(true);
             passwordInputJoin.text = "";
         }
@@ -313,7 +307,6 @@ public class LobbyManager : MonoBehaviour
             minigameSelectedText.text = "";
             difficultySelectedText.text = "";
             levelSelectedText.text = "";
-            playerNameInputJoinObject.SetActive(false);
             passwordInputJoinObject.SetActive(false);
             joinButton.SetActive(false);
         }

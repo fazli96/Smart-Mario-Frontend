@@ -70,7 +70,7 @@ public class StrandedUIManager : MonoBehaviour
     /// </summary>
     public void RestartLevel()
     {
-        scene.ToWorld1Stranded();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     /// <summary>
