@@ -5,11 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ManageTasksScrollView : MonoBehaviour
+public class ManageTasksScrollViewManager : MonoBehaviour
 {
-    //Singleton
-    private static ManageTasksScrollView instance = null;
-
     private SceneController scene;
 
     public GameObject Button_Template;
@@ -18,16 +15,6 @@ public class ManageTasksScrollView : MonoBehaviour
     private static List<DisplayResults> displayResultsList;
     private static List<TaskCompletionCell> tasksList = new List<TaskCompletionCell>();
     public Text noTasksMessage;
-
-    public static ManageTasksScrollView GetManageTasksScrollView()
-    {
-        if (instance == null)
-        {
-            instance = new ManageTasksScrollView();
-        }
-        return instance;
-    }
-
 
     // Start is called before the first frame update
     void Start()

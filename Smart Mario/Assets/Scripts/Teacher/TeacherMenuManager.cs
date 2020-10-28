@@ -10,6 +10,7 @@ public class TeacherMenuManager : MonoBehaviour
 
     private SceneController scene;
 
+    public Text welcomeMessage;
     public Button studentPerformanceButton;
     public Button assignTaskButton;
     public Button checkAssignedTasksButton;
@@ -34,6 +35,7 @@ public class TeacherMenuManager : MonoBehaviour
         apiCall = APICall.getAPICall();
         scene = SceneController.GetSceneController();
         teacherID = PlayerPrefs.GetString("teacherId");
+        welcomeMessage.text = "Welcome " + PlayerPrefs.GetString("username") + "!";
     }
 
     // Update is called once per frame
