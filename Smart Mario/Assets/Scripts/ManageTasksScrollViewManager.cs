@@ -62,7 +62,7 @@ public class ManageTasksScrollViewManager : MonoBehaviour
             newButton.SetActive(true);
             TaskCell cell = newButton.GetComponent<TaskCell>();
             cell.SetCell(task.GetGameName(), task.GetDifficulty(), task.GetLevel(), task.GetCreatedAt(), task.GetCompletionStatus());
-            newButton.transform.SetParent(Button_Template.transform.parent);
+            newButton.transform.SetParent(Button_Template.transform.parent, false);
         }
     }
 

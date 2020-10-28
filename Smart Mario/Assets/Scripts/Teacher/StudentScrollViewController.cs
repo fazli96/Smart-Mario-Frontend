@@ -83,7 +83,7 @@ public class StudentScrollViewController : MonoBehaviour
             newButton.SetActive(true);
             StudentButton SB = newButton.GetComponent<StudentButton>();
             SB.SetAttributes(name, id);
-            newButton.transform.SetParent(Button_Template.transform.parent);
+            newButton.transform.SetParent(Button_Template.transform.parent, false);
         }
     }
 
