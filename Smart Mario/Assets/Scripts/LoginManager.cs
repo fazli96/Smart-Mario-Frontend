@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
-/// Boundary that connects to Unity Login Scene UI objects and triggers function calls on events
+/// Manager that connects to Unity Login Scene UI objects and triggers function calls on events
 /// </summary>
 public class LoginManager : MonoBehaviour
 {
