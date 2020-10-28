@@ -49,7 +49,7 @@ public class AssignedTasksScrollViewController : MonoBehaviour
             newButton.SetActive(true);
             StudentTaskCompletionCell cell = newButton.GetComponent<StudentTaskCompletionCell>();
             cell.SetCell(student.GetName(), student.GetCompletionStatus());
-            newButton.transform.SetParent(Button_Template.transform.parent);
+            newButton.transform.SetParent(Button_Template.transform.parent, false);
         }
     }
     
