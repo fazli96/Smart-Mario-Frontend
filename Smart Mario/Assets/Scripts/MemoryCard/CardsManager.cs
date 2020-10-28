@@ -35,8 +35,7 @@ public class CardsManager: MonoBehaviour
         pairs = 0;
         string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
         int level = PlayerPrefs.GetInt("MinigameLevel", 1);
-        //int level = 2 //hardcode level here
-        //PlayerPrefs.SetInt("MinigameLevel", level); //hardcode level 
+        
         switch (level)
         {
             case 1:
@@ -58,12 +57,7 @@ public class CardsManager: MonoBehaviour
                 pairs = 4;
                 break;
         }
-        //switch (difficulty)
-        //{
-        //    case "Easy":
-        //    case "Medium":
-        //    case "Hard":
-        //}
+   
         for (int k = 0; k < 2; k++)
         {
             for (int i = 0; i < pairs; i++)
@@ -186,6 +180,11 @@ public class CardsManager: MonoBehaviour
             UnityEngine.Debug.Log(i.GetComponent<CardControl>().faceIndex);
         }
     }
+    /// <summary>
+    /// This is called when a card is closed from a wrong attempt 
+    /// Invokes a function for the specific card that is being closed
+    /// </summary>
+    /// <param name="index"></param>
     public void Close(int index)
     {
         foreach (var i in cards)

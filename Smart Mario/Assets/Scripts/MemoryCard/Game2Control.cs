@@ -50,16 +50,12 @@ public class Game2Control : MonoBehaviour
         cardManager = GameObject.Find("CardsManager");
         canvas = GameObject.Find("Canvas");
     }
+    /// <summary>
+    /// This is called before the first frame update
+    /// </summary>
     void Start()
     {
         finishPanel.SetActive(false);
-        //finishText.SetActive(false);
-        //overlay.SetActive(false);
-        //qns.SetActive(false);
-        //time.SetActive(false);
-        //timeScore.SetActive(false);
-        //accScore.SetActive(false);
-        //backButton.SetActive(false);
 
         scoreValue = cardManager.GetComponent<CardsManager>().pairs;
         paused = true;
@@ -71,12 +67,15 @@ public class Game2Control : MonoBehaviour
         MatchingGameStatus.instance.Initialize();
         if (PlayerPrefs.GetInt("MinigameLevel") == 5)
         {
-            //GetComponent<UnityEngine.UI.Text>().text
             rulesText.GetComponent<UnityEngine.UI.Text>().text = "Objective:\nUncover boundless treasure for your player by opening up the treasure chests. Clear the field by pairing two cards with matching descriptions, and be the fastest to find all the pairs\n" +
                 "\nRules:\nClick on one chest to open it up and reveal the short description.Open up more chests to match the two descriptions together.If the chests don't match, they will close. Match all the pairs of descriptions to win. Try to take the shortest time possible to match all the cards.\n" +
                 "\nControls: \nLeft click on chest to reveal the description\nPress the 'Esc' key to pause the game";
         }
     }
+    /// <summary>
+    /// This is called when the player pauses the game
+    /// It pauses the logic of the game and propagates the pause state to other singleton classes
+    /// </summary>
     public void changePauseState()
     {
         paused = !paused;
@@ -140,6 +139,11 @@ public class Game2Control : MonoBehaviour
         canvas.GetComponent<CanvasControl>().ShowMatch();
         StartCoroutine(RightCards(index));
     }
+    /// <summary>
+    /// Interface to set up a coroutine to delay hiding the questions after a match
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns>Yield of waiting for seconds</returns>
     IEnumerator RightCards(int index)
     {
         Debug.Log(Time.time);
@@ -178,6 +182,10 @@ public class Game2Control : MonoBehaviour
             return false;
         }
     }
+    /// <summary>
+    /// Interface to set up coroutine to delay hiding cards in the case of wrong attemp
+    /// </summary>
+    /// <returns>Yield of wait for seconds</returns>
     IEnumerator WrongCards()
     {
         Debug.Log(Time.time);
@@ -194,6 +202,14 @@ public class Game2Control : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method is called when the game has ended
+    /// </summary>
+    /// <param name="t"></param>
+    /// <param name="correct"></param>
+    /// <param name="attempt"></param>
+    /// <param name="accSc"></param>
+    /// <param name="timeSc"></param>
     public void Win(float t, int correct, int attempt, int accSc, int timeSc)
     {
         float accuracy = ((float)correct / (float)attempt) *100;
@@ -204,15 +220,7 @@ public class Game2Control : MonoBehaviour
         accScore.GetComponent<UnityEngine.UI.Text>().text = accSc.ToString()+ " Points";
         totalScore.GetComponent<UnityEngine.UI.Text>().text = (timeSc + accSc).ToString() + " Points";
 
-
         finishPanel.SetActive(true);
-        //finishtext.setactive(true);
-        //overlay.setactive(true);
-        //time.setactive(true);
-        //qns.setactive(true);
-        //timescore.setactive(true);
-        //accscore.setactive(true);
-        //backbutton.setactive(true);
 
     }
 

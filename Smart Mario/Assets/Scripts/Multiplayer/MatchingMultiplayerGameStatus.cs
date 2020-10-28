@@ -14,14 +14,15 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
     private static int qnsAnsweredCorrectly;
     private bool start;
 
-
     GameObject GameManager;
 
     private static readonly string url = "https://smart-mario-backend-1.herokuapp.com/api/results";
 
     public static MatchingMultiplayerGameStatus instance;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// This method is called to initialise the singleton class and various variables
+    /// </summary>
     void Awake()
     {
         if (instance == null)
@@ -35,6 +36,10 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
         time = 0;
         start = false;
     }
+    /// <summary>
+    /// This method is called during every frame update to keep track of the time taken in the game 
+    /// It increments the time counter by 2 decimal points unless game is paused
+    /// </summary>
     void Update()
     {
         if (start)
@@ -43,11 +48,17 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
         }
         timeText.GetComponent<UnityEngine.UI.Text>().text = "Time : " + time.ToString("F2");
     }
+    /// <summary>
+    /// This method is called when the owner starts the multiplayer game 
+    /// </summary>
     public void StartGame()
     {
         start = true;
     }
-
+    /// <summary>
+    /// This method is called when the Game Status is initialised by the Manager
+    /// It resets certain important variables
+    /// </summary>
     public void Initialize()
     {
         qnsAttempted = 0;
@@ -55,22 +66,36 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
         //GameManager = GameObject.Find("GameManager");
         Debug.LogError("found game manager");
     }
+    /// <summary>
+    /// This method is called when the player matches a pair correctly
+    /// </summary>
     public void ScoreIncrease()
     {
         qnsAnsweredCorrectly += 1;
         qnsAttempted += 1;
         Debug.LogError("state : " + qnsAttempted + " " + qnsAnsweredCorrectly);
     }
+    /// <summary>
+    /// This method is called when the player opens two cards but does not match it correctly
+    /// </summary>
     public void QnsAttemptIncrease()
     {
         qnsAttempted += 1;
         Debug.LogError("state : " + qnsAttempted + " " + qnsAnsweredCorrectly);
     }
+    /// <summary>
+    /// This method is called when the player completes all the pairs
+    /// It calls another method to compute the score and store it via a post request
+    /// </summary>
     public void WinLevel()
     {
         start = false;
         ComputeResults();
     }
+    /// <summary>
+    /// This method is called during the winning condition of the game
+    /// It assigns two scores based on time taken and accuracy, moderated by the difficulty and level of the game being played
+    /// </summary>
     private void ComputeResults()
     {
         string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
@@ -80,109 +105,6 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
         int accScore = 0;
         float acc = qnsAttempted == 0 ? 0 : (float)qnsAnsweredCorrectly / (float)qnsAttempted;
 
-        /*switch (currentLevel)
-        {
-            case 1:
-                if (difficulty == "Easy")
-                {
-                    if (time < 35) { timeScore = 2000; }
-                    else if (time < 60) { timeScore = 1500; }
-                    else { timeScore = 1000; }
-                }
-                else if (difficulty == "Medium")
-                {
-                    if (time < 45) { timeScore = 2000; }
-                    else if (time < 70) { timeScore = 1500; }
-                    else { timeScore = 1000; }
-                }
-                else if (difficulty == "Hard")
-                {
-                    if (time < 55) { timeScore = 2000; }
-                    else if (time < 70) { timeScore = 1500; }
-                    else { timeScore = 1000; }
-                }
-                break;
-            case 2:
-                if (difficulty == "Easy")
-                {
-                    if (time < 50) { timeScore = 2500; }
-                    else if (time < 75) { timeScore = 2000; }
-                    else { timeScore = 1500; }
-                }
-                else if (difficulty == "Medium")
-                {
-                    if (time < 60) { timeScore = 2500; }
-                    else if (time < 85) { timeScore = 2000; }
-                    else { timeScore = 1500; }
-                }
-                else if (difficulty == "Hard")
-                {
-                    if (time < 70) { timeScore = 2500; }
-                    else if (time < 95) { timeScore = 2000; }
-                    else { timeScore = 1500; }
-                }
-                break;
-            case 3:
-                if (difficulty == "Easy")
-                {
-                    if (time < 65) { timeScore = 3000; }
-                    else if (time < 90) { timeScore = 2500; }
-                    else { timeScore = 2000; }
-                }
-                else if (difficulty == "Medium")
-                {
-                    if (time < 75) { timeScore = 3000; }
-                    else if (time < 100) { timeScore = 2500; }
-                    else { timeScore = 2000; }
-                }
-                else if (difficulty == "Hard")
-                {
-                    if (time < 85) { timeScore = 3000; }
-                    else if (time < 110) { timeScore = 2500; }
-                    else { timeScore = 2000; }
-                }
-                break;
-            case 4:
-                if (difficulty == "Easy")
-                {
-                    if (time < 80) { timeScore = 3500; }
-                    else if (time < 105) { timeScore = 3000; }
-                    else { timeScore = 2500; }
-                }
-                else if (difficulty == "Medium")
-                {
-                    if (time < 90) { timeScore = 3500; }
-                    else if (time < 115) { timeScore = 3000; }
-                    else { timeScore = 2500; }
-                }
-                else if (difficulty == "Hard")
-                {
-                    if (time < 100) { timeScore = 3500; }
-                    else if (time < 125) { timeScore = 3000; }
-                    else { timeScore = 2500; }
-                }
-                break;
-            case 5:
-                if (difficulty == "Easy")
-                {
-                    if (time < 90) { timeScore = 3500; }
-                    else if (time < 115) { timeScore = 3000; }
-                    else { timeScore = 2500; }
-                }
-                else if (difficulty == "Medium")
-                {
-                    if (time < 100) { timeScore = 3500; }
-                    else if (time < 125) { timeScore = 3000; }
-                    else { timeScore = 2500; }
-                }
-                else if (difficulty == "Hard")
-                {
-                    if (time < 1120) { timeScore = 3500; }
-                    else if (time < 135) { timeScore = 3000; }
-                    else { timeScore = 2500; }
-                }
-                break;
-        }*/
         if (acc == 0)
         {
             accScore = 0;
@@ -209,7 +131,12 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
         SaveResults(difficulty, currentLevel, (accScore + qnsScore));
     }
 
-    //code to put results into DB...
+    /// <summary>
+    /// This method saves the results of the game into database after the score has been computed from local variables
+    /// </summary>
+    /// <param name="difficulty"></param>
+    /// <param name="currentLevel"></param>
+    /// <param name="score"></param>
     private void SaveResults(string difficulty, int currentLevel, int score)
     {
         int worldSelected = PlayerPrefs.GetInt("World", 1);
@@ -237,12 +164,6 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
         Results result = new Results(studentId, minigameId, difficulty, currentLevel, score, qnsAttempted, qnsAnsweredCorrectly, time);
         string bodyJsonString = apiCall.saveToJSONString(result);
         StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));
-        Debug.Log("Sucess");
-
-        //APICall apiCall = APICall.getAPICall();
-        //Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + currentScore + ", " + qnsAttempted + ", " + qnsAnsweredCorrectly);
-        //Results result = new Results(studentId, minigameId, difficulty, currentLevel, currentScore, qnsAttempted, qnsAnsweredCorrectly);
-        //string bodyJsonString = apiCall.saveToJSONString(result);
-        //StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));
+        Debug.Log("Success");
     }
 }

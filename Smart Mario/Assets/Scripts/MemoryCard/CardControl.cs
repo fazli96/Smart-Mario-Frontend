@@ -19,7 +19,7 @@ public class CardControl : MonoBehaviour
     public bool matched = false;
     /// <summary>
     /// This is called when the individual cards detects a mouseclick
-    /// Several checking mechanisms are donee
+    /// Several checking mechanisms are done
     /// </summary>
     public void OnMouseDown()       //detecting mouseclick
     {
@@ -97,6 +97,9 @@ public class CardControl : MonoBehaviour
     //    }
          
     //}
+    /// <summary>
+    /// This is called when the cards open do not match, and the cards automatically close
+    /// </summary>
     public void Hide()
     {
         spriteRenderer.sprite = back;
@@ -106,7 +109,6 @@ public class CardControl : MonoBehaviour
     /// </summary>
     private void Start()
     {
-
         GameControl = GameObject.Find("GameManager");
         cardsManager = GameObject.Find("CardsManager");
         spriteRenderer = GetComponent<SpriteRenderer>();

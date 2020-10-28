@@ -19,7 +19,7 @@ public class CanvasControl : MonoBehaviour
 
     public static CanvasControl instance;
     /// <summary>
-    /// This is called at the start of initialisation
+    /// This is called before the first frame to initialise the singleton
     /// </summary>
     /// 
     void Awake()
@@ -33,6 +33,10 @@ public class CanvasControl : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    /// <summary>
+    /// This is called at the start of initialisation
+    /// </summary>
+    /// 
     void Start()
     {
         
@@ -44,6 +48,8 @@ public class CanvasControl : MonoBehaviour
     }
     /// <summary>
     /// Update is called once per frame
+    /// This method is used to check for the pause input from the user 
+    /// It disables the time scale to prevent user actions except from the pause panel that is activated 
     /// </summary>
     void Update()
     {
@@ -89,60 +95,9 @@ public class CanvasControl : MonoBehaviour
     /// </summary>
     public void RestartLevel()
     {
-        //switch (PlayerPrefs.GetInt("World1Minigame2Level", 1))
-        //{
-        //    case 1:
-        //        scene.ToWorld1Minigame2Level1();
-        //        break;
-        //    case 2:
-        //        scene.ToWorld1Minigame2Level2();
-        //        break;
-        //    case 3:
-        //        scene.ToWorld1Minigame2Level3();
-        //        break;
-        //    case 4:
-        //        scene.ToWorld1Minigame2Level4();
-        //        break;
-        //    case 5:
-        //        scene.ToWorld1Minigame2Level5();
-        //        break;
-        //    default:
-        //        break;
-        //}
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    /// <summary>
-    /// This method is called when the 'Next Level'button is pressed
-    /// </summary>
-    public void NextLevel()
-    {
-        switch (PlayerPrefs.GetInt("World1Minigame2Level", 1))
-        {
-
-            case 1:
-                PlayerPrefs.SetInt("World1Minigame2Level", 2);
-                //scene.ToWorld1Minigame1Level2();
-                break;
-            case 2:
-                PlayerPrefs.SetInt("World1Minigame2Level", 3);
-                //scene.ToWorld1Minigame1Level3();
-                break;
-            case 3:
-                PlayerPrefs.SetInt("World1Minigame2Level", 4);
-                //scene.ToWorld1Minigame1Level4();
-                break;
-            case 4:
-                PlayerPrefs.SetInt("World1Minigame2Level", 5);
-                //scene.ToWorld1Minigame1Level5();
-                break;
-            case 5:
-                PlayerPrefs.SetInt("World1Minigame2Level", 1);
-                scene.ToLevelSelection();
-                break;
-            default:
-                break;
-        }
-    }
+    
     /// <summary>
     /// This class instantiates text that shows a match between two cards
     /// </summary>

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 using System;
-
+/// <summary>
+/// /// This class is used for monitoring and managing the player's score, questions attempted and questions answered correctly
+/// and updating these results in the database in Single Player game session
+/// </summary>
 public class MatchingGameStatus : MonoBehaviour
 {
     //public Text timeText;
@@ -21,7 +24,9 @@ public class MatchingGameStatus : MonoBehaviour
 
     public static MatchingGameStatus instance;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// This method is called to initialise the singleton class and various variables
+    /// </summary>
     void Awake()
     {
         if (instance == null)
@@ -35,6 +40,10 @@ public class MatchingGameStatus : MonoBehaviour
         time = 0;
         paused = true;
     }
+    /// <summary>
+    /// This method is called during every frame update to keep track of the time taken in the game 
+    /// It increments the time counter by 2 decimal points unless game is paused
+    /// </summary>
     void Update()
     {
         if (!paused)
@@ -43,11 +52,18 @@ public class MatchingGameStatus : MonoBehaviour
         }
         timeText.GetComponent<UnityEngine.UI.Text>().text = "Time : " + time.ToString("F2");
     }
+    /// <summary>
+    /// This method is called to toggle the paused state of the game whenever a player presses Esc
+    /// </summary>
+    /// <param name="p"></param>
     public void Pause(bool p)
     {
         paused = p;
     }
-
+    /// <summary>
+    /// This method is called when the Game Status is initialised by the Manager
+    /// It resets certain important variables
+    /// </summary>
     public void Initialize()
     {
         qnsAttempted = 0;
@@ -55,22 +71,36 @@ public class MatchingGameStatus : MonoBehaviour
         GameManager = GameObject.Find("GameManager");
         Debug.Log("found game manager");
     }
+    /// <summary>
+    /// This method is called when the player matches a pair correctly
+    /// </summary>
     public void ScoreIncrease()
     {
         qnsAnsweredCorrectly += 1;
         qnsAttempted += 1;
         Debug.Log("state : " + qnsAttempted + " " + qnsAnsweredCorrectly);
     }
+    /// <summary>
+    /// This method is called when the player opens two cards but does not match it correctly
+    /// </summary>
     public void QnsAttemptIncrease()
     {
         qnsAttempted += 1;
         Debug.Log("state : " + qnsAttempted + " " + qnsAnsweredCorrectly);
     }
+    /// <summary>
+    /// This method is called when the player completes all the pairs
+    /// It calls another method to compute the score and store it via a post request
+    /// </summary>
     public void WinLevel()
     {
         paused = true;
         ComputeResults();
     }
+    /// <summary>
+    /// This method is called during the winning condition of the game
+    /// It assigns two scores based on time taken and accuracy, moderated by the difficulty and level of the game being played
+    /// </summary>
     private void ComputeResults()
     {
         string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
@@ -199,10 +229,15 @@ public class MatchingGameStatus : MonoBehaviour
         Debug.Log("Time Score is " + timeScore + " and acc score is " + accScore);
         GameManager.GetComponent<Game2Control>().Win(time, qnsAnsweredCorrectly, qnsAttempted, accScore, timeScore);
         SaveResults(difficulty, currentLevel, (accScore + timeScore));
-        //UI manager instantiate stars, need to have foreach loop in UI manager 
+       
     }
 
-    //code to put results into DB...
+    /// <summary>
+    /// This method saves the results of the game into database after the score has been computed from local variables
+    /// </summary>
+    /// <param name="difficulty"></param>
+    /// <param name="currentLevel"></param>
+    /// <param name="score"></param>
     private void SaveResults( string difficulty, int currentLevel, int score)
     {
         int worldSelected = PlayerPrefs.GetInt("World", 1);
@@ -215,14 +250,14 @@ public class MatchingGameStatus : MonoBehaviour
             if (minigameSelected.Equals("Stranded"))
                 minigameId = 1;
             else
-                minigameId = 2; //minigame 1 is 2 for matching cards world 1
+                minigameId = 2; //2 is for matching cards world 1
         }
         else
         {
             if (minigameSelected.Equals("Stranded"))
                 minigameId = 3;
             else
-                minigameId = 4; //minigame 1 is 4 for matching cards world 2
+                minigameId = 4; //4 is for matching cards world 2
         }
         time =(float) Math.Round(time, 3);
         APICall apiCall = APICall.getAPICall();
@@ -231,11 +266,5 @@ public class MatchingGameStatus : MonoBehaviour
         string bodyJsonString = apiCall.saveToJSONString(result);
         StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));
         Debug.Log("Sucess");
-
-        //APICall apiCall = APICall.getAPICall();
-        //Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + currentScore + ", " + qnsAttempted + ", " + qnsAnsweredCorrectly);
-        //Results result = new Results(studentId, minigameId, difficulty, currentLevel, currentScore, qnsAttempted, qnsAnsweredCorrectly);
-        //string bodyJsonString = apiCall.saveToJSONString(result);
-        //StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));
     }
 }

@@ -31,14 +31,14 @@ public class MatchingMultiplayerUIManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    /// <summary>
+    /// This is called at the start of initialisation
+    /// </summary>
+    /// 
     void Start()
     {
-
         canvas = GetComponent<Canvas>();
-        //GameManager = GameObject.Find("GameManager");
         scene = SceneController.GetSceneController();
-        //pausePanel.SetActive(false);
-        //isPaused = false;
     }
 
    

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// This class checks the logic of minigame 2 as well as keeping track of the states in the game
+/// This class checks the logic of the multiplayer minigame 2 as well as keeping track of the states in the game
 /// </summary>
 public class MatchingMultiplayerGameManager : MonoBehaviour
 {
@@ -59,13 +59,6 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
     void Start()
     {
         finishPanel.SetActive(false);
-        //finishText.SetActive(false);
-        //overlay.SetActive(false);
-        //qns.SetActive(false);
-        //time.SetActive(false);
-        //qnsScore.SetActive(false);
-        //accScore.SetActive(false);
-        //backButton.SetActive(false);
         countdownTimer.SetActive(false);
 
         scoreValue = cardManager.GetComponent<CardsManager>().pairs;
@@ -96,6 +89,10 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         }
 
     }
+    /// <summary>
+    /// This is called every frame update to check if Esc has been pressed
+    /// the rules panel is brought up without pausing the game
+    /// </summary>
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && paused == false)
@@ -113,6 +110,9 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// This method is called when the room owner presses start on the first rules panel
+    /// </summary>
     public void ButtonClick()
     {
         if (NetworkManager.isOwner && paused == true)
@@ -121,7 +121,10 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
             okayButton.SetActive(false);
         }
     }
-    
+    /// <summary>
+    /// This method is called after the room owner presses start
+    /// it triggers a countdown to prompt everyone of the game starting
+    /// </summary>
     public void changeStartState()
     {
         if (NetworkManager.isOwner)
@@ -133,7 +136,11 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         StartCoroutine(Countdown(5));
         
     }
-
+    /// <summary>
+    /// Interface to countdown time
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns></returns>
     IEnumerator Countdown(int time)
     {
         while (time > 0)
@@ -148,7 +155,9 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         MatchingMultiplayerGameStatus.instance.StartGame();
         Debug.Log("Paused? " + paused);
     }
-
+    /// <summary>
+    /// This method is for the game owner to broadcast to all the players in the room that the multiplayer game is about to start
+    /// </summary>
     public void StartGame()
     {
         if (NetworkManager.isOwner)
@@ -217,6 +226,11 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         score.GetComponent<UnityEngine.UI.Text>().text = "Pairs left: " + scoreValue;
         StartCoroutine(RightCards(index));
     }
+    /// <summary>
+    /// Interface to set up a coroutine to delay hiding the questions after a match
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns>Yield of waiting for seconds</returns>
     IEnumerator RightCards(int index)
     {
         Debug.Log(Time.time);
@@ -257,6 +271,10 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
             return false;
         }
     }
+    /// <summary>
+    /// Interface to set up coroutine to delay hiding cards in the case of wrong attemp
+    /// </summary>
+    /// <returns>Yield of wait for seconds</returns>
     IEnumerator WrongCards()
     {
         Debug.Log(Time.time);
@@ -272,7 +290,14 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// This method is called when the game has ended
+    /// </summary>
+    /// <param name="t"></param>
+    /// <param name="correct"></param>
+    /// <param name="attempt"></param>
+    /// <param name="accSc"></param>
+    /// <param name="timeSc"></param>
     public void Win(float t, int correct, int attempt, int accSc, int qnsSc)
     {
         paused = true;
