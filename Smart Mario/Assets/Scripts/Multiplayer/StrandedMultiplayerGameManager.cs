@@ -101,19 +101,27 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
     /// </summary>
     void LateUpdate()
     {
+        // player has completed the level, alert network manager to broadcast to other players that the game has ended
+        if (player.GetComponent<PlayerPathMovement>().waypointIndex == waypoints.Count && !levelComplete)
+        {
+            print("levelComplete" + waypoints.Count);
+            NetworkManager.instance.GetComponent<NetworkManager>().CommandEndGame();
+            GameComplete();
+        }
+
         // when player has reached the destination based on dice number rolled
         if (player.GetComponent<PlayerPathMovement>().waypointIndex >
-            playerStartWaypoint + diceSideThrown && !qnEncountered)
+            playerStartWaypoint + diceSideThrown && !qnEncountered && !levelComplete)
         {
             // if player lands on a tile greater than the tile listed in the mandatoryQuestionList, 
             // alert player of a surprise question and show question to player
             if ((playerStartWaypoint + diceSideThrown) >= mandatoryQuestionList[0]
                 && !(playerStartWaypoint + diceSideThrown == 39 || playerStartWaypoint + diceSideThrown == 49))
             {
+                Debug.Log("inside mandatory");
                 mandatoryQuestionList.RemoveAt(0);
                 qnEncountered = true;
                 leaveGameButton.SetActive(false);
-                player.GetComponent<PlayerPathMovement>().moveAllowed = false;
                 StartCoroutine(SurpriseQuestion());
             }
 
@@ -123,11 +131,12 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
                 {
                     // if mandatory/surprise question is displayed to player, do not ask question to player
                     // happens if player lands on a barrel and lands on a tile greater than the tile listed in the mandatoryQuestionList
+                    questionBarrels.Remove(questionBarrel);
                     if (!qnEncountered)
                     {
+                        Debug.Log("inside question barrels");
                         qnEncountered = true;
                         leaveGameButton.SetActive(false);
-                        player.GetComponent<PlayerPathMovement>().moveAllowed = false;
                         Debug.Log("qnEncountered");
                         StrandedQuestionManager.instance.AskQuestion();
                     }
@@ -138,11 +147,11 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
             // Teleport to another waypoint, player lands on a teleportation tile
             if (playerStartWaypoint + diceSideThrown == 39 || playerStartWaypoint + diceSideThrown == 49)
             {
-                Debug.Log("teleportationActive");
+                Debug.Log("teleportationActive: " + player.GetComponent<PlayerPathMovement>().waypointIndex + "-" +
+            playerStartWaypoint + diceSideThrown + "-" + teleportationActive);
                 teleportationActive = true;
                 qnEncountered = true;
                 leaveGameButton.SetActive(false);
-                player.GetComponent<PlayerPathMovement>().moveAllowed = false;
                 StrandedQuestionManager.instance.AskQuestion();
             }
 
@@ -152,21 +161,13 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
             if (!qnEncountered)
             {
                 Debug.Log("not question encountered");
+                if (!teleportationActive)
+                    playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
                 leaveGameButton.SetActive(true);
                 currentTurn = false;
                 dice.SetActive(false);
-                if (!teleportationActive)
-                    playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
                 NetworkManager.instance.GetComponent<NetworkManager>().CommandEndTurn();
             }
-        }
-
-        // player has completed the level, alert network manager to broadcast to other players that the game has ended
-        if (player.GetComponent<PlayerPathMovement>().waypointIndex == waypoints.Count && !levelComplete)
-        {
-            print("levelComplete" + waypoints.Count);
-            NetworkManager.instance.GetComponent<NetworkManager>().CommandEndGame();
-            GameComplete();
         }
     }
 
@@ -189,20 +190,28 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
     /// <param name="correct"></param>
     public void TeleportPlayer(bool correct)
     {
-        if (correct && playerStartWaypoint == 39 && teleportationActive)
+        if (correct && playerStartWaypoint + diceSideThrown == 39 && teleportationActive)
         {
             Debug.Log("teleported");
             player.GetComponent<PlayerPathMovement>().transform.position = player.GetComponent<PlayerPathMovement>().waypoints[49].transform.position;
             player.GetComponent<PlayerPathMovement>().waypointIndex = 50;
             playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
         }
-        else if (!correct && playerStartWaypoint == 49 && teleportationActive)
+        else if (!correct && playerStartWaypoint + diceSideThrown == 49 && teleportationActive)
         {
             Debug.Log("teleported");
             player.GetComponent<PlayerPathMovement>().transform.position = player.GetComponent<PlayerPathMovement>().waypoints[39].transform.position;
             player.GetComponent<PlayerPathMovement>().waypointIndex = 40;
             playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
         }
+        else
+        {
+            playerStartWaypoint = player.GetComponent<PlayerPathMovement>().waypointIndex - 1;
+        }
+        leaveGameButton.SetActive(true);
+        currentTurn = false;
+        dice.SetActive(false);
+        NetworkManager.instance.GetComponent<NetworkManager>().CommandEndTurn();
         teleportationActive = false;
     }
 
@@ -269,7 +278,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
 
             int rndInt = UnityEngine.Random.Range(i, i + spacesBetweenBarrels);
             // exclude question barrel that is located at the teleportation tile
-            if (!(rndInt == 39 || rndInt == 49))
+            if (!(rndInt >= 39 && rndInt <= 49))
             {
                 GameObject questionBarrelClone = Instantiate(questionBarrelPrefab,
                     waypoints[rndInt].transform.position,

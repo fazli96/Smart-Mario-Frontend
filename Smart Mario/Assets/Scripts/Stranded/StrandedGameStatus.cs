@@ -170,7 +170,7 @@ public class StrandedGameStatus : MonoBehaviour
         Results result = new Results(studentId, minigameId, difficulty, currentLevel, currentScore, qnsAttempted, qnsAnsweredCorrectly);
         string bodyJsonString = apiCall.saveToJSONString(result);
         Debug.Log(bodyJsonString);
-        StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));
+        StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString));
     }
 
     /// <summary>
@@ -179,7 +179,7 @@ public class StrandedGameStatus : MonoBehaviour
     /// <param name="result"></param>
     public void ResultsSaved(string result)
     {   
-        if (result == null)
+        if (result == null || result.Equals(""))
         {
             ShowResultsNotSaved();
         }

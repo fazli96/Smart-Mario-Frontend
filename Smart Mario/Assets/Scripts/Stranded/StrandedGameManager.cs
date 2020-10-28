@@ -87,7 +87,7 @@ public class StrandedGameManager : MonoBehaviour {
     {
         // when player has reached the destination based on dice number rolled
         if (player.GetComponent<PlayerPathMovement>().waypointIndex > 
-            playerStartWaypoint + diceSideThrown && !levelComplete)
+            playerStartWaypoint + diceSideThrown && !levelComplete && !qnEncountered)
         {
             // if player lands on a tile greater than the tile listed in the mandatoryQuestionList and not a teleportation tile, 
             // alert player of a surprise question and show question to player

@@ -56,7 +56,8 @@ public class RollTheDiceMultiplayer : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         StrandedMultiplayerGameManager.diceSideThrown = randomDiceSide + 1;
-        
+        //StrandedMultiplayerGameManager.diceSideThrown = 39;
+
         // once dice is rolled, allow player to move from tile to tile based on dice number rolled
         StrandedMultiplayerGameManager.MovePlayer();
 

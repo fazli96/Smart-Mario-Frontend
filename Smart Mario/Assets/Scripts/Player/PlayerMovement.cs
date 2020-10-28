@@ -58,8 +58,6 @@ public class PlayerMovement : MonoBehaviour
             // animate the player only when the position of the player changes
             if (currentPosition != transform.position)
             {
-                Debug.LogError("notLocalPlayer"+transform.name + isLocalPlayer + " " + isOwner + " " + multiplayer);
-
                 moveH = transform.position.x - currentPosition.x;
                 Debug.Log("moveH: " + moveH + " = " + currentPosition.x + " - " + oldPosition.x);
                 
@@ -87,7 +85,6 @@ public class PlayerMovement : MonoBehaviour
             // whenever the player moves, alert Network Manager to send player position to other players
             if (currentPosition != oldPosition && multiplayer)
             {
-                Debug.LogError("isLocalPlayer" + transform.name + isLocalPlayer + " " + isOwner + " " + multiplayer);
                 NetworkManager.instance.GetComponent<NetworkManager>().CommandMove(transform.position);
                 oldPosition = currentPosition;
             }

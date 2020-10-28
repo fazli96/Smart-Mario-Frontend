@@ -176,6 +176,7 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
     /// <param name="changeInScore"></param>
     public void ScoreChange(int changeInScore)
     {
+        NetworkManager.instance.CommandQnResult(changeInScore);
         if (changeInScore > 0)
         {
             qnsAnsweredCorrectly1 += 1;
@@ -188,8 +189,7 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
         qnsAttempted1 += 1;
         if (!(currentScore1 == 0 && changeInScore < 0))
             currentScore1 += changeInScore;
-        DisplayScore();
-        NetworkManager.instance.CommandQnResult(changeInScore);
+        DisplayScore(); 
     }
 
     /// <summary>
@@ -345,12 +345,20 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
         int currentLevel = PlayerPrefs.GetInt("MinigameLevel", 1);
         string studentId = PlayerPrefs.GetString("id", "1");
 
-        APICall apiCall = APICall.getAPICall();
-        Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + currentScore1 + ", " + qnsAttempted1 + ", " + qnsAnsweredCorrectly1);
-        Results result = new Results(studentId, minigameId, difficulty, currentLevel, currentScore1, qnsAttempted1, qnsAnsweredCorrectly1);
-        //Results result = new Results("1", 1, "Easy", 1, 50, 1, 1);
-        string bodyJsonString = apiCall.saveToJSONString(result);
-        StartCoroutine(apiCall.ResultsPutRequest(url, bodyJsonString));
+        if (currentScore1 == 0)
+        {
+            saveResultsPanel.SetActive(false);
+            completeLvlPanel.SetActive(true);
+        }
+        else 
+        {
+            APICall apiCall = APICall.getAPICall();
+            Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + currentScore1 + ", " + qnsAttempted1 + ", " + qnsAnsweredCorrectly1);
+            Results result = new Results(studentId, minigameId, difficulty, currentLevel, currentScore1, qnsAttempted1, qnsAnsweredCorrectly1);
+            //Results result = new Results("1", 1, "Easy", 1, 50, 1, 1);
+            string bodyJsonString = apiCall.saveToJSONString(result);
+            StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString));
+        }
     }
 
     /// <summary>
@@ -359,14 +367,14 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
     /// <param name="result"></param>
     public void ResultsSaved(string result)
     {
-        if (result == null)
+        if (result == null || result.Equals(""))
         {
             ShowResultsNotSaved();
         }
         else
         {
             var data = (JObject)JsonConvert.DeserializeObject(result);
-            if (data["success"].ToString() == "True")
+            if (data["success"].ToString().Equals("True"))
             {
                 saveResultsPanel.SetActive(false);
                 completeLvlPanel.SetActive(true);

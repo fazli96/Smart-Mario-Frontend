@@ -599,14 +599,11 @@ public class NetworkManager : MonoBehaviour
         // if it is the current player, return
         if (userJSON.name == storedUserJSON.name)
         {
-            Debug.LogError("inside player move same name");
             return;
         }
-        Debug.LogError("inside player escape same name");
         GameObject p = GameObject.Find(userJSON.name) as GameObject;
         if (p != null)
         {
-            Debug.LogError("inside player move diff name");
             p.transform.position = position;
         }
     }

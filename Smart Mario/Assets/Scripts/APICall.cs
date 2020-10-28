@@ -203,6 +203,7 @@ public class APICall
     public IEnumerator ResultsPutRequest(string bodyJsonString, string url = "https://smart-mario-backend-1.herokuapp.com/api/results")
     {
         var request = new UnityWebRequest(url , "PUT");
+        UnityEngine.Debug.Log(bodyJsonString);
         byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
