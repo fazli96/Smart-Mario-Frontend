@@ -56,7 +56,6 @@ public class APICall
         UnityEngine.Debug.Log(request.downloadHandler.text);
         string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
         var data = (JObject)JsonConvert.DeserializeObject(convertedStr);
-
         if (convertedStr.Contains("Error"))
         {
             RegisterManager.instance.DisplayMessage(data["message"].ToString());
