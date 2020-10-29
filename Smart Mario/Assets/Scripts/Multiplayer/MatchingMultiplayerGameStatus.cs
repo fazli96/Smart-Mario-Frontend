@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using UnityEngine.UI;
 
 public class MatchingMultiplayerGameStatus : MonoBehaviour
 {
@@ -12,6 +15,8 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
     private static float time;
     private static int qnsAttempted;
     private static int qnsAnsweredCorrectly;
+    public GameObject saveResultsPanel;
+    public Text saveStatusMsg;
     private bool start;
 
     GameObject GameManager;
@@ -165,5 +170,39 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
         string bodyJsonString = apiCall.saveToJSONString(result);
         StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));
         Debug.Log("Success");
+    }
+    /// <summary>
+    /// This is to check whether the results is saved to database
+    /// </summary>
+    /// <param name="result"></param>
+    public void ResultsSaved(string result)
+    {
+        if (result == null)
+        {
+            ShowResultsNotSaved();
+        }
+        else
+        {
+            var data = (JObject)JsonConvert.DeserializeObject(result);
+            if (data["success"].ToString() == "True")
+            {
+                saveResultsPanel.SetActive(false);
+            }
+
+            else
+            {
+                ShowResultsNotSaved();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Display warning message to retry or ignore if saving results failed
+    /// </summary>
+    private void ShowResultsNotSaved()
+    {
+        saveResultsPanel.SetActive(true);
+        saveStatusMsg.text = "Unable to save results.\nClick 'retry' to try again\n\nNote: Clicking Ignore will not save your results";
+
     }
 }

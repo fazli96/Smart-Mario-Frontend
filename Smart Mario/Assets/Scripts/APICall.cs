@@ -215,6 +215,10 @@ public class APICall
             StrandedGameStatus.instance.ResultsSaved(convertedStr);
         else if (GameObject.Find("StrandedMultiplayerGameStatus") != null)
             StrandedMultiplayerGameStatus.instance.ResultsSaved(convertedStr);
+        else if (GameObject.Find("MatchingGameStatus") != null)
+            MatchingGameStatus.instance.ResultsSaved(convertedStr);
+        else if (GameObject.Find("MatchingMultiplayerGameStatus") != null)
+            MatchingMultiplayerGameStatus.instance.ResultsSaved(convertedStr);
     }
     /// <summary>
     /// Creates an IEnumerator for coroutines that is used for retrieving best game results of Student via a Get request
