@@ -13,6 +13,8 @@ public class LevelSelectionManager : MonoBehaviour
     public Button level3button;
     public Button level4button;
     public Button level5button;
+    public AudioSource world1StrandedSound;
+    public AudioSource world2StrandedSound;
 
     private int worldSelected;
     private string minigameSelected;
@@ -31,7 +33,13 @@ public class LevelSelectionManager : MonoBehaviour
         minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Stranded");
         difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
         if (PlayerPrefs.GetString("Minigame Selected").Equals("Stranded"))
+        {
+            if (PlayerPrefs.GetInt("World", 1) == 1)
+                world1StrandedSound.Play();
+            else
+                world2StrandedSound.Play();
             minigameNameText.text = "Welcome to World " + PlayerPrefs.GetInt("World") + " " + PlayerPrefs.GetString("Minigame Selected");
+        }
         else
             minigameNameText.text = "Welcome to " + PlayerPrefs.GetString("Minigame Selected");
 

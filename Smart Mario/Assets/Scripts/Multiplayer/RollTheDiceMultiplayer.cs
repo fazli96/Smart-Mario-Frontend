@@ -30,8 +30,10 @@ public class RollTheDiceMultiplayer : MonoBehaviour
         if (!StrandedMultiplayerGameManager.levelComplete && coroutineAllowed
             && !StrandedMultiplayerGameManager.GetMoveAllowed() && !StrandedMultiplayerGameManager.qnEncountered
             && StrandedMultiplayerGameManager.currentTurn)
+        {
             StartCoroutine("RollDice");
-        //GetComponent<AudioSource>().Play();
+            GetComponent<AudioSource>().Play();
+        }       
     }
     /// <summary>
     /// A coroutine for rolling the dice. 

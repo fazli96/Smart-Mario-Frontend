@@ -24,8 +24,9 @@ public class StrandedQuestionManager : MonoBehaviour
     public GameObject wrongPanel; 
     public GameObject correctPanel; 
     public GameObject tooLatePanel;
-    //private static readonly string theoryUrl = "https://smart-mario-backend-1.herokuapp.com/api/questions/mcqtheory";
-    //private static readonly string codeUrl = "https://smart-mario-backend-1.herokuapp.com/api/questions/mcqcode";
+    public AudioSource questionEncounterSound;
+    public AudioSource questionCorrectSound;
+    public AudioSource questionWrongSound;
 
     private Coroutine coroutine;
     private QuestionStatus qnStatus = QuestionStatus.CORRECT;
@@ -147,6 +148,7 @@ public class StrandedQuestionManager : MonoBehaviour
     /// </summary>
     public void AskQuestion()
     {
+        questionEncounterSound.Play();
         SetQuestion();
         coroutine = StartCoroutine(Countdown());
         Debug.Log("After countdown");
@@ -190,16 +192,28 @@ public class StrandedQuestionManager : MonoBehaviour
         if (GameObject.Find("StrandedMultiplayerGameManager") != null)
         {
             if (qnStatus == QuestionStatus.CORRECT)
+            {
+                questionCorrectSound.Play();
                 StrandedMultiplayerGameStatus.instance.ScoreChange(500);
+            }  
             else
+            {
+                questionWrongSound.Play();
                 StrandedMultiplayerGameStatus.instance.ScoreChange(-500);
+            }   
         }
         else
         {
-            if (qnStatus == QuestionStatus.CORRECT)
-                StrandedGameStatus.instance.ScoreChange(500);
+            if (qnStatus == QuestionStatus.CORRECT) 
+            {
+                questionCorrectSound.Play();
+                StrandedGameStatus.instance.ScoreChange(500); 
+            }
             else
+            {
+                questionWrongSound.Play();
                 StrandedGameStatus.instance.ScoreChange(-500);
+            }  
         }
 
         // stop the countdown timer coroutine

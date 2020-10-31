@@ -13,6 +13,9 @@ public class WorldManager : MonoBehaviour
 
     public List<GameObject> characterPrefabs = new List<GameObject>();
     public List<GameObject> characterClones = new List<GameObject>();
+
+    public AudioSource world1Sound;
+    public AudioSource world2Sound;
     /// <summary>
     /// Get instance of SceneController once World Manager starts and sets the Player object according to player preference's selected player
     /// Attached the username of Student to the player Object
@@ -29,6 +32,10 @@ public class WorldManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        if (PlayerPrefs.GetInt("World", 1) == 1)
+            world1Sound.Play();
+        else
+            world2Sound.Play();
         scene = SceneController.GetSceneController();
         string username = PlayerPrefs.GetString("username", "1");
         int customChar = int.Parse(PlayerPrefs.GetString("customChar", "0"));

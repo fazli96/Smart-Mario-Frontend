@@ -10,6 +10,8 @@ public class DifficultySelectionManager : MonoBehaviour
 {
     public Text minigameNameText;
     private SceneController scene;
+    public AudioSource world1StrandedSound;
+    public AudioSource world2StrandedSound;
 
     /// <summary>
     /// This method is used for initialization to initialize the title of the page to the minigame selected
@@ -19,9 +21,15 @@ public class DifficultySelectionManager : MonoBehaviour
     {
         scene = SceneController.GetSceneController();
         if (PlayerPrefs.GetString("Minigame Selected").Equals("Stranded"))
+        {
+            if (PlayerPrefs.GetInt("World", 1) == 1)
+                world1StrandedSound.Play();
+            else
+                world2StrandedSound.Play();
             minigameNameText.text = "Welcome to World " + PlayerPrefs.GetInt("World") + " " + PlayerPrefs.GetString("Minigame Selected");
+        }
         else
-            minigameNameText.text = "Welcome to "+ PlayerPrefs.GetString("Minigame Selected");
+            minigameNameText.text = "Welcome to " + PlayerPrefs.GetString("Minigame Selected");
     }
 
     /// <summary>

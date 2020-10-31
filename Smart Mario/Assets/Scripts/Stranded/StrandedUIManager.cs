@@ -13,6 +13,9 @@ public class StrandedUIManager : MonoBehaviour
     public GameObject pausePanel;
     private bool isPaused;
     private SceneController scene;
+    public AudioSource world1StrandedSound;
+    public AudioSource world2StrandedSound;
+    public AudioSource pauseMenuSound;
 
     /// <summary>
     /// This is called before the first frame update to get the instance of scene Controller and to hide the pause menu on start
@@ -22,6 +25,11 @@ public class StrandedUIManager : MonoBehaviour
         scene = SceneController.GetSceneController();
         pausePanel.SetActive(false);
         isPaused = false;
+        if (PlayerPrefs.GetInt("World", 1) == 1)
+            world1StrandedSound.Play();
+        else
+            world2StrandedSound.Play();
+
     }
 
     /// <summary>
@@ -32,6 +40,7 @@ public class StrandedUIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && !StrandedGameManager.qnEncountered
             && !StrandedGameManager.levelComplete)
         {
+            pauseMenuSound.Play();
             if (!isPaused)
             {
                 isPaused = true;
@@ -42,7 +51,14 @@ public class StrandedUIManager : MonoBehaviour
                 isPaused = false;
                 pausePanel.SetActive(false);
             }
-        }   
+        }
+        if (StrandedGameManager.levelComplete)
+        {
+            if (PlayerPrefs.GetInt("World", 1) == 1)
+                world1StrandedSound.Stop();
+            else
+                world2StrandedSound.Stop();
+        }
     }
 
     /// <summary>

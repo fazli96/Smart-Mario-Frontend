@@ -29,8 +29,10 @@ public class RollTheDice : MonoBehaviour
         // and player is not encountering a question
         if (!StrandedGameManager.levelComplete && coroutineAllowed 
             && !StrandedGameManager.GetMoveAllowed() && !StrandedGameManager.qnEncountered)
-            StartCoroutine("RollDice");
-            //GetComponent<AudioSource>().Play();
+        {
+            StartCoroutine("RollDice"); 
+            GetComponent<AudioSource>().Play();
+        } 
     }
     /// <summary>
     /// A coroutine for rolling the dice. 

@@ -23,6 +23,7 @@ public class StrandedGameStatus : MonoBehaviour
     public GameObject saveResultsPanel, completeLvlPanel;
     public GameObject retryButton, ignoreButton;
     public Text saveStatusMsg;
+    public AudioSource errorSound;
 
     private static int targetScore;
     private static int currentScore;
@@ -204,9 +205,13 @@ public class StrandedGameStatus : MonoBehaviour
     /// </summary>
     private void ShowResultsNotSaved()
     {
+        errorSound.Play();
         completeLvlPanel.SetActive(false);
         saveResultsPanel.SetActive(true);
-        saveStatusMsg.text = "Unable to save results.\nClick 'retry' to try again\n\nNote: Clicking Ignore will not save your results";
+        saveStatusMsg.text = "Unable to save your results\n" +
+            "Please check your connection\n" +
+            "Click 'retry' to try again\n\n" +
+            "Note: Clicking Ignore will not save your results";
         retryButton.SetActive(true);
         ignoreButton.SetActive(true);
     }

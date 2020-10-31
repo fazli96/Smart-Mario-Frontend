@@ -10,13 +10,33 @@ using UnityEngine.UI;
 public class StrandedMultiplayerUIManager : MonoBehaviour
 {
     private SceneController scene;
+    public AudioSource world1StrandedSound;
+    public AudioSource world2StrandedSound;
 
     /// <summary>
     /// This is called before the first frame update to get the instance of scene Controller
     /// </summary>
     void Start()
     {
+        if (PlayerPrefs.GetInt("World", 1) == 1)
+            world1StrandedSound.Play();
+        else
+            world2StrandedSound.Play();
         scene = SceneController.GetSceneController();
+    }
+
+    /// <summary>
+    /// This is to stop playing the sound when the game is completed.
+    /// </summary>
+    void Update()
+    {
+        if (StrandedMultiplayerGameManager.levelComplete)
+        {
+            if (PlayerPrefs.GetInt("World", 1) == 1)
+                world1StrandedSound.Stop();
+            else
+                world2StrandedSound.Stop();
+        }
     }
 
     /// <summary>
