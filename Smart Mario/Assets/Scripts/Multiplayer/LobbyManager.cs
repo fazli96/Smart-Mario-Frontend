@@ -198,7 +198,7 @@ public class LobbyManager : MonoBehaviour
     {
         if (roomName.Equals("") || roomCapacity.Equals(""))
         {
-            return "Room Name/Room Capacity/Player Name cannot be empty";
+            return "Room Name/Room Capacity cannot be empty";
         }
         else if (roomName.Length < 5)
         {
