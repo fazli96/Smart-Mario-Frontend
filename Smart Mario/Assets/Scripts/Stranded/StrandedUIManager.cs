@@ -11,7 +11,6 @@ public class StrandedUIManager : MonoBehaviour
 {
 
     public GameObject pausePanel;
-    public GameObject rulesPanel;
     private bool isPaused;
     private SceneController scene;
 

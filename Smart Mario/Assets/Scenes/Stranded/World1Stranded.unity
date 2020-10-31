@@ -40542,18 +40542,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 916161953}
-    - target: {fileID: 2198350546699353677, guid: de77958dde1f0b944af51a236e8ed0e4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnClickOption1
-      objectReference: {fileID: 0}
     - target: {fileID: 2685689372516392865, guid: de77958dde1f0b944af51a236e8ed0e4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 916161953}
-    - target: {fileID: 2685689372516392865, guid: de77958dde1f0b944af51a236e8ed0e4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnClickOption4
-      objectReference: {fileID: 0}
     - target: {fileID: 3923890811328369255, guid: de77958dde1f0b944af51a236e8ed0e4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -40642,10 +40634,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 916161953}
-    - target: {fileID: 5086230479481187430, guid: de77958dde1f0b944af51a236e8ed0e4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnClickOption3
-      objectReference: {fileID: 0}
     - target: {fileID: 5407580697045167890, guid: de77958dde1f0b944af51a236e8ed0e4, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0
@@ -40702,10 +40690,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 916161953}
-    - target: {fileID: 9117415833169547510, guid: de77958dde1f0b944af51a236e8ed0e4, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnClickOption2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de77958dde1f0b944af51a236e8ed0e4, type: 3}
 --- !u!224 &1069329635 stripped

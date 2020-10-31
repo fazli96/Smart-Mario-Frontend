@@ -21,6 +21,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
 
     public GameObject dice;
     public GameObject resultsPanel, surpriseQuestionPanel;
+    public Text levelText;
     public GameObject leaveGameButton;
     public GameObject questionBarrelPrefab;
     public List<GameObject> characterMinigamePrefabs = new List<GameObject>();
@@ -68,6 +69,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
 
         resultsPanel.SetActive(false);
         surpriseQuestionPanel.SetActive(false);
+        levelText.text = "Level " + PlayerPrefs.GetInt("MinigameLevel", 1);
 
         // spawn player and attached player name to gameObject
         // initialize networking variables in player gameObject

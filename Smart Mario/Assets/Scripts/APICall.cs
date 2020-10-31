@@ -239,41 +239,6 @@ public class APICall
         UnityEngine.Debug.Log(convertedStr);
         StatisticsManager.instance.GetComponent<StatisticsManager>().ResultsRetrieved(convertedStr);
     }
-    /// <summary>
-    /// Creates an IEnumerator for coroutines that is used for retrieving game questions for Student via a Get request
-    /// </summary>
-    /// <param name="url"></param>
-    /// <returns></returns>
-    public IEnumerator AllQuestionsGetRequest(string url)
-    { 
-        UnityEngine.Debug.Log(url);
-        var request = new UnityWebRequest(url, "GET");
-        // byte[] bodyRaw = new System.Text.UTF8Encoding().GetBytes(bodyJsonString);
-        //  request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        // request.SetRequestHeader("Content-Type", "application/json");
-        request.chunkedTransfer = false;
-        UnityEngine.Debug.Log("Before!");
-        yield return request.SendWebRequest();
-        string convertedStr = Encoding.UTF8.GetString(request.downloadHandler.data, 0, request.downloadHandler.data.Length);
-        UnityEngine.Debug.Log(convertedStr);
-        UnityEngine.Debug.Log("After!");
-        //if (GameObject.Find("QuestionManager") != null)
-        //{
-        //    //questionManager questionManager = GameObject.Find("QuestionManager").GetComponent<questionManager>();
-        //    UnityEngine.Debug.Log("Success in finding QuestionManager!");
-        //    //questionManager.QuestionsRetrieved(convertedStr);
-        //}
-        //else if (GameObject.Find("StrandedQuestionManager") != null)
-        //{
-        //    //StrandedQuestionManager.instance.QuestionsRetrieved(convertedStr);
-        //    UnityEngine.Debug.Log("Success in finding StrandedQuestionManager!");
-        //}
-        //else
-        //{
-        //    UnityEngine.Debug.Log("Unable to find questionManager");
-        //}
-    }
 
     /// <summary>
     /// Creates an IEnumerator for coroutines that is used for retrieving game questions for Student via a Get request

@@ -102,7 +102,7 @@ public class StrandedGameStatus : MonoBehaviour
         scoreText.text = "Score: " + currentScore + " / " + targetScore;
         if (currentScore >= targetScore)
         {
-            scoreText.color = Color.green;
+            scoreText.color = new Color(0f, 0.9f, 0f);
         }
         else
         {

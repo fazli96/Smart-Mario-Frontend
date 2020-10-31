@@ -9,8 +9,6 @@ using UnityEngine.UI;
 /// </summary>
 public class StrandedMultiplayerUIManager : MonoBehaviour
 {
-
-    public GameObject rulesPanel;
     private SceneController scene;
 
     /// <summary>
