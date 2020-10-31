@@ -94,7 +94,7 @@ public class PlayerPathMovement : MonoBehaviour {
             // when player is not moving for 10 frames, that means the player has stopped moving
             else 
             {
-                if (counter < 10)
+                if (counter < 30)
                     counter++;
             }
             // when player is confirmed to have stop moving, enable static player animation
