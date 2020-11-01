@@ -91,14 +91,14 @@ public class PlayerPathMovement : MonoBehaviour {
                 oldPosition = currentPosition;
                 counter = 0;
             }
-            // when player is not moving for 10 frames, that means the player has stopped moving
+            // when player is not moving for 50 frames, that means the player has stopped moving
             else 
             {
-                if (counter < 30)
+                if (counter < 50)
                     counter++;
             }
             // when player is confirmed to have stop moving, enable static player animation
-            if (counter >= 10)
+            if (counter >= 50)
                 anim.SetDirection(new Vector2(0, 0));
         }
         

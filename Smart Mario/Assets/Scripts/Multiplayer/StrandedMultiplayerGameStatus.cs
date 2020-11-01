@@ -76,43 +76,10 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
         }
         players = new List<string>();
 
-        int level = PlayerPrefs.GetInt("MinigameLevel", 1);
-        switch (level)
-        {
-            case 1:
-                currentScore1 = 1000;
-                currentScore2 = 1000;
-                currentScore3 = 1000;
-                currentScore4 = 1000;
-                break;
-            case 2:
-                currentScore1 = 1500;
-                currentScore2 = 1500;
-                currentScore3 = 1500;
-                currentScore4 = 1500;
-                break;
-            case 3:
-                currentScore1 = 2000;
-                currentScore2 = 2000;
-                currentScore3 = 2000;
-                currentScore4 = 2000;
-                break;
-            case 4:
-                currentScore1 = 2500;
-                currentScore2 = 2500;
-                currentScore3 = 2500;
-                currentScore4 = 2500;
-                break;
-            case 5:
-                currentScore1 = 3000;
-                currentScore2 = 3000;
-                currentScore3 = 3000;
-                currentScore4 = 3000;
-                break;
-            default:
-                break;
-        }
-
+        currentScore1 = 0;
+        currentScore2 = 0;
+        currentScore3 = 0;
+        currentScore4 = 0;
         qnsAttempted1 = 0;
         qnsAttempted2 = 0;
         qnsAttempted3 = 0;

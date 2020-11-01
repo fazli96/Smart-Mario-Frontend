@@ -426,7 +426,7 @@ public class NetworkManager : MonoBehaviour
         {
             return;
         }
-        GameObject p = Instantiate(players[customChar], position, Quaternion.identity);
+        GameObject p = Instantiate(players[otherUserJSON.customChar], position, Quaternion.identity);
         PlayerMovement pm = p.GetComponent<PlayerMovement>();
         Transform t = p.transform.Find("Player Name Canvas");
         Transform t1 = t.transform.Find("Player Name");
@@ -455,7 +455,7 @@ public class NetworkManager : MonoBehaviour
         {
             return;
         }
-        GameObject p = Instantiate(playersMinigame[customChar], StrandedMultiplayerGameManager.instance.GetStartWayPoint().transform.position, Quaternion.identity) as GameObject;
+        GameObject p = Instantiate(playersMinigame[otherUserJSON.customChar], StrandedMultiplayerGameManager.instance.GetStartWayPoint().transform.position, Quaternion.identity) as GameObject;
         PlayerPathMovement pm = p.GetComponent<PlayerPathMovement>();
         Transform t = p.transform.Find("Player Name Canvas");
         Transform t1 = t.transform.Find("Player Name");
@@ -573,7 +573,7 @@ public class NetworkManager : MonoBehaviour
         string data = socketIOEvent.data.ToString();
         UserJSON currentUserJSON = UserJSON.CreateFromJSON(data);
         Vector3 position = new Vector3(currentUserJSON.position[0], currentUserJSON.position[1], currentUserJSON.position[2]);
-        GameObject p = Instantiate(players[customChar], position, Quaternion.identity) as GameObject;
+        GameObject p = Instantiate(players[currentUserJSON.customChar], position, Quaternion.identity) as GameObject;
         PlayerMovement pm = p.GetComponent<PlayerMovement>();
         Transform t = p.transform.Find("Player Name Canvas");
         Transform t1 = t.transform.Find("Player Name");

@@ -130,7 +130,6 @@ public class StrandedGameStatus : MonoBehaviour
             gameOverScoreText.text = "Score: " + currentScore + " / " + targetScore;
             gameOverQnsAttemptedText.text = "Qns Attempted: " + qnsAttempted;
             gameOverQnsAnsweredCorrectlyText.text = "Qns Answered Correctly: " + qnsAnsweredCorrectly;
-            SaveResults();
             return false;
         }
     }
