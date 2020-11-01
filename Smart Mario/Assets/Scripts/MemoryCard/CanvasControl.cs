@@ -18,6 +18,8 @@ public class CanvasControl : MonoBehaviour
     GameObject GameManager;
 
     public static CanvasControl instance;
+    public Animator animator;
+
     /// <summary>
     /// This is called before the first frame to initialise the singleton
     /// </summary>
@@ -39,7 +41,6 @@ public class CanvasControl : MonoBehaviour
     /// 
     void Start()
     {
-        
         canvas = GetComponent<Canvas>();
         GameManager = GameObject.Find("GameManager");
         scene = SceneController.GetSceneController();
@@ -59,7 +60,7 @@ public class CanvasControl : MonoBehaviour
             {
                 isPaused = true;
                 pausePanel.SetActive(true);
-                Time.timeScale = 0;
+                //Time.timeScale = 0;
                 GameManager.GetComponent<Game2Control>().changePauseState();
                 Debug.Log("Pause panel");
             }
@@ -68,7 +69,7 @@ public class CanvasControl : MonoBehaviour
                 isPaused = false;
                 pausePanel.SetActive(false);
                 GameManager.GetComponent<Game2Control>().changePauseState();
-                Time.timeScale = 1;
+                //Time.timeScale = 1;
             }
             Debug.Log("Esc pressed");
         }
@@ -78,16 +79,36 @@ public class CanvasControl : MonoBehaviour
     /// </summary>
     public void ToWorld()
     {
-        if (PlayerPrefs.GetInt("World", 1) == 1)
-            scene.PlayWorld1();
-        else
-            scene.PlayWorld2();
+        StartCoroutine(LoadWorldAfterTransition());
+        
     }
+    IEnumerator LoadWorldAfterTransition()
+    {
+        if (PlayerPrefs.GetInt("World", 1) == 1)
+        {
+            animator.SetTrigger("FadeOut");
+            yield return new WaitForSeconds(1f);
+            scene.PlayWorld1();
+        }
+        else
+        {
+            animator.SetTrigger("FadeOut");
+            yield return new WaitForSeconds(1f);
+            scene.PlayWorld2();
+        }
+    }
+
     /// <summary>
     /// This method is called when the 'Level Selection'button is pressed
     /// </summary>
     public void ToLevelSelection()
     {
+        StartCoroutine(LoadLevelSelectAfterTransition());
+    }
+    IEnumerator LoadLevelSelectAfterTransition()
+    {
+        animator.SetTrigger("FadeOut");
+        yield return new WaitForSeconds(1f);
         scene.ToLevelSelection();
     }
     /// <summary>
@@ -95,9 +116,15 @@ public class CanvasControl : MonoBehaviour
     /// </summary>
     public void RestartLevel()
     {
+        StartCoroutine(LoadRestartAfterTransition());
+    }
+    IEnumerator LoadRestartAfterTransition()
+    {
+        animator.SetTrigger("FadeOut");
+        yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    
+
     /// <summary>
     /// This class instantiates text that shows a match between two cards
     /// </summary>

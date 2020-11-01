@@ -46,6 +46,7 @@ public class MatchingGameStatus : MonoBehaviour
         }
         time = 0;
         paused = true;
+        saveResultsPanel.SetActive(false);
     }
     /// <summary>
     /// This method is called during every frame update to keep track of the time taken in the game 

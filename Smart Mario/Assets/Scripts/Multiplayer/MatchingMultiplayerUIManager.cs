@@ -15,6 +15,7 @@ public class MatchingMultiplayerUIManager : MonoBehaviour
     GameObject GameManager;
 
     public static MatchingMultiplayerUIManager instance;
+    public Animator animator;
 
     /// <summary>
     /// This is called at the start of initialisation
@@ -63,6 +64,12 @@ public class MatchingMultiplayerUIManager : MonoBehaviour
     /// </summary>
     public void ToMultiplayerLobby()
     {
+        StartCoroutine(LoadLobbyAfterTransition());
+    }
+    IEnumerator LoadLobbyAfterTransition()
+    {
+        animator.SetTrigger("FadeOut");
+        yield return new WaitForSeconds(1f);
         NetworkManager.instance.GetComponent<NetworkManager>().CommandLeaveChallenge();
     }
 }
