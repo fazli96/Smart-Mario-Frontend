@@ -7,6 +7,7 @@ TagManager:
   - SelectedPlayer
   - WayPoint
   - Dynamic Message
+  - Music
   layers:
   - Default
   - TransparentFX

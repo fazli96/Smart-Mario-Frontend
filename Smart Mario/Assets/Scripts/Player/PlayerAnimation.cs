@@ -15,7 +15,7 @@ public class PlayerAnimation : MonoBehaviour
     public bool isMoving;
 
     // ensure the player is facing south immediately after spawning
-    int lastDirection = 4;
+    int lastDirection = 0;
 
     /// <summary>
     /// This is called to initialize the player animation to the correct character animation

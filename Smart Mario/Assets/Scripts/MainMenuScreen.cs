@@ -69,6 +69,7 @@ public class MainMenuScreen : MonoBehaviour
     /// </summary>
     public void MultiplayerScreen()
     {
+        GameObject.FindGameObjectWithTag("Music").GetComponent<ContinuousMusic>().StopMusic();
         scene.ToMultiplayerLobby();
     }
     /// <summary>

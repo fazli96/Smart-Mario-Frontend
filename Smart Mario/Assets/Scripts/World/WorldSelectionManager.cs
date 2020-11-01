@@ -27,6 +27,7 @@ public class WorldSelectionManager : MonoBehaviour
     public void SelectWorld1()
     {
         PlayerPrefs.SetInt("World", 1);
+        GameObject.FindGameObjectWithTag("Music").GetComponent<ContinuousMusic>().StopMusic();
         scene.PlayWorld1();
     }
     /// <summary>
@@ -35,6 +36,7 @@ public class WorldSelectionManager : MonoBehaviour
     public void SelectWorld2()
     {
         PlayerPrefs.SetInt("World", 2);
+        GameObject.FindGameObjectWithTag("Music").GetComponent<ContinuousMusic>().StopMusic();
         scene.PlayWorld2();
     }
     /// <summary>

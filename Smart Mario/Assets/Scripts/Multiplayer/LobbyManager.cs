@@ -68,6 +68,7 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void BackToMainMenu()
     {
+        GameObject.FindGameObjectWithTag("Music").GetComponent<ContinuousMusic>().PlayMusic();
         scene.ToMainMenu();
     }
 

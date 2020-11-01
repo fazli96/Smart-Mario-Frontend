@@ -32,17 +32,25 @@ public class WorldManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        Vector3 spawnPoint = new Vector3(0f, 0f, 0f);
+
         if (PlayerPrefs.GetInt("World", 1) == 1)
+        {
             world1Sound.Play();
+            spawnPoint = new Vector3(0f, -3f, 0f);
+        }   
         else
+        {
             world2Sound.Play();
+            spawnPoint = new Vector3(0f, -0.8f, 0f);
+        }
+            
         scene = SceneController.GetSceneController();
         string username = PlayerPrefs.GetString("username", "1");
         int customChar = int.Parse(PlayerPrefs.GetString("customChar", "0"));
         
         characterClones[customChar] = Instantiate(characterPrefabs[customChar],
-        characterClones[customChar].transform.position,
-        Quaternion.Euler(0, 0, 0)) as GameObject;
+            spawnPoint, Quaternion.Euler(0, 0, 0)) as GameObject;
         Transform CloneTransform = characterClones[customChar].transform.Find("Player Name Canvas");
         Transform CloneTransform1 = CloneTransform.transform.Find("Player Name");
         Text playerName = CloneTransform1.GetComponent<Text>();
@@ -80,6 +88,7 @@ public class WorldManager : MonoBehaviour
     /// </summary>
     public void ToWorldSelection()
     {
+        GameObject.FindGameObjectWithTag("Music").GetComponent<ContinuousMusic>().PlayMusic();
         scene.ToWorldSelection();
     }
 }
