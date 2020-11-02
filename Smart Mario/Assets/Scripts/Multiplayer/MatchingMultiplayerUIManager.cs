@@ -16,6 +16,8 @@ public class MatchingMultiplayerUIManager : MonoBehaviour
 
     public static MatchingMultiplayerUIManager instance;
     public Animator animator;
+    public AudioSource world1MatchingSound;
+    public AudioSource world2MatchingSound;
 
     /// <summary>
     /// This is called at the start of initialisation
@@ -40,6 +42,10 @@ public class MatchingMultiplayerUIManager : MonoBehaviour
     {
         canvas = GetComponent<Canvas>();
         scene = SceneController.GetSceneController();
+        if (PlayerPrefs.GetString("Minigame Selected", "World 1 Matching Cards") == "World 1 Matching Cards")
+            world1MatchingSound.Play();
+        else
+            world2MatchingSound.Play();
     }
 
    
