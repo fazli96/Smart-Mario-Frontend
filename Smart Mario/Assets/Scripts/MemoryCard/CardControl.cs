@@ -32,6 +32,7 @@ public class CardControl : MonoBehaviour
                     if (MatchingMultiplayerGameManager.instance.TwoCards() == false) //if less than two cards have been flipped up
                     {
                         spriteRenderer.sprite = open;               //reveal the inside sprite 
+                        MatchingMultiplayerGameManager.instance.PlayOpenSound();
                         Debug.Log("Face index is " + faceIndex);
                         MatchingMultiplayerGameManager.instance.AddVisibleFace(faceIndex, qOrA);   //add the index of the face of this card to arr
                         matched = MatchingMultiplayerGameManager.instance.CheckMatch();     //check if got match 
@@ -45,6 +46,7 @@ public class CardControl : MonoBehaviour
                 else
                 {
                     spriteRenderer.sprite = back;   //flip back the card onto backside
+                    MatchingMultiplayerGameManager.instance.PlayCloseSound();
                     MatchingMultiplayerGameManager.instance.RemoveVisibleFace(faceIndex);  //remove the face
 
                 }
@@ -56,6 +58,7 @@ public class CardControl : MonoBehaviour
                     if (GameControl.GetComponent<Game2Control>().TwoCards() == false) //if less than two cards have been flipped up
                     {
                         spriteRenderer.sprite = open;               //reveal the inside sprite 
+                        Game2Control.instance.PlayOpenSound();
                         Debug.Log("Face index is " + faceIndex);
                         GameControl.GetComponent<Game2Control>().AddVisibleFace(faceIndex, qOrA);   //add the index of the face of this card to arr
                         matched = GameControl.GetComponent<Game2Control>().CheckMatch();     //check if got match 
@@ -69,6 +72,7 @@ public class CardControl : MonoBehaviour
                 else
                 {
                     spriteRenderer.sprite = back;   //flip back the card onto backside
+                    Game2Control.instance.PlayCloseSound();
                     GameControl.GetComponent<Game2Control>().RemoveVisibleFace(faceIndex);  //remove the face
 
                 }
@@ -103,6 +107,10 @@ public class CardControl : MonoBehaviour
     public void Hide()
     {
         spriteRenderer.sprite = back;
+        if (GameObject.Find("MatchingMultiplayerGameManager") == null)
+            Game2Control.instance.PlayCloseSound();
+        else 
+            MatchingMultiplayerGameManager.instance.PlayCloseSound();
     }
     /// <summary>
     /// This is called before the first frame update
