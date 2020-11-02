@@ -253,7 +253,7 @@ public class StrandedMultiplayerGameStatus : MonoBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
-            if (players[i].Equals(username))
+            if (players[i].Equals(username) && !StrandedMultiplayerGameManager.levelComplete)
             {
                 switch (i)
                 {
