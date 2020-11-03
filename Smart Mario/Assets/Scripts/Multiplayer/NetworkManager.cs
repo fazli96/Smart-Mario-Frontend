@@ -215,7 +215,10 @@ public class NetworkManager : MonoBehaviour
         socket.Emit("disconnect");
     }
 
-
+    /// <summary>
+    /// This method is called when the owner enter the minigame 2
+    /// It alerts other players and transports them to the new scenes
+    /// </summary>
     public void CommandMinigame2Enter()
     {
         Debug.Log("Emit minigame2 connect");
@@ -225,11 +228,13 @@ public class NetworkManager : MonoBehaviour
         socket.Emit("minigame connect", new JSONObject(data));
         socket.Emit("minigame2 enter");
     }
-
+    /// <summary>
+    /// This method is called when the owner starts the second minigame
+    /// It emits a message to other players to commence the countdown
+    /// </summary>
     public void CommandMinigame2Start()
     {
         Debug.Log("Emit minigame2 start");
-        //
         socket.Emit("minigame2 start");
     }
 
@@ -323,19 +328,28 @@ public class NetworkManager : MonoBehaviour
         // send websocket event to server to indicate that the player has reached the ending hence has completed the level
         socket.Emit("end game");
     }
+    /// <summary>
+    /// This method is called when one player answers all the question cards
+    /// It alerts other players that the game has ended, and to stop the gameplay for everyone
+    /// </summary>
     public void CommandEndGame2()
     {
         print("end game");
         // send websocket event to server to indicate that the player has reached the ending hence has completed the level
         socket.Emit("end game2");
     }
-
+    /// <summary>
+    /// This method is called when one player matches a card
+    /// It displays the matched action to other players so that they are able to gauge the progress of others
+    /// </summary>
+    /// <param name="pairsLeft"></param>
     public void CommandMatchedCard(int pairsLeft)
     {
         print("Matched a card");
         string data = JsonUtility.ToJson(new OneIntVariableJSON(pairsLeft));
         socket.Emit("matched card", new JSONObject(data));
     }
+
 
     #endregion
 
@@ -357,6 +371,11 @@ public class NetworkManager : MonoBehaviour
             StrandedMultiplayerGameManager.instance.ShowDice();
         }
     }
+    /// <summary>
+    /// This is a listener that listens for websocket event where a non-local owner has entered minigame
+    /// It prompts the local player to enter the minigame as well
+    /// </summary>
+    /// <param name="socketIOEvent"></param>
     void OnMinigame2Enter(SocketIOEvent socketIOEvent)
     {
         print("minigame2 enter");
@@ -365,6 +384,11 @@ public class NetworkManager : MonoBehaviour
         else
             scene.ToWorld2MatchingMultiplayer();
     }
+    /// <summary>
+    /// This is a listener that listens for websocket event where a non-local owner has started minigame
+    /// It commences the countdown before the start of the game
+    /// </summary>
+    /// <param name="socketIOEvent"></param>
     void OnMinigame2Start(SocketIOEvent socketIOEvent)
     {
         print("minigame2 started");
@@ -542,11 +566,15 @@ public class NetworkManager : MonoBehaviour
         StrandedMultiplayerGameManager.instance.GameComplete();
 
     }
-
+    /// <summary>
+    /// This is a listener that listens for websocket event to end the minigame 
+    /// The game results panel will appear and indicate whether player has won the game or not
+    /// </summary>
+    /// <param name="socketIOEvent"></param>
     void OnEndGame2(SocketIOEvent socketIOEvent)
     {
         print("end game");
-        MatchingMultiplayerGameStatus.instance.WinLevel();
+        MatchingMultiplayerGameStatus.instance.EndLevel(false);
     }
 
     /// <summary>

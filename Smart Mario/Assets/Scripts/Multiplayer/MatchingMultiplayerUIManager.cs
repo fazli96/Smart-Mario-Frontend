@@ -72,6 +72,10 @@ public class MatchingMultiplayerUIManager : MonoBehaviour
     {
         StartCoroutine(LoadLobbyAfterTransition());
     }
+    /// <summary>
+    /// This creates a coroutine for loading the lobby after the scene transition 
+    /// </summary>
+    /// <returns></returns>
     IEnumerator LoadLobbyAfterTransition()
     {
         animator.SetTrigger("FadeOut");
