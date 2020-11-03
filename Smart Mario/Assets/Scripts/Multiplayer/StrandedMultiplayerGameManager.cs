@@ -65,7 +65,7 @@ public class StrandedMultiplayerGameManager : MonoBehaviour
         questionBarrels.Clear();
 
         // the last number 999 is to ensure that the mandatory question list is never null
-        mandatoryQuestionList = new List<int>() { 30, 60, 90, 999 };
+        mandatoryQuestionList = new List<int>() { 20, 60, 90, 999 };
 
         resultsPanel.SetActive(false);
         surpriseQuestionPanel.SetActive(false);
