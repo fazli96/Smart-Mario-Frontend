@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 /// <summary>
-/// This class controls the behavior of the canvas  
+/// This class controls the behavior of the canvas  for the Single Player Session
 /// </summary>
 public class CanvasControl : MonoBehaviour
 {
@@ -99,6 +99,10 @@ public class CanvasControl : MonoBehaviour
         StartCoroutine(LoadWorldAfterTransition());
         
     }
+    /// <summary>
+    /// Starts a coroutine for scene transition animation
+    /// </summary>
+    /// <returns>WaitForSeconds</returns>
     IEnumerator LoadWorldAfterTransition()
     {
         if (PlayerPrefs.GetInt("World", 1) == 1)
@@ -122,6 +126,10 @@ public class CanvasControl : MonoBehaviour
     {
         StartCoroutine(LoadLevelSelectAfterTransition());
     }
+    /// <summary>
+    /// Starts a coroutine for scene transition animation
+    /// </summary>
+    /// <returns>WaitForSeconds</returns>
     IEnumerator LoadLevelSelectAfterTransition()
     {
         animator.SetTrigger("FadeOut");
@@ -135,6 +143,10 @@ public class CanvasControl : MonoBehaviour
     {
         StartCoroutine(LoadRestartAfterTransition());
     }
+    /// <summary>
+    /// Starts a coroutine for scene transition animation
+    /// </summary>
+    /// <returns>WaitForSeconds</returns>
     IEnumerator LoadRestartAfterTransition()
     {
         animator.SetTrigger("FadeOut");
@@ -155,6 +167,5 @@ public class CanvasControl : MonoBehaviour
                 350, -100),
                 Quaternion.identity);
         two.transform.SetParent(canvas.transform, false);
-        
     }
 }
