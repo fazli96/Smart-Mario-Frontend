@@ -720,6 +720,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 893589916}
     m_Modifications:
+    - target: {fileID: 280301679247062168, guid: 638709f6da3009b46ad460fef093fa36, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 578512744937876287, guid: 638709f6da3009b46ad460fef093fa36, type: 3}
       propertyPath: m_Name
       value: RulesPanel2

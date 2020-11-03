@@ -202,7 +202,7 @@ public class Game2Control : MonoBehaviour
     IEnumerator WrongCards()
     {
         Debug.Log(Time.time);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4f);
         Debug.Log(Time.time);
         if (TwoCards())
         {
