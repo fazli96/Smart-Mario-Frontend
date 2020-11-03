@@ -19,13 +19,11 @@ public class CanvasControl : MonoBehaviour
 
     public static CanvasControl instance;
     public Animator animator;
-    public AudioSource world1MatchingSound;
-    public AudioSource world2MatchingSound;
-    public AudioSource pauseMenuSound;
 
     /// <summary>
     /// This is called before the first frame to initialise the singleton
     /// </summary>
+    /// 
     void Awake()
     {
         if (instance == null)
@@ -48,11 +46,6 @@ public class CanvasControl : MonoBehaviour
         scene = SceneController.GetSceneController();
         pausePanel.SetActive(false);
         isPaused = false;
-        if (PlayerPrefs.GetInt("World", 1) == 1)
-            world1MatchingSound.Play();
-        else
-            world2MatchingSound.Play();
-
     }
     /// <summary>
     /// Update is called once per frame
@@ -61,9 +54,8 @@ public class CanvasControl : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !MatchingGameStatus.instance.gameComplete && Game2Control.instance.start)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            pauseMenuSound.Play();
             if (!isPaused)
             {
                 isPaused = true;
@@ -71,11 +63,6 @@ public class CanvasControl : MonoBehaviour
                 //Time.timeScale = 0;
                 GameManager.GetComponent<Game2Control>().changePauseState();
                 Debug.Log("Pause panel");
-                if (PlayerPrefs.GetInt("World", 1) == 1)
-                    world1MatchingSound.Pause();
-                else
-                    world2MatchingSound.Pause();
-
             }
             else
             {
@@ -83,10 +70,6 @@ public class CanvasControl : MonoBehaviour
                 pausePanel.SetActive(false);
                 GameManager.GetComponent<Game2Control>().changePauseState();
                 //Time.timeScale = 1;
-                if (PlayerPrefs.GetInt("World", 1) == 1)
-                    world1MatchingSound.Play();
-                else
-                    world2MatchingSound.Play();
             }
             Debug.Log("Esc pressed");
         }

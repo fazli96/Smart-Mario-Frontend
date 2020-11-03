@@ -12,7 +12,6 @@ public class StrandedMultiplayerUIManager : MonoBehaviour
     private SceneController scene;
     public AudioSource world1StrandedSound;
     public AudioSource world2StrandedSound;
-    public Animator animator;
 
     /// <summary>
     /// This is called before the first frame update to get the instance of scene Controller
@@ -46,14 +45,6 @@ public class StrandedMultiplayerUIManager : MonoBehaviour
     /// </summary>
     public void ToMultiplayerLobby()
     {
-        StartCoroutine(LoadLobbyAfterTransition());
-    }
-    IEnumerator LoadLobbyAfterTransition()
-    {
-        animator.SetTrigger("FadeOut");
-        yield return new WaitForSeconds(1f);
         NetworkManager.instance.GetComponent<NetworkManager>().CommandLeaveChallenge();
     }
-    
-    
 }

@@ -37,11 +37,6 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
 
     public static MatchingMultiplayerGameManager instance;
 
-    public AudioSource cardMatchingSound;
-    public AudioSource cardOpenSound;
-    public AudioSource cardCloseSound;
-    public AudioSource winLevelSound;
-
     public int scoreValue;
     /// <summary>
     /// Called at the start of script initialisation
@@ -227,7 +222,6 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
     public void ShowMatch(int index)
     {
         canvas.GetComponent<MatchingMultiplayerUIManager>().ShowMatch();
-        PlayMatchSound();
         Debug.LogError("Matched a card!");
         score.GetComponent<UnityEngine.UI.Text>().text = "Pairs left: " + scoreValue;
         StartCoroutine(RightCards(index));
@@ -251,7 +245,6 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         disable = false;
         if (scoreValue == 0)
         {
-            PlayWinSound();
             NetworkManager.instance.GetComponent<NetworkManager>().CommandEndGame2();
             MatchingMultiplayerGameStatus.instance.WinLevel();
         }
@@ -321,22 +314,6 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         leaveGameButton.SetActive(false);
         finishPanel.SetActive(true);
 
-    }
-    public void PlayMatchSound()
-    {
-        cardMatchingSound.Play();
-    }
-    public void PlayOpenSound()
-    {
-        cardOpenSound.Play();
-    }
-    public void PlayCloseSound()
-    {
-        cardCloseSound.Play();
-    }
-    public void PlayWinSound()
-    {
-        winLevelSound.Play();
     }
 
 

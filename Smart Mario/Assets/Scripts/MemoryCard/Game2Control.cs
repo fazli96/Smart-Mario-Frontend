@@ -16,7 +16,6 @@ public class Game2Control : MonoBehaviour
     GameObject canvas;
     public bool paused;
     public bool disable;
-    public bool start;
     int [] visibleFaces = new int[2];
     public GameObject finishText;
     public GameObject overlay;
@@ -31,11 +30,6 @@ public class Game2Control : MonoBehaviour
     public GameObject finishPanel;
 
     public static Game2Control instance;
-
-    public AudioSource cardMatchingSound;
-    public AudioSource cardOpenSound;
-    public AudioSource cardCloseSound;
-    public AudioSource winLevelSound;
 
     public int scoreValue;
     /// <summary>
@@ -66,7 +60,6 @@ public class Game2Control : MonoBehaviour
         scoreValue = cardManager.GetComponent<CardsManager>().pairs;
         paused = true;
         disable = false;
-        start = false;
         visibleFaces[0] = -1;
         visibleFaces[1] = -2;
         Debug.Log("Entering new game");
@@ -85,8 +78,6 @@ public class Game2Control : MonoBehaviour
     /// </summary>
     public void changePauseState()
     {
-        if (!start)
-            start = true;
         paused = !paused;
         MatchingGameStatus.instance.Pause(paused);
         Debug.Log("Paused " + paused);
@@ -146,9 +137,7 @@ public class Game2Control : MonoBehaviour
     public void ShowMatch(int index)
     {
         canvas.GetComponent<CanvasControl>().ShowMatch();
-        PlayMatchSound();
         StartCoroutine(RightCards(index));
-
     }
     /// <summary>
     /// Interface to set up a coroutine to delay hiding the questions after a match
@@ -166,10 +155,8 @@ public class Game2Control : MonoBehaviour
         questionManager.GetComponent<questionManager>().hideQuestion(1, true);
         questionManager.GetComponent<questionManager>().hideQuestion(2, true);
         disable = false;
-        
         if (scoreValue == 0)
         {
-            PlayWinSound();
             MatchingGameStatus.instance.WinLevel();
         }
     }
@@ -235,23 +222,6 @@ public class Game2Control : MonoBehaviour
 
         finishPanel.SetActive(true);
 
-    }
-
-    public void PlayMatchSound()
-    {
-        cardMatchingSound.Play();
-    }
-    public void PlayOpenSound()
-    {
-        cardOpenSound.Play();
-    }
-    public void PlayCloseSound()
-    {
-        cardCloseSound.Play();
-    }
-    public void PlayWinSound()
-    {
-        winLevelSound.Play();
     }
 
 

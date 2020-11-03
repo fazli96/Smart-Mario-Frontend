@@ -478,8 +478,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1382151889628025523}
   m_HandleRect: {fileID: 3289218099794532725}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1037,7 +1037,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 24beb3137afcd494fb2286f6dd0481b5, type: 3}
+    m_Font: {fileID: 12800000, guid: 652f7165b7c30ab46af6c4aad90a639b, type: 2}
     m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
@@ -1055,8 +1055,8 @@ MonoBehaviour:
     open it up and reveal the short description. Open up more chests to match the
     two descriptions together. A pair of descriptions have a <color=red>red </color>and
     a <color=blue>blue</color> card each. If the chests don't match, they will close.
-    Match all the pairs of descriptions to win. You will be judged based on accuracy
-    and speed.\n\n\nControls: \nLeft click on chest to reveal the description\nPress
+    Match all the pairs of descriptions to win. Try to take the shortest time possible
+    to match all the cards.\n\n\nControls: \nLeft click on chest to reveal the description\nPress
     the 'E' key to pause the game\n\n"
 --- !u!1 &6931576782782543244
 GameObject:
@@ -1323,7 +1323,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8551176228803561292}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.66108006
+  m_Size: 0.8055597
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
