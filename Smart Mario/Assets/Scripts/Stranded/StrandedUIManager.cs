@@ -16,6 +16,7 @@ public class StrandedUIManager : MonoBehaviour
     public AudioSource world1StrandedSound;
     public AudioSource world2StrandedSound;
     public AudioSource pauseMenuSound;
+    public Animator animator;
 
     /// <summary>
     /// This is called before the first frame update to get the instance of scene Controller and to hide the pause menu on start
@@ -66,27 +67,56 @@ public class StrandedUIManager : MonoBehaviour
     /// </summary>
     public void ToWorld()
     {
-        if (PlayerPrefs.GetInt("World", 1) == 1)
-            scene.PlayWorld1();
-        else
-            scene.PlayWorld2();
+        StartCoroutine(LoadWorldAfterTransition());
+
     }
+    IEnumerator LoadWorldAfterTransition()
+    {
+        if (PlayerPrefs.GetInt("World", 1) == 1)
+        {
+            animator.SetTrigger("FadeOut");
+            yield return new WaitForSeconds(1f);
+            scene.PlayWorld1();
+        }
+        else
+        {
+            animator.SetTrigger("FadeOut");
+            yield return new WaitForSeconds(1f);
+            scene.PlayWorld2();
+        }
+    }
+
 
     /// <summary>
     /// This method is called when the 'Level Selection'button is pressed
     /// </summary>
     public void ToLevelSelection()
     {
+        StartCoroutine(LoadLevelSelectAfterTransition());
+    }
+    IEnumerator LoadLevelSelectAfterTransition()
+    {
+        animator.SetTrigger("FadeOut");
+        yield return new WaitForSeconds(1f);
         scene.ToLevelSelection();
     }
+
 
     /// <summary>
     /// This method is called when the 'Restart Level'button is pressed
     /// </summary>
     public void RestartLevel()
     {
+        StartCoroutine(LoadRestartAfterTransition());
+    }
+    IEnumerator LoadRestartAfterTransition()
+    {
+        animator.SetTrigger("FadeOut");
+        yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+
 
     /// <summary>
     /// This method is called when the 'Next Level'button is pressed
@@ -116,6 +146,12 @@ public class StrandedUIManager : MonoBehaviour
             default:
                 break;
         }
+            StartCoroutine(LoadNextLevelAfterTransition(level, world));
+    }
+    IEnumerator LoadNextLevelAfterTransition(int level, int world)
+    {
+        animator.SetTrigger("FadeOut");
+        yield return new WaitForSeconds(1f);
         // if level 5 is completed, next level will direct player to level selection screen
         if (level == 5)
             scene.ToLevelSelection();
@@ -125,5 +161,6 @@ public class StrandedUIManager : MonoBehaviour
         else
             scene.ToWorld2Stranded();
     }
+    
 
 }

@@ -24,6 +24,8 @@ public class MatchingGameStatus : MonoBehaviour
     public Text saveStatusMsg;
     private bool paused;
 
+    public bool gameComplete;
+
 
     GameObject GameManager;
 
@@ -47,6 +49,7 @@ public class MatchingGameStatus : MonoBehaviour
         time = 0;
         paused = true;
         saveResultsPanel.SetActive(false);
+        gameComplete = false;
     }
     /// <summary>
     /// This method is called during every frame update to keep track of the time taken in the game 
@@ -103,6 +106,7 @@ public class MatchingGameStatus : MonoBehaviour
     public void WinLevel()
     {
         paused = true;
+        gameComplete = true;
         ComputeResults();
     }
     /// <summary>
