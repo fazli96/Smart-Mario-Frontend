@@ -2,10 +2,19 @@
 
 public class ContinuousMusic : MonoBehaviour
 {
+    public static ContinuousMusic instance;
     private AudioSource _audioSource;
     private void Awake()
     {
-        DontDestroyOnLoad(transform.gameObject);
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
         _audioSource = GetComponent<AudioSource>();
     }
 

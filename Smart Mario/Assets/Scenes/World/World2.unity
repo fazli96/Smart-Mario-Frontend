@@ -11932,6 +11932,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorldSounds
       objectReference: {fileID: 0}
+    - target: {fileID: 2186813908276847226, guid: 028b7481b332a2c418e6924439dea618, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7502050103822482411, guid: 028b7481b332a2c418e6924439dea618, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
