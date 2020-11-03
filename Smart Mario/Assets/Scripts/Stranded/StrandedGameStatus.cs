@@ -12,7 +12,6 @@ using UnityEngine.UI;
 /// </summary>
 public class StrandedGameStatus : MonoBehaviour
 {
-
     public Text scoreText;
     public Text completeLvlScoreText;
     public Text gameOverScoreText;

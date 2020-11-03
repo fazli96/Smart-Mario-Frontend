@@ -41,13 +41,6 @@ public class questionManager : MonoBehaviour
         qnsTwo.SetActive(false);
         panelOne.SetActive(false);
         panelTwo.SetActive(false);
-        //questionList.Clear();
-        //APICall apiCall = APICall.getAPICall();
-        //if (PlayerPrefs.GetInt("World", 1) == 1)
-        //    StartCoroutine(apiCall.AllQuestionsGetRequest(theoryUrl));
-        //else
-        //    StartCoroutine(apiCall.AllQuestionsGetRequest(codeUrl));
-        //clear the question list, useful for restart level
 
        questionList = new List<Question>();
 
@@ -83,34 +76,7 @@ public class questionManager : MonoBehaviour
         Debug.Log("No of Questions: " + questionList.Count);
 
     }
-    /// <summary>
-    /// This is called when the questions are loaded from the database
-    /// They stored in a list of JObjects
-    /// </summary>
-    /// <param name="result"></param>
-    //public void QuestionsRetrieved(string result)
-    //{
-    //    Debug.Log("inside qns manager");
-    //    var data = (JObject)JsonConvert.DeserializeObject(result);
-    //    JArray data2 = data["Question"].Value<JArray>();
-    //    Debug.Log("done!");
-    //    foreach (JObject questionObject in data2)
-    //    {
-    //        Debug.Log("question: " + questionObject);
-    //        //Question question1 = questionObject.ToObject<Question2>();
-    //        //Debug.Log(question1.option1);
-    //        //if (counter % 3 == difficulty)
-    //        //{
-    //            questionList.Add(questionObject);
-    //        //}
-    //        //counter++;
-    //    }
-    //    Debug.Log("DBResult: " + result);
-    //    Debug.Log("Questions" + data2);
-    //    ShuffleList.Shuffle(questionList);
  
-    //}
-
     /// <summary>
     /// This is called when there is a request for the questions to be shown, called when player clicks on cards 
     /// </summary>
@@ -179,11 +145,6 @@ public class questionManager : MonoBehaviour
     public void hideQuestion(int choice, bool fade)
     {
 
-        if (fade)
-        {
-
-            //StartCoroutine(WaitForSecond(1));
-        }
         if (choice == 1)
         {
             qnsOne.SetActive(false);
@@ -195,14 +156,6 @@ public class questionManager : MonoBehaviour
             panelTwo.SetActive(false);
         }
     }
-    ///// <summary>
-    ///// This delays the running of the code for a set amount of time
-    ///// </summary>
-    ///// <param name="time"></param>
-    ///// <returns>Wait for seconds</returns>
-    //IEnumerator WaitForSecond(float time)
-    //{
-    //    yield return new WaitForSeconds(time);
-    //}
+
     
 }

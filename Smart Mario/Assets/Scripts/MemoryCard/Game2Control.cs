@@ -236,19 +236,30 @@ public class Game2Control : MonoBehaviour
         finishPanel.SetActive(true);
 
     }
-
+    /// <summary>
+    /// This method is called to play card matched sounds 
+    /// </summary>
     public void PlayMatchSound()
     {
         cardMatchingSound.Play();
     }
+    /// <summary>
+    /// This method is called to play card opening sounds 
+    /// </summary>
     public void PlayOpenSound()
     {
         cardOpenSound.Play();
     }
+    /// <summary>
+    /// This method is called to play card closing sounds 
+    /// </summary>
     public void PlayCloseSound()
     {
         cardCloseSound.Play();
     }
+    /// <summary>
+    /// This method is called to play ending sound
+    /// </summary>
     public void PlayWinSound()
     {
         winLevelSound.Play();

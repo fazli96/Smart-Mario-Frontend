@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine.UI;
 
-
 /// <summary>
 /// /// This class is used for monitoring and managing the player's score, questions attempted and questions answered correctly
 /// and updating these results in the database in Single Player game session
@@ -254,7 +253,7 @@ public class MatchingGameStatus : MonoBehaviour
     {
         int worldSelected = PlayerPrefs.GetInt("World", 1);
         string minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Matching Cards");
-        string studentId = "1";
+        string studentId = PlayerPrefs.GetString("id", "1");
         int minigameId;
 
         if (worldSelected == 1)
@@ -273,10 +272,10 @@ public class MatchingGameStatus : MonoBehaviour
         }
         time =(float) Math.Round(time, 3);
         APICall apiCall = APICall.getAPICall();
-        Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + score + qnsAttempted + ", " + qnsAnsweredCorrectly + ", " +  time);
+        //Debug.LogError(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + score + qnsAttempted + ", " + qnsAnsweredCorrectly + ", " +  time);
         Results result = new Results(studentId, minigameId, difficulty, currentLevel, score, qnsAttempted, qnsAnsweredCorrectly, time);
         string bodyJsonString = apiCall.saveToJSONString(result);
-        StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));
+        StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString));
         Debug.Log("Sucess");
     }
 

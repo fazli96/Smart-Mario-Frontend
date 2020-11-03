@@ -10,6 +10,7 @@ public class TeacherMenuManager : MonoBehaviour
 
     private SceneController scene;
 
+    public Text teacherIDMessage;
     public Text welcomeMessage;
     public Button studentPerformanceButton;
     public Button assignTaskButton;
@@ -35,6 +36,7 @@ public class TeacherMenuManager : MonoBehaviour
         apiCall = APICall.getAPICall();
         scene = SceneController.GetSceneController();
         teacherID = PlayerPrefs.GetString("teacherId");
+        teacherIDMessage.text = "ID: " + teacherID;
         welcomeMessage.text = "Welcome " + PlayerPrefs.GetString("username") + "!";
     }
 

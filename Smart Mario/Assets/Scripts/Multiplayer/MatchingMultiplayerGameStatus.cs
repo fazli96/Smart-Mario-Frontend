@@ -6,7 +6,10 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine.UI;
-
+/// <summary>
+/// This class is used for monitoring and managing the player's questions attempted, answered correctly, and computes the end score
+/// and updates these results in the database for a Multiplayer game session
+/// </summary>
 public class MatchingMultiplayerGameStatus : MonoBehaviour
 {
     //public Text timeText;
@@ -92,16 +95,16 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
     /// This method is called when the player completes all the pairs
     /// It calls another method to compute the score and store it via a post request
     /// </summary>
-    public void WinLevel()
+    public void EndLevel(bool win)
     {
         start = false;
-        ComputeResults();
+        ComputeResults(win);
     }
     /// <summary>
     /// This method is called during the winning condition of the game
     /// It assigns two scores based on time taken and accuracy, moderated by the difficulty and level of the game being played
     /// </summary>
-    private void ComputeResults()
+    private void ComputeResults(bool win)
     {
         string difficulty = PlayerPrefs.GetString("Minigame Difficulty", "Easy");
         int currentLevel = PlayerPrefs.GetInt("MinigameLevel", 1);
@@ -132,7 +135,7 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
 
         //Debug.Log("Time Score is " + timeScore + " and acc score is " + accScore);
         Debug.LogError("Acc Score is " + accScore + " and qns score is " + qnsScore);
-        MatchingMultiplayerGameManager.instance.Win(time, qnsAnsweredCorrectly, qnsAttempted, accScore, qnsScore);
+        MatchingMultiplayerGameManager.instance.Win(time, qnsAnsweredCorrectly, qnsAttempted, accScore, qnsScore, win);
         SaveResults(difficulty, currentLevel, (accScore + qnsScore));
     }
 
@@ -146,7 +149,7 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
     {
         int worldSelected = PlayerPrefs.GetInt("World", 1);
         string minigameSelected = PlayerPrefs.GetString("Minigame Selected", "Matching Cards");
-        string studentId = "1";
+        string studentId = PlayerPrefs.GetString("id", "1");
         int minigameId;
 
         if (worldSelected == 1)
@@ -168,7 +171,7 @@ public class MatchingMultiplayerGameStatus : MonoBehaviour
         Debug.Log(studentId + ", " + minigameId + ", " + difficulty + ", " + currentLevel + ", " + score + qnsAttempted + ", " + qnsAnsweredCorrectly + ", " + time);
         Results result = new Results(studentId, minigameId, difficulty, currentLevel, score, qnsAttempted, qnsAnsweredCorrectly, time);
         string bodyJsonString = apiCall.saveToJSONString(result);
-        StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString, url));
+        StartCoroutine(apiCall.ResultsPutRequest(bodyJsonString));
         Debug.Log("Success");
     }
     /// <summary>

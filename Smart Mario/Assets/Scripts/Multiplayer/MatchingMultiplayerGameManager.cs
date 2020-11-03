@@ -72,7 +72,6 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         disable = false;
         visibleFaces[0] = -1;
         visibleFaces[1] = -2;
-        Debug.LogError("Entering new game");
 
         MatchingMultiplayerGameStatus.instance.Initialize();
         if (PlayerPrefs.GetInt("MinigameLevel") == 5)
@@ -84,7 +83,6 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         }
         if (NetworkManager.isOwner)
         {
-            Debug.LogError("Broadcasted that everyone entered minigame");
             // alert network manager to broadcast to other players that the minigame has started
             NetworkManager.instance.GetComponent<NetworkManager>().CommandMinigame2Enter();
         }
@@ -102,16 +100,13 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) && paused == false)
         {
-            Debug.LogError("Esc pressed");
             if (rulesPanel.activeInHierarchy)
             {
                 rulesPanel.SetActive(false);
-                Debug.LogError("rules panel deactivated");
             }
             else
             {
                 rulesPanel.SetActive(true);
-                Debug.LogError("rules panel activated");
             }
         }
     }
@@ -134,7 +129,6 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
     {
         if (NetworkManager.isOwner)
         {
-            Debug.LogError("Broadcasted to everyone to start minigame");
             NetworkManager.instance.GetComponent<NetworkManager>().CommandMinigame2Start();
         }
         countdownTimer.SetActive(true);
@@ -167,7 +161,6 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
     {
         if (NetworkManager.isOwner)
         {
-            Debug.LogError("Broadcasted that minigame has started");
             // alert network manager to broadcast to other players that the minigame has started
             NetworkManager.instance.GetComponent<NetworkManager>().CommandMinigame2Start();
         }
@@ -228,7 +221,6 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
     {
         canvas.GetComponent<MatchingMultiplayerUIManager>().ShowMatch();
         PlayMatchSound();
-        Debug.LogError("Matched a card!");
         score.GetComponent<UnityEngine.UI.Text>().text = "Pairs left: " + scoreValue;
         StartCoroutine(RightCards(index));
     }
@@ -253,7 +245,7 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         {
             PlayWinSound();
             NetworkManager.instance.GetComponent<NetworkManager>().CommandEndGame2();
-            MatchingMultiplayerGameStatus.instance.WinLevel();
+            MatchingMultiplayerGameStatus.instance.EndLevel(true);
         }
     }
     /// <summary>
@@ -268,7 +260,6 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
             visibleFaces[1] = -2;
             scoreValue -= 1;
             MatchingMultiplayerGameStatus.instance.ScoreIncrease();
-            Debug.LogError("pairs " + scoreValue);
             return true;
         }
         else
@@ -305,7 +296,7 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
     /// <param name="attempt"></param>
     /// <param name="accSc"></param>
     /// <param name="timeSc"></param>
-    public void Win(float t, int correct, int attempt, int accSc, int qnsSc)
+    public void Win(float t, int correct, int attempt, int accSc, int qnsSc, bool win)
     {
         paused = true;
         float accuracy = accSc == 0 ? 0 : ((float)correct / (float)attempt) * 100;
@@ -316,24 +307,37 @@ public class MatchingMultiplayerGameManager : MonoBehaviour
         qnsScore.GetComponent<UnityEngine.UI.Text>().text = qnsSc.ToString() + " Points";
         accScore.GetComponent<UnityEngine.UI.Text>().text = accSc.ToString() + " Points";
         totalScore.GetComponent<UnityEngine.UI.Text>().text = (qnsSc + accSc).ToString() + " Points";
-
-
+        if (win)
+            finishText.GetComponent<UnityEngine.UI.Text>().text = "CONGRATS! YOU WON!";
+        else
+            finishText.GetComponent<UnityEngine.UI.Text>().text = "TOO BAD! YOU LOST!";
         leaveGameButton.SetActive(false);
         finishPanel.SetActive(true);
 
-    }
+    }/// <summary>
+    /// This method plays the sound when two cards are matched
+    /// </summary>
     public void PlayMatchSound()
     {
         cardMatchingSound.Play();
     }
+    /// <summary>
+    /// This method plays the sound when a card is opened
+    /// </summary>
     public void PlayOpenSound()
     {
         cardOpenSound.Play();
     }
+    /// <summary>
+    /// This method plays the sound when a card is closed
+    /// </summary>
     public void PlayCloseSound()
     {
         cardCloseSound.Play();
     }
+    /// <summary>
+    /// This method plays the sound when the level ends
+    /// </summary>
     public void PlayWinSound()
     {
         winLevelSound.Play();
