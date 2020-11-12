@@ -4,6 +4,9 @@ using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+/// <summary>
+/// Controller responsible for retrieving and storing the tasks assigned to the students and their completion status
+/// </summary>
 public class AssignedTasksManager
 {
     //Singleton
@@ -11,6 +14,10 @@ public class AssignedTasksManager
     
     private static List<StudentTaskCell> studentList;
 
+    /// <summary>
+    /// Creates a singleton instance if none exist, returns the existing instance if one exists
+    /// </summary>
+    /// <returns></returns>
     public static AssignedTasksManager GetAssignedTasksManager()
     {
         if (instance == null)
@@ -20,6 +27,10 @@ public class AssignedTasksManager
         return instance;
     }
 
+    /// <summary>
+    /// Function call to retrieve the data and store it
+    /// </summary>
+    /// <param name="str"></param>
     public void RetrieveData(string str)
     {
         studentList = new List<StudentTaskCell>();
@@ -33,6 +44,10 @@ public class AssignedTasksManager
         }
     }
 
+    /// <summary>
+    /// Getter function to get the list stored
+    /// </summary>
+    /// <returns></returns>
     public List<StudentTaskCell> GetStudentList()
     {
         return studentList;

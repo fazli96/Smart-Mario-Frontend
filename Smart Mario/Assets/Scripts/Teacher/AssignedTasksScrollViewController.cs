@@ -5,6 +5,9 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+/// <summary>
+/// Controller class for teh display of the assigned tasks scroll view
+/// </summary>
 public class AssignedTasksScrollViewController : MonoBehaviour
 {
     private SceneController scene;
@@ -18,7 +21,9 @@ public class AssignedTasksScrollViewController : MonoBehaviour
     public Text msg;
 
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Gets the stored list of students and generates a cell for each student along with their completion status
+    /// </summary>
     void Start()
     {
         scene = SceneController.GetSceneController();
@@ -41,6 +46,9 @@ public class AssignedTasksScrollViewController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Generates a cell for each student
+    /// </summary>
     private void GenerateStudentCells()
     {
         foreach(StudentTaskCell student in studentList)
@@ -53,6 +61,10 @@ public class AssignedTasksScrollViewController : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// To display a string message
+    /// </summary>
+    /// <param name="str"></param>
     public void DisplayMessage(string str)
     {
         msg.text = str;

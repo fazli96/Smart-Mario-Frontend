@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controller for the teacher menu scene
+/// </summary>
 public class TeacherMenuManager : MonoBehaviour
 {
     //Singleton
@@ -20,6 +23,10 @@ public class TeacherMenuManager : MonoBehaviour
     private static string teacherID;
     private APICall apiCall;
 
+    /// <summary>
+    ///  Creates a singleton instance if none exist, returns the existing instance if one exists
+    /// </summary>
+    /// <returns></returns>
     public static TeacherMenuManager GetTeacherMenuManager()
     {
         if (instance == null)
@@ -46,21 +53,33 @@ public class TeacherMenuManager : MonoBehaviour
          
     }
 
+    /// <summary>
+    /// Select Student Performance Button action; transits to select student performance screen
+    /// </summary>
     public void SelectStudentPerformanceScreen()
     {
         StartCoroutine(apiCall.AllStudentResultGetRequest(teacherID, true));
     }
 
+    /// <summary>
+    /// Assign task button action; transits to assign task screen
+    /// </summary>
     public void AssignTasksScreen()
     {
         scene.ToAssignTasksScreen();
     }
 
+    /// <summary>
+    /// Selet task screen button, transits to select task screen
+    /// </summary>
     public void SelectTaskScreen()
     {
         StartCoroutine(apiCall.AllStudentResultGetRequest(teacherID, false));
     }
 
+    /// <summary>
+    /// Log out button action; transits to login screen
+    /// </summary>
     public void LogOut()
     {
         scene.ToLogin();

@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/// <summary>
+/// Controller of the manage tasks scroll view. It dynamically displays the tasks.
+/// </summary>
 public class ManageTasksScrollViewManager : MonoBehaviour
 {
     private SceneController scene;
@@ -41,6 +45,11 @@ public class ManageTasksScrollViewManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Converts the list of items from DisplayList Manager to the list of attributes it needs
+    /// </summary>
+    /// <param name="ls"></param>
+    /// <returns></returns>
     private List<TaskCompletionCell> ParseList(List<DisplayResults> ls)
     {
         List<TaskCompletionCell> newList = new List<TaskCompletionCell>();
@@ -54,6 +63,9 @@ public class ManageTasksScrollViewManager : MonoBehaviour
         return newList;
     }
 
+    /// <summary>
+    /// Create the cells to be displayed
+    /// </summary>
     private void GenerateTaskCells()
     {
         foreach(TaskCompletionCell task in tasksList)
@@ -66,6 +78,9 @@ public class ManageTasksScrollViewManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Displays error message if there are no tasks
+    /// </summary>
     public void DisplayNoTasksMessage()
     {
         noTasksMessage.text = "You have no assigned tasks!";

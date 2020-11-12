@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controller class for the statistics scene.
+/// </summary>
 public class StatisticsManager : MonoBehaviour
 {
     //Singleton
@@ -34,6 +37,10 @@ public class StatisticsManager : MonoBehaviour
     private static string level;
     private static bool teacherUser;
 
+    /// <summary>
+    /// Creates a singleton instance if none exist, returns the existing instance if one exists
+    /// </summary>
+    /// <returns></returns>
     public static StatisticsManager GetStatisticsManager()
     {
         if (instance == null)
@@ -42,7 +49,6 @@ public class StatisticsManager : MonoBehaviour
         }
         return instance;
     }
-
 
     void Awake()
     {
@@ -55,6 +61,7 @@ public class StatisticsManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -76,6 +83,12 @@ public class StatisticsManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Set the attributes of the student
+    /// </summary>
+    /// <param name="newStudentName"></param>
+    /// <param name="newStudentId"></param>
+    /// <param name="teacherUserBool"></param>
     public void SetStudentAttributes(string newStudentName, string newStudentId, bool teacherUserBool)
     {
         studentId = newStudentId;
@@ -83,6 +96,9 @@ public class StatisticsManager : MonoBehaviour
         teacherUser = teacherUserBool;
     }
     
+    /// <summary>
+    /// Default dropdown list values
+    /// </summary>
     private void SetDefaultValues()
     {
         minigameId = "1";
@@ -90,6 +106,9 @@ public class StatisticsManager : MonoBehaviour
         level = "1"; 
     }
 
+    /// <summary>
+    /// Displays loading results message when retrieving from the database
+    /// </summary>
     public void LoadingResults()
     {
         highScoreText.text = "Loading Results...";
@@ -98,6 +117,9 @@ public class StatisticsManager : MonoBehaviour
         QnsAccuracyText.text = "";
     }
 
+    /// <summary>
+    /// Displays message if student did not complete the level
+    /// </summary>
     public void ResultsAbsent()
     {
         highScoreText.text = "Level not cleared";
@@ -106,6 +128,10 @@ public class StatisticsManager : MonoBehaviour
         QnsAccuracyText.text = "";
     }
 
+    /// <summary>
+    /// Displays the results of the level if exists and completed
+    /// </summary>
+    /// <param name="responseString"></param>
     public void ResultsRetrieved(string responseString)
     {
         var jo = JObject.Parse(responseString);
@@ -130,6 +156,9 @@ public class StatisticsManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Changes current value when user clicks on one from the dropdown menu
+    /// </summary>
     public void OnDropdownValueChange()
     {
         LoadingResults();
@@ -154,6 +183,9 @@ public class StatisticsManager : MonoBehaviour
         StartCoroutine(apiCall.BestResultsGetRequest(studentId, minigameId, difficulty, level));
     }
 
+    /// <summary>
+    /// Back button action
+    /// </summary>
     public void backToSelectStudent()
     {
         if (teacherUser)

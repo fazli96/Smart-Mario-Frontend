@@ -9,6 +9,9 @@ using System.Text;
 using Newtonsoft.Json;
 using System;
 
+/// <summary>
+/// Controller class for the display of the scene to select a student to view their performance
+/// </summary>
 public class SelectStudentManager : MonoBehaviour
 {
     //Singleton
@@ -26,6 +29,10 @@ public class SelectStudentManager : MonoBehaviour
     private static bool refreshAndExportCSV;
     private static string CSVRawData;
 
+    /// <summary>
+    /// Creates a singleton instance if none exist, returns the existing instance if one exists
+    /// </summary>
+    /// <returns></returns>
     public static SelectStudentManager GetSelectStudentManager()
     {
         if (instance == null)
@@ -36,7 +43,10 @@ public class SelectStudentManager : MonoBehaviour
         return instance;
     }
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Starts the scene and clears all messages
+    /// If exportcsv is called, scene refreshes and exports the csv
+    /// </summary>
     void Start()
     {
         scene = SceneController.GetSceneController();
@@ -58,11 +68,19 @@ public class SelectStudentManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Back action button
+    /// Directs user back to the main menu
+    /// </summary>
     public void BackToTeacherMenu()
     {
         scene.ToTeacherMenu();
     }
 
+    /// <summary>
+    /// Gets the path to export csv
+    /// </summary>
+    /// <returns></returns>
     private string getPath()
     {
         #if UNITY_EDITOR
@@ -72,12 +90,19 @@ public class SelectStudentManager : MonoBehaviour
         #endif
     }
 
+    /// <summary>
+    /// Gets the string for csv export and stores it before refreshing the page
+    /// </summary>
+    /// <param name="responseString"></param>
     public void SetRefreshAndExportCSV(string responseString)
     {
         refreshAndExportCSV = true;
         CSVRawData = responseString;
     }
 
+    /// <summary>
+    /// Exports all student's progress and data
+    /// </summary>
     public void ExportCSV()
     {
         successMessage.text = "";
@@ -87,6 +112,9 @@ public class SelectStudentManager : MonoBehaviour
         StartCoroutine(apiCall.CSVExportGetRequest(teacherId));
     }
 
+    /// <summary>
+    /// To process the response string into a csv output
+    /// </summary>
     public void ProcessCSVResponse()
     {
         try

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controller for the scroll view selection of students to view their performance
+/// </summary>
 public class StudentScrollViewController : MonoBehaviour
 {
     //Singleton
@@ -19,6 +22,10 @@ public class StudentScrollViewController : MonoBehaviour
     private static List<(string, string)> nameList;
     public Text msg;
 
+    /// <summary>
+    /// Creates a singleton instance if none exist, returns the existing instance if one exists
+    /// </summary>
+    /// <returns></returns>
     public static StudentScrollViewController GetStudentScrollViewController()
     {
         if (instance == null)
@@ -28,7 +35,9 @@ public class StudentScrollViewController : MonoBehaviour
         return instance;
     }
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Gets list of students then generate buttons for each student
+    /// </summary>
     void Start()
     {
         DisplayMessage("");
@@ -57,6 +66,11 @@ public class StudentScrollViewController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Converts the list items to what the buttons need
+    /// </summary>
+    /// <param name="ls"></param>
+    /// <returns></returns>
     private List<(string, string)> ParseList(List<DisplayResults> ls)
     {
         List<(string, string)> newList = new List<(string, string)>();
@@ -72,7 +86,9 @@ public class StudentScrollViewController : MonoBehaviour
         return newList;
     }
 
-
+    /// <summary>
+    /// Creates a button for each student
+    /// </summary>
     private void GenerateStudentButtons()
     {
         foreach(var student in nameList)
@@ -87,6 +103,10 @@ public class StudentScrollViewController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Function to diaplay an error message
+    /// </summary>
+    /// <param name="str"></param>
     public void DisplayMessage(string str)
     {
         msg.text = str;
@@ -98,6 +118,9 @@ public class StudentScrollViewController : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Action for when a student button is clicked
+    /// </summary>
     public void ButtonClicked()
     {
         scene.ToStatistics();

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controller class for check assigned tasks scene
+/// </summary>
 public class CheckAssignedTasksManager : MonoBehaviour
 {
     private SceneController scene;
@@ -35,11 +38,18 @@ public class CheckAssignedTasksManager : MonoBehaviour
         
     }
     
+    /// <summary>
+    /// Back button action
+    /// Redirects user back to main menu
+    /// </summary>
     public void BackToTeacherMenu()
     {
         scene.ToTeacherSelectTaskScreen();
     }
 
+    /// <summary>
+    /// Display the selected game, level and difficulty on the screen
+    /// </summary>
     public void DisplayAttributes()
     {
         gameNameText.text = gameName;
@@ -47,6 +57,9 @@ public class CheckAssignedTasksManager : MonoBehaviour
         levelText.text = level;
     }
 
+    /// <summary>
+    /// Function to retrieve the selected values
+    /// </summary>
     public void SetAttributes()
     {
         this.gameName = translator.GameIDToName(selectTaskManager.GetMiniGameID());

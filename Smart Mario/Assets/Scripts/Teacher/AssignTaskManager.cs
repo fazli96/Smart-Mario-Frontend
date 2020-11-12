@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Controller responsible for allowing the teacher to assign a task for the students
+/// </summary>
 public class AssignTaskManager : MonoBehaviour
 {
     //Singleton
@@ -27,6 +30,10 @@ public class AssignTaskManager : MonoBehaviour
     private static bool refresh;
     private static bool success;
 
+    /// <summary>
+    /// Creates a singleton instance if none exist, returns the existing instance if one exists
+    /// </summary>
+    /// <returns></returns>
     public static AssignTaskManager GetAssignTaskManager()
     {
         if (instance == null)
@@ -37,7 +44,11 @@ public class AssignTaskManager : MonoBehaviour
         return instance;
     }
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Set the default values for the dropdown list.
+    /// If teacher attempts to assign a task, the scene is refreshed. 
+    /// If refreshed, then it will check the success status of assigning the task and display the outcome.
+    /// </summary>
     void Start()
     {
         waitMessage.text = "";
@@ -61,6 +72,9 @@ public class AssignTaskManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Set default values for the dropdown menus
+    /// </summary>
     private void SetDefaultValues()
     {
         minigameId = "1";
@@ -68,6 +82,9 @@ public class AssignTaskManager : MonoBehaviour
         level = "1"; 
     }
 
+    /// <summary>
+    /// Changes current value when user selects an option from the dropdown menu
+    /// </summary>
     public void OnDropdownValueChange()
     {
         minigameId = (minigameDropdown.value + 1).ToString();
@@ -89,6 +106,10 @@ public class AssignTaskManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Confirm button action
+    /// Starts coroutine of assigning the task
+    /// </summary>
     public void ConfirmAndDisplayMessage()
     {
         successMessage.text = "";
@@ -99,16 +120,26 @@ public class AssignTaskManager : MonoBehaviour
         StartCoroutine(apiCall.AssignTaskPutRequest(teacherId, minigameId, difficulty, level));
     }
 
+    /// <summary>
+    /// For coroutine to set the refresh flag to True before loading the scene again
+    /// </summary>
     public void setRefresh()
     {
         refresh = true;
     }
 
+    /// <summary>
+    /// Coroutine sets the success status of assigning the task
+    /// </summary>
+    /// <param name="status"></param>
     public void setSuccessStatus(bool status)
     {
         success = status;
     }
 
+    /// <summary>
+    /// Cancel button action
+    /// </summary>
     public void Cancel()
     {
         scene.ToTeacherMenu();

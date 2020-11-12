@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Game object for displaying the tasks to the student using Text fields.
+/// </summary>
 public class TaskCell : MonoBehaviour
 {
     [SerializeField]
@@ -22,6 +25,14 @@ public class TaskCell : MonoBehaviour
     public Text createdAtText;
     public Text completionStatusText;
 
+    /// <summary>
+    /// Set the strings to be displayed
+    /// </summary>
+    /// <param name="gameName"></param>
+    /// <param name="difficultyText"></param>
+    /// <param name="levelText"></param>
+    /// <param name="createdAt"></param>
+    /// <param name="completionStatus"></param>
     public void SetCell(string gameName, string difficultyText, string levelText, string createdAt, string completionStatus)
     {
         this.gameName = gameName;

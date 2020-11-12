@@ -4,6 +4,9 @@ using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+/// <summary>
+/// A class which stores the list of items after retriving from the API call. These items will be retrieved and displayed to the user,
+/// </summary>
 public class DisplayListManager
 {
     //Singleton
@@ -11,6 +14,10 @@ public class DisplayListManager
     
     private List<DisplayResults> displayResultsList;
     
+    /// <summary>
+    /// Creates a singleton instance if none exist, returns the existing instance if one exists
+    /// </summary>
+    /// <returns></returns>
     public static DisplayListManager GetDisplayListManager()
     {
         if (instance == null)
@@ -20,7 +27,10 @@ public class DisplayListManager
         return instance;
     }
 
-
+    /// <summary>
+    /// Function Call for the API to store the data in this manager
+    /// </summary>
+    /// <param name="result"></param>
     public void RetrieveData(string result)
     {
         displayResultsList = new List<DisplayResults>();
@@ -33,6 +43,10 @@ public class DisplayListManager
         }
     }
 
+    /// <summary>
+    /// Function call for the displaying manager to retrieve the stored results
+    /// </summary>
+    /// <returns></returns>
     public List<DisplayResults> GetDisplayResultsList()
     {
         return displayResultsList;

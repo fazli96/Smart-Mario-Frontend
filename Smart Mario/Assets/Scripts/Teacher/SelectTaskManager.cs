@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Select a task to view for Teacher to check student's completion status or whether the task has been assigned
+/// </summary>
 public class SelectTaskManager : MonoBehaviour
 {
     //Singleton
@@ -26,6 +29,10 @@ public class SelectTaskManager : MonoBehaviour
     private static string difficulty;
     private static string level;
 
+    /// <summary>
+    /// Creates a singleton instance if none exist, returns the existing instance if one exists
+    /// </summary>
+    /// <returns></returns>
     public static SelectTaskManager GetSelectTaskManager()
     {
         if (instance == null)
@@ -35,7 +42,9 @@ public class SelectTaskManager : MonoBehaviour
         return instance;
     }
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Gets the list of tasks from students and extracts the tasks assigned.
+    /// </summary>
     void Start()
     {
         scene = SceneController.GetSceneController();
@@ -54,6 +63,9 @@ public class SelectTaskManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Sets the default values for the dropdown list
+    /// </summary>
     private void SetDefaultValues()
     {
         minigameId = "1";
@@ -61,6 +73,9 @@ public class SelectTaskManager : MonoBehaviour
         level = "1"; 
     }
 
+    /// <summary>
+    /// Changes the seelcted value when user selects an option from the dropdown menu
+    /// </summary>
     public void OnDropdownValueChange()
     {
         minigameId = (minigameDropdown.value + 1).ToString();
@@ -82,6 +97,11 @@ public class SelectTaskManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Converts the list to what we need
+    /// </summary>
+    /// <param name="ls"></param>
+    /// <returns></returns>
     private List<(string, string, string)> ParseList(List<DisplayResults> ls)
     {
         List<(string, string, string)> newList = new List<(string, string, string)>();
@@ -96,16 +116,25 @@ public class SelectTaskManager : MonoBehaviour
         return newList;
     }
 
+    /// <summary>
+    /// Displays an error message that the task had not been assigned yet
+    /// </summary>
     public void DisplayErrorMessage()
     {   
         errorMessage.text = "Task has not been assigned yet!";
     }
 
+    /// <summary>
+    /// Back button action
+    /// </summary>
     public void Back()
     {
         scene.ToTeacherMenu();
     }
 
+    /// <summary>
+    /// Next button action
+    /// </summary>
     public void Next()
     {
         var currentSelection = (minigameId, difficulty, level);
@@ -123,9 +152,21 @@ public class SelectTaskManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Get the minigame id of the user's current selection
+    /// </summary>
+    /// <returns></returns>
     public string GetMiniGameID() { return minigameId; }
 
+    /// <summary>
+    /// Get the difficulty of the user's current selection
+    /// </summary>
+    /// <returns></returns>
     public string GetDifficulty() { return difficulty; }
 
+    /// <summary>
+    /// Get the level of the user's current selection
+    /// </summary>
+    /// <returns></returns>
     public string GetLevel() { return level; }
 }
